@@ -9,30 +9,30 @@
 // ammoMax, showBrief, updateHud, syncLifeContainers), what it rebinds as getters (story, t, graph, dungeon, cellSide, playerHP,
 // playerPos, pilotMode, briefQ, storyBase, sectorRun, shotId, eco, ammo, kills, rank, hands, combo, hull) and its writers (setPlayerHP,
 // setAmmo, pause).
-import { BASE_PERKS } from '../content/base-programme.js?v=25f0cc09';
-import { LASER_AUTO } from '../content/orbital-laser.js?v=25f0cc09';
-import { hasPerk as programmeHas, sectorStarted } from '../domain/build-programme.js?v=25f0cc09';
-import { createArcLaunch } from './arc-launch.js?v=25f0cc09';
-import { createArmoryPad } from './armory-pad.js?v=25f0cc09';
-import { createPaintPad } from './paint-pad.js?v=25f0cc09';
-import { applyGarage } from '../../assets/models/garage/runtime.js?v=25f0cc09';
-import { ORBITAL_WORKS } from '../content/orbital-works.js?v=25f0cc09';
-import { makeWorks, launchDue, beginLaunch, collectorUp, energyBonus } from '../domain/orbital-works.js?v=25f0cc09';
-import { createOrbitalRing } from './orbital-ring.js?v=25f0cc09';
-import { createScoreboard } from './scoreboard.js?v=25f0cc09';
-import { createSiteBeacons } from './site-beacons.js?v=25f0cc09';
-import { STORY_EXPEDITIONS } from '../content/story-defaults.js?v=25f0cc09';
-import { GUNSHIP_AUTO } from '../content/gunship.js?v=25f0cc09';
-import { LIVERY_IDS, DYE_SHOP } from '../content/dyes.js?v=25f0cc09';
-import { makeDyeBook } from '../domain/dyes.js?v=25f0cc09';
-import { openPaintShop, applyLivery } from './paint-shop.js?v=25f0cc09';
-import { isaoSpeak } from './isao-voice.js?v=25f0cc09';
-import { tourStops } from '../domain/story-shots.js?v=25f0cc09';
-import { createAmbientGust } from './ambient-gust.js?v=25f0cc09';
-import { BRIEFS } from '../isaobriefs.js?v=25f0cc09';
-import { storage } from '../storage.js?v=25f0cc09';
-import { createMomentReel } from './moment-reel.js?v=25f0cc09';
-import { createColonyLapse } from './colony-lapse.js?v=25f0cc09';
+import { BASE_PERKS } from '../content/base-programme.js?v=9d95390b';
+import { LASER_AUTO } from '../content/orbital-laser.js?v=9d95390b';
+import { hasPerk as programmeHas, sectorStarted } from '../domain/build-programme.js?v=9d95390b';
+import { createArcLaunch } from './arc-launch.js?v=9d95390b';
+import { createArmoryPad } from './armory-pad.js?v=9d95390b';
+import { createPaintPad } from './paint-pad.js?v=9d95390b';
+import { applyGarage } from '../../assets/models/garage/runtime.js?v=9d95390b';
+import { ORBITAL_WORKS } from '../content/orbital-works.js?v=9d95390b';
+import { makeWorks, launchDue, beginLaunch, collectorUp, energyBonus } from '../domain/orbital-works.js?v=9d95390b';
+import { createOrbitalRing } from './orbital-ring.js?v=9d95390b';
+import { createScoreboard } from './scoreboard.js?v=9d95390b';
+import { createSiteBeacons } from './site-beacons.js?v=9d95390b';
+import { STORY_EXPEDITIONS } from '../content/story-defaults.js?v=9d95390b';
+import { GUNSHIP_AUTO } from '../content/gunship.js?v=9d95390b';
+import { LIVERY_IDS, DYE_SHOP } from '../content/dyes.js?v=9d95390b';
+import { makeDyeBook } from '../domain/dyes.js?v=9d95390b';
+import { openPaintShop, applyLivery } from './paint-shop.js?v=9d95390b';
+import { isaoSpeak } from './isao-voice.js?v=9d95390b';
+import { tourStops } from '../domain/story-shots.js?v=9d95390b';
+import { createAmbientGust } from './ambient-gust.js?v=9d95390b';
+import { BRIEFS } from '../isaobriefs.js?v=9d95390b';
+import { storage } from '../storage.js?v=9d95390b';
+import { createMomentReel } from './moment-reel.js?v=9d95390b';
+import { createColonyLapse } from './colony-lapse.js?v=9d95390b';
 const loadDyes = () => { try { return JSON.parse(storage.getItem(DYE_SHOP.store) ?? 'null'); } catch { return null; } };
 const saveDyes = (b) => { try { storage.setItem(DYE_SHOP.store, JSON.stringify(b)); } catch { /* a refused store: the dyes last this run */ } };
 

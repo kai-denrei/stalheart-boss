@@ -1,7 +1,7 @@
 // Felt it: note a moment that was satisfying or needs work, saved on this browser, copied out by hand for
 // docs/FUNMAP.md. Nothing leaves the browser except by copy.
-import { storage } from '../storage.js?v=25f0cc09';
-import { FELT_KINDS, FELT_LESSONS, addNote, sanitiseNotes, toFunmapLines, toJson } from '../domain/felt-notes.js?v=25f0cc09';
+import { storage } from '../storage.js?v=9d95390b';
+import { FELT_KINDS, FELT_LESSONS, addNote, sanitiseNotes, toFunmapLines, toJson } from '../domain/felt-notes.js?v=9d95390b';
 
 const KEY = 'ssg.felt-notes';
 let panel = null;

@@ -5,7 +5,7 @@
 import {
   PALETTE, mulberry32, hash01, lerp, clamp, smoothstep,
   clearBg, drawBezel, drawHeader, label, fmtStep,
-} from './crt.js?v=25f0cc09';
+} from './crt.js?v=9d95390b';
 
 const PERIOD_MS = 12000;
 const SEED = 5717;

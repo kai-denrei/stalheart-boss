@@ -1,4 +1,4 @@
-import { storage as localStorage } from './storage.js?v=25f0cc09';
+import { storage as localStorage } from './storage.js?v=9d95390b';
 // audio.js — the Web Audio half: context, buffers, gain graph. Every
 // decision about WHETHER a sound may play lives in audiomix.js; this
 // file only carries them out. No three.js, no game knowledge, so any
@@ -18,10 +18,10 @@ import { storage as localStorage } from './storage.js?v=25f0cc09';
 //    total. A failed fetch or decode logs once and that key becomes a
 //    permanent no-op for the session; the game keeps running silent.
 
-import { makeMixState, distanceGain, admit, addVoice, dropVoice } from './audiomix.js?v=25f0cc09';
-import { SOUNDS, BUSES, DEFAULT_LEVELS, GLOBAL_VOICE_CAP, DISTANCE_K } from './audiomanifest.js?v=25f0cc09';
-import { mulberry32 } from './rng.js?v=25f0cc09';
-import { gateStep } from './audiogate.js?v=25f0cc09';
+import { makeMixState, distanceGain, admit, addVoice, dropVoice } from './audiomix.js?v=9d95390b';
+import { SOUNDS, BUSES, DEFAULT_LEVELS, GLOBAL_VOICE_CAP, DISTANCE_K } from './audiomanifest.js?v=9d95390b';
+import { mulberry32 } from './rng.js?v=9d95390b';
+import { gateStep } from './audiogate.js?v=9d95390b';
 
 const STORE_KEY = 'ssg.audio.levels';
 const STEAL_FADE = 0.03; // s — a hard cut mid-waveform is an audible click

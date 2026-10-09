@@ -1,7 +1,7 @@
-import { createAuthoringClient } from '../platform/authoring-client.js?v=25f0cc09';
-import { clone } from '../content/preset.js?v=25f0cc09';
-import { SHIPPED } from '../content/runtime.js?v=25f0cc09';
-import { replaceSubject, subjectLabel, changeSummary } from '../content/authoring.js?v=25f0cc09';
+import { createAuthoringClient } from '../platform/authoring-client.js?v=9d95390b';
+import { clone } from '../content/preset.js?v=9d95390b';
+import { SHIPPED } from '../content/runtime.js?v=9d95390b';
+import { replaceSubject, subjectLabel, changeSummary } from '../content/authoring.js?v=9d95390b';
 
 export function mountLocalAuthoring(box, { read, write, subject, report }) {
   const client = createAuthoringClient();

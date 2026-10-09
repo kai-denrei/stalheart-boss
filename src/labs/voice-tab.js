@@ -3,14 +3,14 @@
 // the seiyu_voice export) with the game moments that raise it, each line to audition and switch on or off, and the gaps both ways:
 // triggers no moment raises yet, and Isao's briefs with no line. The picks are the game's own (src/storage.js VOICE_STORE): the game
 // reads them on every line it says, so a switch here holds in the next run on this browser. EXPORT writes them as a file to bake later.
-import { makeAudio } from '../audio.js?v=25f0cc09';
-import { SOUNDS } from '../audiomanifest.js?v=25f0cc09';
-import { ISAO_TRIGGERS, ISAO_VOICE_SOURCE } from '../content/isao-voice.js?v=25f0cc09';
-import { VOICE_HOOKS, VOICE_CALLOUTS, VOICE_EVENTS, VOICE_STORE, VOICE_TUNE, voiceKey, voiceSounds } from '../content/voice-hooks.js?v=25f0cc09';
-import { createVoiceIndex, readPicks, writePicks, prunePicks, dbGain, PICK_DB, PICK_DUCK } from '../domain/voice-match.js?v=25f0cc09';
-import { unvoicedScript } from '../domain/voice-script.js?v=25f0cc09';
-import { BRIEFS } from '../isaobriefs.js?v=25f0cc09';
-import { storage } from '../storage.js?v=25f0cc09';
+import { makeAudio } from '../audio.js?v=9d95390b';
+import { SOUNDS } from '../audiomanifest.js?v=9d95390b';
+import { ISAO_TRIGGERS, ISAO_VOICE_SOURCE } from '../content/isao-voice.js?v=9d95390b';
+import { VOICE_HOOKS, VOICE_CALLOUTS, VOICE_EVENTS, VOICE_STORE, VOICE_TUNE, voiceKey, voiceSounds } from '../content/voice-hooks.js?v=9d95390b';
+import { createVoiceIndex, readPicks, writePicks, prunePicks, dbGain, PICK_DB, PICK_DUCK } from '../domain/voice-match.js?v=9d95390b';
+import { unvoicedScript } from '../domain/voice-script.js?v=9d95390b';
+import { BRIEFS } from '../isaobriefs.js?v=9d95390b';
+import { storage } from '../storage.js?v=9d95390b';
 
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 

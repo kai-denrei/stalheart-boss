@@ -3,7 +3,7 @@
 // now carries every flag the controller and the variables modal read; an absent flag is null, never undefined, so `=== '1'` and
 // `!== '0'` tests keep their meaning, and a flag present with no value is '' (URLSearchParams.has(k) is `flags[k] !== null`).
 // `shield` holds the SHIELD_TUNE knobs by name (?tapOutage=8, ?coolSecs=3, src/domain/shield.js SHIELD_KNOBS).
-import { SHIELD_KNOBS } from '../domain/shield.js?v=25f0cc09';
+import { SHIELD_KNOBS } from '../domain/shield.js?v=9d95390b';
 
 export const GAME_FLAG_KEYS = Object.freeze([
   'acceptance', 'blast', 'brief', 'callouts', 'coarse', 'creature', 'day', 'fps', 'gunship', 'heart', 'keyprobe', 'labGalaxySeed', 'labseed',

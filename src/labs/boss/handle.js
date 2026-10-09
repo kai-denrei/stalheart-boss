@@ -2,12 +2,12 @@
 // drive the lab by, moved out of boss-tab.js (bait-mode spec, Task 0) so the bait and the seat have room to grow beside it. The lab's
 // own state reaches it through getters (a creature reload, a size change, a re-anchor or a new fight is seen at once); the two it
 // assigns, the scripted input and the pinTo hold, through setters. The methods are the lab's own, moved verbatim.
-import { readout as fightReadout } from '../../domain/boss-fight.js?v=25f0cc09';
+import { readout as fightReadout } from '../../domain/boss-fight.js?v=9d95390b';
 
 export function createLabHandle({
   getCreature, getScale, getT, getFight, getGameCam, getReanchors, setScripted, setPin,
   readout, setLure, setCam, setMode, bait, seat, setFight, fireCannon, copySettings, reset, tryReanchor, placeTank, creatureNow, creatureAim, temperament,
-  plane, drive, keys, state, cam, params, gui, arena, fear, fightTune, scene, chase,
+  plane, drive, keys, state, cam, params, gui, arena, fear, fightTune, scene, chase, wave, reeds,
 }) {
   const lab = {
     readout,
@@ -31,6 +31,11 @@ export function createLabHandle({
     // next lunge due), weights: { lunge, fear }, live (the settings written, null in the tank mode) }) and fear per gun ({ flinch, wild, panic (the run's
     // scares), meter (the 25 mm's barrage), flight ({ level, at, since, until, flee, speed, erratic } or null) })
     temperament: () => temperament.state(),
+    // THE FIRST WAVE (bait mode, ./wave.js): wave() is its state ({ count, alive, killed, made (bodies standing or lying), cleared, boss (the boss in), entered (it came in
+    // after a wave), reeds: [{ id, hp, dead, hits, body, centre (local), contacts, lod }], hunted (the Reed nearest Isao), solver (ms this frame), steps, timeScale (the
+    // wave's clock under the budget), lod (off-screen now), cost (ms a step), meanSolver, meanScale }); reeds(n) sets the count and restarts the round (reeds() reads it);
+    // killReeds() is the acceptance's cheat: every Reed standing dies now (the number)
+    wave: () => wave.state(), reeds, killReeds: () => wave.killAll(),
     gunFear: () => fear.guns(),
     // the game's gunship seat (bait mode, ./game-seat.js): aim([x, z]) turns the optic onto a local ground point (until the mouse moves it),
     // gun(key) picks 'rotary' | 'bofors' | 'nuke' (the MK-9; 'heavy' and 1-3 too) through the seat's own gun buttons and returns the gun,

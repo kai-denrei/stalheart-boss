@@ -8,10 +8,10 @@
 // call through as they did, sfx, explode, showBrief, camDist, showCallout, warnRing, breachWallCell, rebuildAfterBreach,
 // recomputePortalDist, shotActive, camera, startShot) and what it rebinds as getters (story, graph, dungeon, cellSide,
 // paused, deploy, pilotMode, pilot).
-import * as THREE from '../../vendor/three.module.js?v=25f0cc09';
-import { backBreachCells } from '../domain/back-door.js?v=25f0cc09';
-import { createBackOmen } from './back-omen.js?v=25f0cc09';
-import { startDiveShot } from './dive-shot.js?v=25f0cc09';
+import * as THREE from '../../vendor/three.module.js?v=9d95390b';
+import { backBreachCells } from '../domain/back-door.js?v=9d95390b';
+import { createBackOmen } from './back-omen.js?v=9d95390b';
+import { startDiveShot } from './dive-shot.js?v=9d95390b';
 
 export function createBackDoor(host) {
   const { storyApi, sfx, explode, showBrief, camDist, showCallout, warnRing, breachWallCell, rebuildAfterBreach, recomputePortalDist, shotActive, camera, startShot } = host;

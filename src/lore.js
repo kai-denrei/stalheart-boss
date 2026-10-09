@@ -1,4 +1,4 @@
-import { SENTRIES } from './content/sentries.js?v=25f0cc09';
+import { SENTRIES } from './content/sentries.js?v=9d95390b';
 // lore.js — the codex. Every unit described twice: once as it EXISTS in
 // the fiction (survey-log register, sci-fi realistic), once as a dense
 // visual prompt fit for a txt2img model. The game's dot-render is, in

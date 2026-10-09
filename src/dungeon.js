@@ -13,8 +13,8 @@
 // interesting; the double-BFS diameter trick still finds the "two most
 // distant" cells for spawn and heart.
 
-import { mulberry32 } from './rng.js?v=25f0cc09';
-import { sub3, dot3, cross3, norm3, mean3, scale3 } from './vec3.js?v=25f0cc09';
+import { mulberry32 } from './rng.js?v=9d95390b';
+import { sub3, dot3, cross3, norm3, mean3, scale3 } from './vec3.js?v=9d95390b';
 
 export const BLOCKED = 0;
 export const PATH = 1;

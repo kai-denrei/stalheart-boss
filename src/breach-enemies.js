@@ -1,9 +1,9 @@
-import * as THREE from '../vendor/three.module.js?v=25f0cc09';
-import { makeDotEnemy } from './units.js?v=25f0cc09';
-import { ENEMY_SPEC,CREATURE_TINTS,accentFor } from './enemyspec.js?v=25f0cc09';
-import { makeBreachWaves,stepBreachWaves,emergence } from './domain/breach-waves.js?v=25f0cc09';
-import { breachPoint,breachNormal } from './core/breach-surface.js?v=25f0cc09';
-import { rimRadius,bowlHeight,SINKHOLE_INNER } from './core/sinkhole-shape.js?v=25f0cc09';
+import * as THREE from '../vendor/three.module.js?v=9d95390b';
+import { makeDotEnemy } from './units.js?v=9d95390b';
+import { ENEMY_SPEC,CREATURE_TINTS,accentFor } from './enemyspec.js?v=9d95390b';
+import { makeBreachWaves,stepBreachWaves,emergence } from './domain/breach-waves.js?v=9d95390b';
+import { breachPoint,breachNormal } from './core/breach-surface.js?v=9d95390b';
+import { rimRadius,bowlHeight,SINKHOLE_INNER } from './core/sinkhole-shape.js?v=9d95390b';
 export const BREACH_ENEMY_TYPES=Object.keys(ENEMY_SPEC).filter(k=>!ENEMY_SPEC[k].shelved);
 export function createBreachEnemies(scene){
  const group=new THREE.Group();group.name='Breach creatures';scene.add(group);

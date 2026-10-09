@@ -8,9 +8,9 @@
 //
 // THE BLOCKER is the lab's test, `(x, z) -> null | { nx, nz, depth }`: a push-out direction and depth in metres. A hull that hits
 // it is pushed out, stops dead and loses its run-up (a head-on scrub). Only a hull that moved is tested: a parked hull is not shoved.
-import { makeDriveRamp, stepDriveRamp, scrubDriveRamp } from '../../domain/drive-ramp.js?v=25f0cc09';
-import { makeSteerEase, stepSteerEase, steerBank } from '../../domain/steer-ease.js?v=25f0cc09';
-import { TANK_DRIVE, TANK_STEER } from '../../content/tank.js?v=25f0cc09';
+import { makeDriveRamp, stepDriveRamp, scrubDriveRamp } from '../../domain/drive-ramp.js?v=9d95390b';
+import { makeSteerEase, stepSteerEase, steerBank } from '../../domain/steer-ease.js?v=9d95390b';
+import { TANK_DRIVE, TANK_STEER } from '../../content/tank.js?v=9d95390b';
 
 const FORWARD = 1, REVERSE = -0.55, CRUISE_BOOST = 1.45, CRUISE_ROLL = 1;   // hull-drive.js's manual drive values
 // the game's pace at ten metres a cell: params.speed (1.1 cells a second) x cellSide x 1.6

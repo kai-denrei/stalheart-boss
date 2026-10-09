@@ -1,5 +1,5 @@
-import { BufferGeometry, Float32BufferAttribute } from '../../../../vendor/three.module.js?v=25f0cc09';
-import { hash11 } from '../utils/math.js?v=25f0cc09';
+import { BufferGeometry, Float32BufferAttribute } from '../../../../vendor/three.module.js?v=9d95390b';
+import { hash11 } from '../utils/math.js?v=9d95390b';
 
 /**
  * The broken floor plate — layer 4 of the Crystallized Venom Surge breakdown.

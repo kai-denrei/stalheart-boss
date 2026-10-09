@@ -1,6 +1,6 @@
-import { firingFor } from './content/firing-defaults.js?v=25f0cc09';
+import { firingFor } from './content/firing-defaults.js?v=9d95390b';
 // Sentry combat rules. Identity, numbering and radial order have one content owner.
-import { SENTRIES, SENTRY_ORDER } from './content/sentries.js?v=25f0cc09';
+import { SENTRIES, SENTRY_ORDER } from './content/sentries.js?v=9d95390b';
 const COMBAT = {
   "rotor": {
     "color": 15397631,

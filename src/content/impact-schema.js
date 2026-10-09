@@ -1,4 +1,4 @@
-import { makeParams, clampParams, formatKnobs, knobProblems } from '../core/knobs.js?v=25f0cc09';
+import { makeParams, clampParams, formatKnobs, knobProblems } from '../core/knobs.js?v=9d95390b';
 
 export const IMPACT_TUNE = {
   // SPARK SHOWER — hot chips thrown off the surface, falling under gravity

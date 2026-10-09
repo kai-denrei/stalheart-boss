@@ -1,9 +1,9 @@
 // THE ENDING'S HOST (moved out of src/fx/programme-host.js unchanged, the refactor run, 2026-10-07): the sector loop's interlude
 // (retired) and the finale. `c` is handed on to playDiorama (src/fx/finale-diorama.js), which reads story, startShot, scene,
 // cellSide, hull, isao and spawnIsao of it; the finale itself reads storyBase, map, dungeon, graph, pause, hud and sfx.
-import * as THREE from '../../vendor/three.module.js?v=25f0cc09';
-import { playDiorama } from './finale-diorama.js?v=25f0cc09';
-import { playOrbitalFinale } from './orbital-finale.js?v=25f0cc09';
+import * as THREE from '../../vendor/three.module.js?v=9d95390b';
+import { playDiorama } from './finale-diorama.js?v=9d95390b';
+import { playOrbitalFinale } from './orbital-finale.js?v=9d95390b';
 
 export function createEndingHost(c) {
   return {

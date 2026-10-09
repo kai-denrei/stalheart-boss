@@ -2,8 +2,8 @@
 // laser like burn effect (less strong)"). SOL-82's scorch (src/fx/scorch-trail.js), smaller and shorter-lived: a stamp of char and
 // embers where a Lancer's beam meets rock, laid on the rock's face (facing back along the beam) or on the ground under it. It ages
 // itself as it is drawn, so the controller only calls hit().
-import * as THREE from '../../vendor/three.module.js?v=25f0cc09';
-import { createScorchTrail } from './scorch-trail.js?v=25f0cc09';
+import * as THREE from '../../vendor/three.module.js?v=9d95390b';
+import { createScorchTrail } from './scorch-trail.js?v=9d95390b';
 
 // `cells`: the stamp's width in cells, 0.45 -> 1.1 (owner, 2026-10-05: "the burned ground effect of the laser is too small")
 // `life` 20 -> 7 s (owner, 2026-10-05: "staying too long")

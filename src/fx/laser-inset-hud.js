@@ -13,7 +13,7 @@
 //
 // A 2D canvas over the lab's container, redrawn after each 3D frame from one plain frame object in canvas pixels. The
 // only state here is animation phase and the contact's temperature, integrated from LASER_TELEMETRY.
-import { LASER_TELEMETRY } from '../content/orbital-laser.js?v=25f0cc09';
+import { LASER_TELEMETRY } from '../content/orbital-laser.js?v=9d95390b';
 
 const FG = '#dfe8ee';
 const HOT = '#ff3b1f';

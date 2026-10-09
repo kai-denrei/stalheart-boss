@@ -1,4 +1,4 @@
-import { Color } from '../../../../vendor/three.module.js?v=25f0cc09';
+import { Color } from '../../../../vendor/three.module.js?v=9d95390b';
 
 /**
  * Cached hex-string → THREE.Color conversion.

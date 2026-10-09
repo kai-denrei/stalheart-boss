@@ -51,12 +51,12 @@
 // hop crosses over it, and the picture would spin; the facing turns at `turn` rad/s, and so does the picture.
 //
 // Positions are the lab's local metres [x, z]; the host gives the ground under a point and the frame there, so this file knows no planet.
-import * as THREE from '../../../vendor/three.module.js?v=25f0cc09';
-import { makeBait, planBait, moveBait, hurtBait, baitCaught, hopBait, startHop, envelopeBait, reachOf } from '../../domain/boss-bait.js?v=25f0cc09';
-import { lineOf, capture } from '../../domain/boss-fight.js?v=25f0cc09';
-import { makeIsaoDrone, preloadFabricator } from '../../units.js?v=25f0cc09';
-import { STORY_SCALE } from '../../content/story-defaults.js?v=25f0cc09';
-import { createChatter } from './chatter.js?v=25f0cc09';
+import * as THREE from '../../../vendor/three.module.js?v=9d95390b';
+import { makeBait, planBait, moveBait, hurtBait, baitCaught, hopBait, startHop, envelopeBait, reachOf } from '../../domain/boss-bait.js?v=9d95390b';
+import { lineOf, capture } from '../../domain/boss-fight.js?v=9d95390b';
+import { makeIsaoDrone, preloadFabricator } from '../../units.js?v=9d95390b';
+import { STORY_SCALE } from '../../content/story-defaults.js?v=9d95390b';
+import { createChatter } from './chatter.js?v=9d95390b';
 
 const ALTITUDE = 4;        // the lab's default flying height, metres (the knob's range is the panel's)
 const CLIMB = 8;           // metres a second his altitude eases toward the knob

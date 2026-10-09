@@ -1,9 +1,9 @@
-import { DEFAULT_TANK } from './content/tank.js?v=25f0cc09';
-import { makeOrdnanceShell } from './shell.js?v=25f0cc09';
-import { createWeaponVoice } from './weapon-voice.js?v=25f0cc09';
-import { firingFor } from './content/firing-defaults.js?v=25f0cc09';
-import { makeBeamShot } from './shotfx.js?v=25f0cc09';
-import { storage as localStorage } from './storage.js?v=25f0cc09';
+import { DEFAULT_TANK } from './content/tank.js?v=9d95390b';
+import { makeOrdnanceShell } from './shell.js?v=9d95390b';
+import { createWeaponVoice } from './weapon-voice.js?v=9d95390b';
+import { firingFor } from './content/firing-defaults.js?v=9d95390b';
+import { makeBeamShot } from './shotfx.js?v=9d95390b';
+import { storage as localStorage } from './storage.js?v=9d95390b';
 // units-tab.js — a carousel for looking at one unit at a time, up close,
 // and turning it over.
 //
@@ -15,36 +15,36 @@ import { storage as localStorage } from './storage.js?v=25f0cc09';
 // ONE renderer, one unit on screen. A grid of live viewports would need a
 // WebGL context each and browsers cap those in the teens; a carousel costs
 // one context no matter how long the roster grows.
-import * as THREE from '../vendor/three.module.js?v=25f0cc09';
-import { CONTENT } from './content/runtime.js?v=25f0cc09';
-import { MISSILE_LAUNCH_ELEVATION } from './content/missile-defaults.js?v=25f0cc09';
-import { createMissilePool, launchDart, advanceDart } from './missiles.js?v=25f0cc09';
-import { shotOf } from './sentryfx.js?v=25f0cc09';
-import { OrbitControls } from '../vendor/OrbitControls.js?v=25f0cc09';
-import { GLTFExporter } from '../vendor/GLTFExporter.js?v=25f0cc09';
-import { ENEMY_SPEC } from './enemyspec.js?v=25f0cc09';
+import * as THREE from '../vendor/three.module.js?v=9d95390b';
+import { CONTENT } from './content/runtime.js?v=9d95390b';
+import { MISSILE_LAUNCH_ELEVATION } from './content/missile-defaults.js?v=9d95390b';
+import { createMissilePool, launchDart, advanceDart } from './missiles.js?v=9d95390b';
+import { shotOf } from './sentryfx.js?v=9d95390b';
+import { OrbitControls } from '../vendor/OrbitControls.js?v=9d95390b';
+import { GLTFExporter } from '../vendor/GLTFExporter.js?v=9d95390b';
+import { ENEMY_SPEC } from './enemyspec.js?v=9d95390b';
 import { buildUnit, preloadMork, makeDebris, makeDotBurst, makeBulletCloud,
   makeDotEnemy, makeRewardSolid, makeShellSolid,
   preloadContainer, makeContainerFixture,
-  preloadFabricator, makeFabricatorDrone, makeIsaoDrone } from './units.js?v=25f0cc09';
+  preloadFabricator, makeFabricatorDrone, makeIsaoDrone } from './units.js?v=9d95390b';
 import { TANK_FEEL, TANK_FEEL_KNOBS, formatFeelCode, makeTankFeel, stepTankFeel,
-  landTankFeel, fireTankFeel, applyTankFeel, applyTankHealth } from './tankfeel.js?v=25f0cc09';
-import { FEEL, loadFeel, saveFeel, resetFeel } from './feelstore.js?v=25f0cc09';
-import { CREATURE_TINTS, accentFor } from './enemyspec.js?v=25f0cc09';
-import { buildTowerLook, TOWER_LOOK_NAMES, DEFAULT_TOWER_LOOK, preloadLook } from './towerlooks.js?v=25f0cc09';
-import { TOWER_BY_KEY, TOWERS, effectiveStats } from './towers.js?v=25f0cc09';
-import { LOOKS } from './looks.js?v=25f0cc09';
-import { makeBloom } from './postfx.js?v=25f0cc09';
-import { makeAudio } from './audio.js?v=25f0cc09';
-import { GROUPS, GROUP_LABELS, GROUP_EMPTY, entriesIn } from './unitcatalog.js?v=25f0cc09';
-import { modelFixture, modelClips, setWireframe, cloneFixture } from './fx/model-fixture.js?v=25f0cc09';
-import { createBenchRange } from './labs/bench-range.js?v=25f0cc09';
-import { createOrbitalLaser } from './fx/orbital-laser.js?v=25f0cc09';
-import { LASER_SKY_METRES } from './content/orbital-laser.js?v=25f0cc09';
-import { SENTRY_TUNE } from './sentry.js?v=25f0cc09';
+  landTankFeel, fireTankFeel, applyTankFeel, applyTankHealth } from './tankfeel.js?v=9d95390b';
+import { FEEL, loadFeel, saveFeel, resetFeel } from './feelstore.js?v=9d95390b';
+import { CREATURE_TINTS, accentFor } from './enemyspec.js?v=9d95390b';
+import { buildTowerLook, TOWER_LOOK_NAMES, DEFAULT_TOWER_LOOK, preloadLook } from './towerlooks.js?v=9d95390b';
+import { TOWER_BY_KEY, TOWERS, effectiveStats } from './towers.js?v=9d95390b';
+import { LOOKS } from './looks.js?v=9d95390b';
+import { makeBloom } from './postfx.js?v=9d95390b';
+import { makeAudio } from './audio.js?v=9d95390b';
+import { GROUPS, GROUP_LABELS, GROUP_EMPTY, entriesIn } from './unitcatalog.js?v=9d95390b';
+import { modelFixture, modelClips, setWireframe, cloneFixture } from './fx/model-fixture.js?v=9d95390b';
+import { createBenchRange } from './labs/bench-range.js?v=9d95390b';
+import { createOrbitalLaser } from './fx/orbital-laser.js?v=9d95390b';
+import { LASER_SKY_METRES } from './content/orbital-laser.js?v=9d95390b';
+import { SENTRY_TUNE } from './sentry.js?v=9d95390b';
 import { FONT_NAMES, TYPE_KNOBS, TYPE_FEEL, makeTypeParams, loadTypeFeel, saveTypeFeel,
-  formatTypeCode, applyFontPack, currentFontPack, currentShoutPack } from './fonts.js?v=25f0cc09';
-import { LORE, LORE_WORLD, loreText, loreAll } from './lore.js?v=25f0cc09';
+  formatTypeCode, applyFontPack, currentFontPack, currentShoutPack } from './fonts.js?v=9d95390b';
+import { LORE, LORE_WORLD, loreText, loreAll } from './lore.js?v=9d95390b';
 
 let roundTex = null;
 function roundDotTex() {

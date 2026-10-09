@@ -7,8 +7,8 @@
 // would turn it into a carousel.
 // CLOSER AND STAGGERED (owner, 2026-10-06: "their clusters should be closer together and slightly staggered; otherwise how they move
 // looks unnatural and unorganic"): two rows `stagger` apart, members `spacing` apart along them, each a little off its mark
-import { makeDotEnemy } from '../units.js?v=25f0cc09';
-import { SQUADS } from '../content/sectors.js?v=25f0cc09';
+import { makeDotEnemy } from '../units.js?v=9d95390b';
+import { SQUADS } from '../content/sectors.js?v=9d95390b';
 
 // where member k of n stands, in the creature's own units
 export const memberAt = (k, n, tune = SQUADS) => [(k - (n - 1) / 2) * tune.spacing + ((k * 0.382) % 1 - 0.5) * 0.12, 0, (k % 2 ? 0.5 : -0.5) * tune.stagger + ((k * 0.618) % 1 - 0.5) * 0.2];

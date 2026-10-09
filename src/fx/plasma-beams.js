@@ -1,16 +1,16 @@
 // THE PLASMA BEAMS (moved out of src/td-tab.js unchanged, the refactor run, 2026-10-07): the plasma thrower's and the lancer's
 // beams on the towers: the links, throwPlasma, lanceBeam and their per-frame step. The controller keeps the beams' map
 // (plasmaBeams; the frame readout counts it) and hands it in.
-import { firingFor } from '../content/firing-defaults.js?v=25f0cc09';
-import * as THREE from '../../vendor/three.module.js?v=25f0cc09';
-import { createBeam } from '../beamfx.js?v=25f0cc09';
-import { BOARD_PRESET, BEAM_PEAK } from '../beamdraw.js?v=25f0cc09';
-import { sub3, scale3, norm3 } from '../vec3.js?v=25f0cc09';
-import { makeDotBurst } from '../units.js?v=25f0cc09';
-import { arcOf, pointAlongArc } from '../domain/round-path.js?v=25f0cc09';
-import { shotOf } from '../sentryfx.js?v=25f0cc09';
-import { LANCE_LOOK as SHOT_LANCE_LOOK, THROW_LOOK as SHOT_THROW_LOOK } from '../shotfx.js?v=25f0cc09';
-import { lanceFollow } from './lance-follow.js?v=25f0cc09';
+import { firingFor } from '../content/firing-defaults.js?v=9d95390b';
+import * as THREE from '../../vendor/three.module.js?v=9d95390b';
+import { createBeam } from '../beamfx.js?v=9d95390b';
+import { BOARD_PRESET, BEAM_PEAK } from '../beamdraw.js?v=9d95390b';
+import { sub3, scale3, norm3 } from '../vec3.js?v=9d95390b';
+import { makeDotBurst } from '../units.js?v=9d95390b';
+import { arcOf, pointAlongArc } from '../domain/round-path.js?v=9d95390b';
+import { shotOf } from '../sentryfx.js?v=9d95390b';
+import { LANCE_LOOK as SHOT_LANCE_LOOK, THROW_LOOK as SHOT_THROW_LOOK } from '../shotfx.js?v=9d95390b';
+import { lanceFollow } from './lance-follow.js?v=9d95390b';
 
 export function createPlasmaBeams(host) {
   // --- the PLASMA THROWER's beam ------------------------------------------

@@ -4,14 +4,14 @@
 // landing it drops off the back (<TOWER> UNLOCKED) and a trophy flag goes up; a lost hull throws it off and the site's flag comes
 // down and goes up again over the part. The rules are src/domain/expeditions.js; the look is src/fx/cargo.js. The controller
 // hands in what it owns as hooks and never sees the cargo.
-import * as THREE from '../../vendor/three.module.js?v=25f0cc09';
-import { reveal, guardsCleared, reach, deliver, deliverAtOnce, hullLost, nextReveals } from '../domain/expeditions.js?v=25f0cc09';
-import { STORY_EXPEDITIONS } from '../content/story-defaults.js?v=25f0cc09';
-import { CARGO_LOOK } from '../content/cargo.js?v=25f0cc09';
-import { TOWER_BY_KEY } from '../towers.js?v=25f0cc09';
-import { norm3 } from '../vec3.js?v=25f0cc09';
-import { createCargo } from './cargo.js?v=25f0cc09';
-import { makePadRing, glowPadRing } from './shield-array.js?v=25f0cc09';
+import * as THREE from '../../vendor/three.module.js?v=9d95390b';
+import { reveal, guardsCleared, reach, deliver, deliverAtOnce, hullLost, nextReveals } from '../domain/expeditions.js?v=9d95390b';
+import { STORY_EXPEDITIONS } from '../content/story-defaults.js?v=9d95390b';
+import { CARGO_LOOK } from '../content/cargo.js?v=9d95390b';
+import { TOWER_BY_KEY } from '../towers.js?v=9d95390b';
+import { norm3 } from '../vec3.js?v=9d95390b';
+import { createCargo } from './cargo.js?v=9d95390b';
+import { makePadRing, glowPadRing } from './shield-array.js?v=9d95390b';
 
 const v3 = (a) => new THREE.Vector3(a[0], a[1], a[2]);
 const chord = (a, b) => Math.hypot(a[0] - b[0], a[1] - b[1], a[2] - b[2]);
@@ -42,7 +42,7 @@ export function createExpeditionGlue(h) {
   function signStep(e) {
     if (!signAsked && typeof document !== 'undefined' && h.scene && e.sites.some((s) => s.state !== 'hidden')) {
       signAsked = true;
-      import('./scoreboard.js?v=25f0cc09').then(({ createScoreboard }) => {
+      import('./scoreboard.js?v=9d95390b').then(({ createScoreboard }) => {
         const p = trophyPose(-1.6);
         sign = createScoreboard(h.scene, { at: p.point.toArray(), up: p.normal.toArray(), facing: p.facing.toArray(), metres: metres * look.signScale, title: 'CARGO DROP-OFF', accent: '#ffd27a', flag: false, variant: 'splitflap_rivalry', rowLabels: { kills: 'HOME', gathered: 'FIELD', used: 'SITES' } });
       }).catch(() => {});

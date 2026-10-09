@@ -14,9 +14,9 @@
 //
 // Cyan and white are ours; amber is only ever a warning (out of range, the launcher holding its round).
 // prefers-reduced-motion drops every spin and blink and says the phase in words instead.
-import * as THREE from '../../vendor/three.module.js?v=25f0cc09';
-import { add3, sub3, scale3, dot3, norm3 } from '../vec3.js?v=25f0cc09';
-import { BELT_OF } from '../content/sectors.js?v=25f0cc09';
+import * as THREE from '../../vendor/three.module.js?v=9d95390b';
+import { add3, sub3, scale3, dot3, norm3 } from '../vec3.js?v=9d95390b';
+import { BELT_OF } from '../content/sectors.js?v=9d95390b';
 
 const WHITE = '#f2fbff';
 const FG = '#dfe8ee';

@@ -1,7 +1,7 @@
-import * as THREE from '../vendor/three.module.js?v=25f0cc09';
-import { GLTFLoader } from '../vendor/GLTFLoader.js?v=25f0cc09';
-import { MeshoptDecoder } from '../vendor/meshopt_decoder.module.js?v=25f0cc09';
-import { mergeGeometries, deinterleaveGeometry } from '../vendor/BufferGeometryUtils.js?v=25f0cc09';
+import * as THREE from '../vendor/three.module.js?v=9d95390b';
+import { GLTFLoader } from '../vendor/GLTFLoader.js?v=9d95390b';
+import { MeshoptDecoder } from '../vendor/meshopt_decoder.module.js?v=9d95390b';
+import { mergeGeometries, deinterleaveGeometry } from '../vendor/BufferGeometryUtils.js?v=9d95390b';
 
 // One pinned geometry upload, three body batches and one optional exhaust batch.
 // Instances share resources. A shot never disposes the pool's geometry/materials.

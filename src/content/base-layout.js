@@ -1,7 +1,7 @@
 // The story base: what stands where, and in which stage it appears. Frame
 // metres around the pole; -Z points at the clearing's open mouth. Plots are
 // the kit's reserved footprints (4 m cells), islands carry one scalable slab.
-import { STORY_SCALE } from './story-defaults.js?v=25f0cc09';
+import { STORY_SCALE } from './story-defaults.js?v=9d95390b';
 
 export const STAGES = Object.freeze([
   { n: 0, name: 'Empty pole' },

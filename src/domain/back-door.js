@@ -1,7 +1,7 @@
 // The second front: the sealed clearing mouth behind the base, and the lane cells a breach can open on so its swarm walks
 // in through that mouth once it is cracked. Pure graph rules on the story planet (src/domain/story-planet.js); the
 // numbers come from the caller (src/content/story-defaults.js STORY_BACK_DOOR).
-import { bfsDist, BLOCKED } from '../dungeon.js?v=25f0cc09';
+import { bfsDist, BLOCKED } from '../dungeon.js?v=9d95390b';
 
 const centroid = (graph, cells) => {
   const c = [0, 0, 0];

@@ -4,8 +4,8 @@
 // pass after postfx's OutputPass, in display space as the SVG ran (color-interpolation-filters sRGB): Rec. 709 luminance, then each
 // channel through the SVG's 11-step table, linearly between steps. When the board runs without its composer (bloom off on a tier),
 // the composer is turned on while thermal is and handed back after.
-import { WebGLRenderTarget, Vector4 } from '../../vendor/three.module.js?v=25f0cc09';
-import { ShaderPass } from '../../vendor/ShaderPass.js?v=25f0cc09';
+import { WebGLRenderTarget, Vector4 } from '../../vendor/three.module.js?v=9d95390b';
+import { ShaderPass } from '../../vendor/ShaderPass.js?v=9d95390b';
 
 // index.html #flir feComponentTransfer tables, 0 -> 1 in ten equal steps
 export const IRONBOW = Object.freeze({

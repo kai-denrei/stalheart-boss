@@ -4,10 +4,10 @@
 // something of ours stands inside. TRACERS: short-lived lines from the
 // muzzle sockets to the impact. The KORP model rides the platform with its
 // guns pitched to the optic and is hidden from the gunner's own eye.
-import * as THREE from '../../vendor/three.module.js?v=25f0cc09';
-import { GLTFLoader } from '../../vendor/GLTFLoader.js?v=25f0cc09';
-import { MeshoptDecoder } from '../../vendor/meshopt_decoder.module.js?v=25f0cc09';
-import { GUNSHIP_GUNS, GUNSHIP_GUN_ORDER, GUNSHIP_PLATFORM } from '../content/gunship.js?v=25f0cc09';
+import * as THREE from '../../vendor/three.module.js?v=9d95390b';
+import { GLTFLoader } from '../../vendor/GLTFLoader.js?v=9d95390b';
+import { MeshoptDecoder } from '../../vendor/meshopt_decoder.module.js?v=9d95390b';
+import { GUNSHIP_GUNS, GUNSHIP_GUN_ORDER, GUNSHIP_PLATFORM } from '../content/gunship.js?v=9d95390b';
 
 const KORP_URL = 'assets/models/korp/korp_d0_lod1.glb';
 const deg = (d) => d * Math.PI / 180;

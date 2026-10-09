@@ -1,7 +1,7 @@
 // The establishing dive: the whole planet from orbit through a pre-roll, a fast dive to a close view over a point on the
 // ground, a hold, then a short blend back to where the camera was. Taken out of the controller's sinkhole shot so the back
 // door's rock collapse frames the same way. Poses are host units on the unit sphere; the controller owns the shot latch.
-import * as THREE from '../../vendor/three.module.js?v=25f0cc09';
+import * as THREE from '../../vendor/three.module.js?v=9d95390b';
 
 const tmpCam = new THREE.PerspectiveCamera();
 const ease = (x) => { const v = Math.max(0, Math.min(1, x)); return v * v * (3 - 2 * v); };

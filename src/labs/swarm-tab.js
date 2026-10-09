@@ -19,20 +19,20 @@
 // display, not the renderer. The cost line renders in a tight loop and blocks
 // on gl.finish(), so it reads what the work is worth and can read far UNDER
 // one frame.
-import * as THREE from '../../vendor/three.module.js?v=25f0cc09';
-import { OrbitControls } from '../../vendor/OrbitControls.js?v=25f0cc09';
-import { makeDotEnemy, makeDotBurst, buildUnit, preloadMork } from '../units.js?v=25f0cc09';
-import { createDotSwarm } from '../fx/dot-swarm.js?v=25f0cc09';
-import { dotShapePts } from '../units.js?v=25f0cc09';
-import { makeJelly } from '../jelly.js?v=25f0cc09';
-import { ENEMY_SPEC, CREATURE_TINTS, accentFor } from '../enemyspec.js?v=25f0cc09';
-import { RAM_PREMIUM, STREAK_CAP, STREAK_STEP } from '../domain/economy.js?v=25f0cc09';
-import { makeAudio } from '../audio.js?v=25f0cc09';
-import { stepYardDrive } from '../domain/yard-drive.js?v=25f0cc09';
-import { makeTankFeel, stepTankFeel, applyTankFeel } from '../tankfeel.js?v=25f0cc09';
-import { FEEL, loadFeel } from '../feelstore.js?v=25f0cc09';
-import { applyFontPack, currentFontPack } from '../fonts.js?v=25f0cc09';
-import { storage } from '../storage.js?v=25f0cc09';
+import * as THREE from '../../vendor/three.module.js?v=9d95390b';
+import { OrbitControls } from '../../vendor/OrbitControls.js?v=9d95390b';
+import { makeDotEnemy, makeDotBurst, buildUnit, preloadMork } from '../units.js?v=9d95390b';
+import { createDotSwarm } from '../fx/dot-swarm.js?v=9d95390b';
+import { dotShapePts } from '../units.js?v=9d95390b';
+import { makeJelly } from '../jelly.js?v=9d95390b';
+import { ENEMY_SPEC, CREATURE_TINTS, accentFor } from '../enemyspec.js?v=9d95390b';
+import { RAM_PREMIUM, STREAK_CAP, STREAK_STEP } from '../domain/economy.js?v=9d95390b';
+import { makeAudio } from '../audio.js?v=9d95390b';
+import { stepYardDrive } from '../domain/yard-drive.js?v=9d95390b';
+import { makeTankFeel, stepTankFeel, applyTankFeel } from '../tankfeel.js?v=9d95390b';
+import { FEEL, loadFeel } from '../feelstore.js?v=9d95390b';
+import { applyFontPack, currentFontPack } from '../fonts.js?v=9d95390b';
+import { storage } from '../storage.js?v=9d95390b';
 
 const TYPES = Object.keys(CREATURE_TINTS).filter((t) => ENEMY_SPEC[t]);
 const DIE_CUES = ['enemy_die_a', 'enemy_die_b', 'enemy_die_c'];

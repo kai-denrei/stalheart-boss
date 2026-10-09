@@ -24,8 +24,8 @@
 
 // Penetration, as FRACTIONS of the reach — see beamranks.js for why this
 // cannot be an absolute distance once reach climbs with rank.
-export { PEN_SOFT_FRAC, PEN_HARD_FRAC } from './beamranks.js?v=25f0cc09';
-import { PEN_SOFT_FRAC, PEN_HARD_FRAC } from './beamranks.js?v=25f0cc09';
+export { PEN_SOFT_FRAC, PEN_HARD_FRAC } from './beamranks.js?v=9d95390b';
+import { PEN_SOFT_FRAC, PEN_HARD_FRAC } from './beamranks.js?v=9d95390b';
 
 // Drag, per body in the beam. Absolute, not fractional: this is about how
 // much MASS is in the beam, and a heavier target does not get lighter because

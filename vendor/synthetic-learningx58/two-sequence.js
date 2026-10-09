@@ -6,7 +6,7 @@
 import {
   PALETTE, mulberry32, hash01, lerp, clamp, smoothstep,
   clearBg, drawBezel, drawHeader, label, fmtStep,
-} from './crt.js?v=25f0cc09';
+} from './crt.js?v=9d95390b';
 
 const PERIOD_MS = 13000;
 const T_LEN = 100;

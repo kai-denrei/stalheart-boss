@@ -24,7 +24,7 @@ import {
 	CompressedTexture,
 	Vector3,
 	Quaternion,
-} from './three.module.js?v=25f0cc09';
+} from './three.module.js?v=9d95390b';
 // vendored for spherical-stalberg-grid (three r160): TextureUtils is not
 // vendored and nothing here carries a compressed texture, so decompress is
 // the identity. If a compressed texture ever reaches this exporter, vendor

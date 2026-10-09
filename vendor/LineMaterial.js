@@ -4,7 +4,7 @@ import {
 	UniformsLib,
 	UniformsUtils,
 	Vector2,
-} from './three.module.js?v=25f0cc09';
+} from './three.module.js?v=9d95390b';
 
 UniformsLib.line = {
 

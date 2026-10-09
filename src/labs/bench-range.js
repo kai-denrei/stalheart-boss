@@ -4,11 +4,11 @@
 // ANIMATION view: the dark disc, the cyan grid, the two range rings, and waves of the game's own dot enemies walking in from the
 // outer ring on the sentry lab's pure range rules (src/sentry.js). The bench's unit stands at the centre; the unit's own driver
 // (src/units-tab.js stepDemo) asks this for targets and tells it what died. One module, no knobs: the sentry lab keeps those.
-import * as THREE from '../../vendor/three.module.js?v=25f0cc09';
-import { makeRange, stepWaves, stepWalkers, SENTRY_TUNE } from '../sentry.js?v=25f0cc09';
-import { makeDotEnemy, makeDotBurst } from '../units.js?v=25f0cc09';
-import { CREATURE_TINTS, accentFor } from '../enemyspec.js?v=25f0cc09';
-import { mulberry32 } from '../rng.js?v=25f0cc09';
+import * as THREE from '../../vendor/three.module.js?v=9d95390b';
+import { makeRange, stepWaves, stepWalkers, SENTRY_TUNE } from '../sentry.js?v=9d95390b';
+import { makeDotEnemy, makeDotBurst } from '../units.js?v=9d95390b';
+import { CREATURE_TINTS, accentFor } from '../enemyspec.js?v=9d95390b';
+import { mulberry32 } from '../rng.js?v=9d95390b';
 
 const TARGET_TYPES = ['phage', 'ghost', 'corona', 'barbed'];   // the sentry lab's pop-up roster
 const GRID = 0x2b6b96, RING = 0x2b6b96, DEAD = 0xff5a4a;

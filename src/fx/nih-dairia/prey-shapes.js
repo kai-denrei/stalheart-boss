@@ -1,6 +1,6 @@
 // Ported from lab-creatures src/monster/prey.ts (kai-denrei, f2a4f89, export of 2026-10-08; derived from Jelly Baby by scottstts; GPL-3.0, see ./LICENSE), types stripped; the solver, the gait, the pursuit and the feeding are unchanged.
 // This is the file's logic half (the prey shapes, their geometry and membrane profiles); the mesh half, createPrey, is prey.js.
-import * as THREE from '../../../vendor/three.module.js?v=25f0cc09';
+import * as THREE from '../../../vendor/three.module.js?v=9d95390b';
 
 export const PREY_SHAPES=['sphere','cube','prism','dodecahedron'];
 export function preyGeometry(shape){

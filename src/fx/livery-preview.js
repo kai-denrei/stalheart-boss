@@ -4,7 +4,7 @@
 // materials, so the preview and the live hull never share a material the livery rewrites; the game's environment map belongs to the
 // game's renderer, so the copies drop it and the stand lights them with a sky of its own. Rendering runs only while the screen is open;
 // dispose() hands the context back.
-import * as THREE from '../../vendor/three.module.js?v=25f0cc09';
+import * as THREE from '../../vendor/three.module.js?v=9d95390b';
 
 // the stand's sky: a gradient dome through PMREM, enough for the metal to read without the game's sky
 function standSky(renderer) {

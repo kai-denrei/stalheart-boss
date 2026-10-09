@@ -27,8 +27,8 @@
 //   study         Isao's screen, retitled: Preliminary Alien Vibration Language Analysis
 //   expedition    the screen closed: Isao sends the tank for material at the other rocket landing sites, the planet pulled back
 //                 and the sites marked on the radar
-import { makeFoundry, deployFoundry, stepFoundry, foundryState, skipFoundry } from './foundry.js?v=25f0cc09';
-import { STORY_PHASES } from './automation.js?v=25f0cc09';
+import { makeFoundry, deployFoundry, stepFoundry, foundryState, skipFoundry } from './foundry.js?v=9d95390b';
+import { STORY_PHASES } from './automation.js?v=9d95390b';
 export function makeStoryBeats({
   socket, foundry = null, lane = -1, fodder = -1, gate = -1, rotorDelay = 2, key = 'rotor',
   fodderType = 'amoeba', fodderEvery = 2.5, fodderAlive = 8, fodderTotal = 20, fodderEmerge = null,

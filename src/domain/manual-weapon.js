@@ -1,4 +1,4 @@
-import { A6_TUNE } from './heptapod.js?v=25f0cc09';
+import { A6_TUNE } from './heptapod.js?v=9d95390b';
 // Adapt shared combat/content inputs to a manually operated range.
 // No roster or persisted defaults live here. Environment owns gravity/wind/sway.
 export function manualWeapon(def, stats, profile, missile, metresPerCell) {

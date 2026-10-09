@@ -5,8 +5,8 @@
 //
 // Pure: graph ({ adj, centers }), dungeon ({ heart, spawn, tags }) and story are read, never written. The ring's size comes
 // in as `tune` (src/content/gunship.js GUNSHIP_FAR). Moved out of the game controller unchanged.
-import { bfsDist, BLOCKED } from '../dungeon.js?v=25f0cc09';
-import { dist3 } from '../vec3.js?v=25f0cc09';
+import { bfsDist, BLOCKED } from '../dungeon.js?v=9d95390b';
+import { dist3 } from '../vec3.js?v=9d95390b';
 
 // A breach a minute's walk out (owner: leave time to enjoy the action): of the open cells `tune.hops` hops from the heart
 // (give or take `tune.slack`; the farthest open ring when the planet is smaller), the one nearest the lane end that is not

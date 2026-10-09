@@ -17,9 +17,9 @@
 // here and nothing more. Sound is whatever the systems make (SHOWCASE_BED is null; see the content file).
 //
 // Skippable at any moment: tap, Space or Esc goes straight to the last card.
-import { SHOWCASE_SHOTS, SHOWCASE_ELEMENTS, SHOWCASE_FINALE, SHOWCASE_CLASS, SHOWCASE_SECONDS } from '../content/showcase.js?v=25f0cc09';
-import { createWireframeStage } from './wireframe-stage.js?v=25f0cc09';
-import { showcaseExitUrls, rememberShowcase } from '../platform/showcase-entry.js?v=25f0cc09';
+import { SHOWCASE_SHOTS, SHOWCASE_ELEMENTS, SHOWCASE_FINALE, SHOWCASE_CLASS, SHOWCASE_SECONDS } from '../content/showcase.js?v=9d95390b';
+import { createWireframeStage } from './wireframe-stage.js?v=9d95390b';
+import { showcaseExitUrls, rememberShowcase } from '../platform/showcase-entry.js?v=9d95390b';
 
 // What each beat actually runs. `enter` fires once on the cut; `frame` runs every frame the beat is up. Everything
 // here goes through the hooks — that is the whole point of the rail.
