@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <title>Stalheart</title>
+  <meta name="theme-color" content="#10131a">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Stalheart">
+  <link rel="stylesheet" href="./styles.css?v=25f0cc09">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <meta name="cb" content="25f0cc09">
+  <meta name="rev" content="">
+  <link rel="stylesheet" href="./app.css?v=25f0cc09">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <!-- FLIR ironbow thermal (lab-explosions 5f7c543): luminance through a colour table, indigo to white -->
+  <filter id="flir" color-interpolation-filters="sRGB">
+    <feColorMatrix type="matrix" values="0.2126 0.7152 0.0722 0 0  0.2126 0.7152 0.0722 0 0  0.2126 0.7152 0.0722 0 0  0 0 0 1 0"/>
+    <feComponentTransfer>
+      <feFuncR type="table" tableValues="0.020 0.114 0.290 0.541 0.761 0.910 0.973 0.988 0.992 1.000 1.000"/>
+      <feFuncG type="table" tableValues="0.008 0.039 0.043 0.059 0.114 0.251 0.439 0.639 0.827 0.953 1.000"/>
+      <feFuncB type="table" tableValues="0.102 0.369 0.541 0.604 0.494 0.290 0.118 0.063 0.227 0.604 1.000"/>
+    </feComponentTransfer>
+  </filter>
+</svg>
+<div id="tab-td" class="tab tab-hidden">
+    <div id="td-app"></div>
+    <!-- hidden: td-tab still wires the variables modal to #vars-toggle and the
+         deep link to #td-link; players reach both from the navigation shell's
+         DEV · Tuning and DEV · Tools (src/fx/shell-nav.js). -->
+    <button id="vars-toggle" type="button" title="variables (V-less: ⚙)">⚙</button>
+    <button id="td-link" type="button" title="deep link: copy this board — mission and seed — as a URL">&#8599;</button>
+    <!-- the mobile shell's own pieces: a rotate prompt (landscape only, ruling
+         2) and its one big mode switch (ruling 3). Both inert on desktop. -->
+    <div id="td-rotate"><div>&#8635;</div><p>STÅLHEART is played in landscape.<br>Rotate your phone.</p></div>
+    <button id="mob-mode" type="button">BUILD</button>
+    <!-- the floating stick: appears under the finger on the left half in DRIVE (src/stick.js) -->
+    <div id="td-stick" class="hidden" aria-hidden="true"><div class="stick-ring"></div><div class="stick-knob"></div></div>
+    <!-- frame readout, top-left after ⚙ — toggled by ` or the panel -->
+    <div id="td-perf" class="hidden"></div>
+    <!-- the variables MODAL: the lil-gui panel re-homed here as pages -->
+    <div id="td-vars" class="hidden">
+      <div class="vars-nav"></div>
+      <div class="vars-body"></div>
+      <button class="vars-close" type="button" title="close (Esc)">×</button>
+    </div>
+    <div id="td-stats"></div>
+    <div id="td-wave" class="hidden"></div>
+    <div id="td-tower" class="hidden"></div>
+    <div id="td-next" class="hidden"></div>
+    <div id="td-msg" class="hidden"></div>
+    <div id="td-tut" class="hidden"></div>
+    <!-- ISAO speaking: his face, and what he has to say about it -->
+    <div id="td-brief" class="hidden" role="dialog" aria-label="Isao">
+      <canvas id="td-brief-face" width="128" height="128" aria-hidden="true"></canvas>
+      <div id="td-brief-body">
+        <div id="td-brief-title"></div>
+        <p id="td-brief-line"></p>
+        <div id="td-brief-foot"><span id="td-brief-dots"></span><button id="td-brief-next" type="button">&rsaquo;</button></div>
+        <div id="td-brief-track" aria-hidden="true"><div id="td-brief-bar"></div></div>
+      </div>
+    </div>
+    <div id="td-toast" class="hidden"></div>
+    <!-- the victory lap's way back: the debrief is PARKED, not dismissed -->
+    <button id="td-lap" class="hidden">&rsaquo; back to the debrief</button>
+    <div id="td-sitrep" class="hidden" role="status"></div>
+    <div id="td-callouts" aria-hidden="true"></div>
+    <div id="td-combo" class="hidden" aria-hidden="true"></div>
+    <div id="td-danger" class="hidden" aria-hidden="true">
+      <div class="dg-sign">&#9888;</div>
+      <div class="dg-label">DANGER &middot; HOSTILE CONTACT</div>
+    </div>
+    <div id="td-auto-radial" class="hidden" role="menu" aria-label="tank directives"></div>
+    <div id="td-launch" class="caution-frame" aria-label="launch control">
+      <button id="td-safety" class="safety" type="button" aria-pressed="false" aria-label="safety">
+        <span class="lbl-on">ON</span>
+        <img id="td-safety-img" class="switch-img" src="assets/ui/switch-off.png" alt="" width="120" height="200">
+        <span class="lbl-off">OFF</span>
+      </button>
+      <div id="td-launch-readout">
+        <div class="status" id="td-launch-status">STANDBY</div>
+        <div class="target" id="td-launch-target">NO TARGET</div>
+      </div>
+      <button id="td-launch-btn" class="launch-button" type="button" aria-label="launch">
+        <span class="kanji">&#30330;&#23556;</span>
+        <span class="latin" id="td-launch-latin">LAUNCH</span>
+      </button>
+    </div>
+    <div id="td-strikecam" class="hidden" aria-hidden="true">
+      <div class="sc-scan"></div>
+      <div class="sc-bracket tl"></div><div class="sc-bracket tr"></div>
+      <div class="sc-bracket bl"></div><div class="sc-bracket br"></div>
+      <div class="sc-cross">&#10011;</div>
+      <div id="sc-info"></div>
+      <div id="sc-range">0000M</div>
+      <div class="sc-skip">TAP TO SKIP</div>
+    </div>
+    <div id="td-pad-left" class="tzone tzone-side tzone-l"><span>&lsaquo;</span></div>
+    <div id="td-pad-right" class="tzone tzone-side tzone-r"><span>&rsaquo;</span></div>
+    <div id="td-throttle" class="throttle" title="throttle — drag to set speed, flick up for full">
+      <div class="throttle-track">
+        <div class="throttle-fill"></div>
+        <div class="throttle-zero"></div>
+        <div class="throttle-handle"></div>
+      </div>
+      <div class="throttle-read">0</div>
+    </div>
+    <button id="td-pad-fire" class="tfire tfire-primary" title="FIRE shell (Space)">&#9673;</button>
+    <button id="td-pad-laser" class="tfire tfire-secondary" title="hold: lasers (Shift)">&#8767;</button>
+    <button id="td-pad-shield" class="tfire tfire-tertiary" title="deploy a SHIELD (T)">&#9672;</button>
+    <div class="tc-util">
+      <button id="td-pad-ctrheart" title="centre the view on the heart">&#9829; CTR</button>
+      <button id="td-pad-ctrtank" title="centre the view on the tank">&#9673; CTR</button>
+      <button id="td-pad-map" title="radar: player-centred / heart threat view">MAP</button>
+      <button id="td-pad-dir" title="tank auto — pick a directive">AUTO</button>
+      <button id="td-pad-tank" title="camera: behind the tank">TANK</button>
+      <button id="td-pad-orbit" title="camera: orbital — the whole shell">ORBIT</button>
+      <button id="td-pad-sound" title="mute / unmute sound">&#9834;</button>
+    </div>
+    <div id="td-hint">TD · towers mount the HIGH GROUND · B build · M threat map</div>
+  </div>
+<div id="tab-record" class="tab tab-hidden">
+    <div id="record-scroll">
+      <article class="mdview">
+        <h1>THE RECORD</h1>
+        <p id="record-head" class="rec-count"></p>
+        <div id="record-list" class="rec"></div>
+      </article>
+    </div>
+  </div>
+<script type="module" src="./src/main.js?v=25f0cc09"></script>
+</body></html>

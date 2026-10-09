@@ -1,0 +1,120 @@
+// A document owns one renderer/session. Navigating modes releases its whole lifetime.
+import './url.js?v=25f0cc09';
+import './roster.js?v=25f0cc09';
+import { bootstrapContent } from './platform/content-bootstrap.js?v=25f0cc09';
+import { registerServiceWorker } from './pwa.js?v=25f0cc09';
+import { storage as localStorage } from './storage.js?v=25f0cc09';
+import { installDiagnostics, record } from './diagnostics.js?v=25f0cc09';
+import { isStoryRoute } from './core/story-route.js?v=25f0cc09';
+import { mountShellNav } from './fx/shell-nav.js?v=25f0cc09';
+import { loadPlanetBake } from './platform/planet-bake.js?v=25f0cc09';
+import { applyFontPack, DEFAULT_FONT, DEFAULT_SHOUT_FONT, loadTypeFeel } from './fonts.js?v=25f0cc09';
+
+installDiagnostics();
+const q = new URLSearchParams(location.search);
+if (q.get('sw') !== '0') {
+  void registerServiceWorker(apply => {
+    const nav = document.getElementById('shell-bar');
+    if (!nav || document.getElementById('app-update')) return;
+    const button = document.createElement('button');
+    button.id = 'app-update'; button.textContent = 'update & restart';
+    button.addEventListener('click', apply); nav.append(button);
+    record('app.update-ready');
+  }).then(reg => record('app.worker', { registered: !!reg, reason: registerServiceWorker.why }));
+}
+const workshop = document.body.dataset.workshop === 'true';
+const routes = {
+  audio: () => import('./labs/audio-tab.js?v=25f0cc09').then(m => m.initAudioTab),
+  td: () => import('./td-tab.js?v=25f0cc09').then(m => m.initTdTab),
+  record: () => import('./recordtab.js?v=25f0cc09').then(m => m.initRecordTab),
+  units: () => import('./units-tab.js?v=25f0cc09').then(m => m.initUnitsTab),
+  swarm: () => import('./labs/swarm-tab.js?v=25f0cc09').then(m => m.initSwarmTab),
+  boss: () => import('./labs/boss-tab.js?v=25f0cc09').then(m => m.initBossTab),
+  beam: () => import('./beam-tab.js?v=25f0cc09').then(m => m.initBeamTab),
+  metal: () => import('./metal-tab.js?v=25f0cc09').then(m => m.initMetalTab),
+  story: () => import('./labs/story-tab.js?v=25f0cc09').then(m => m.initStoryTab),
+  sentry: () => import('./sentry-tab.js?v=25f0cc09').then(m => m.initSentryTab),
+  portal: () => import('./portal-tab.js?v=25f0cc09').then(m => m.initPortalTab),
+  sim: () => import('./sim-tab.js?v=25f0cc09').then(m => m.initSimTab),
+  laser: () => import('./labs/laser-tab.js?v=25f0cc09').then(m => m.initLaserTab),
+  gunship: () => import('./labs/gunship-tab.js?v=25f0cc09').then(m => m.initGunshipTab),
+  debrief: () => import('./labs/debrief-tab.js?v=25f0cc09').then(m => m.initDebriefTab),
+  voice: () => import('./labs/voice-tab.js?v=25f0cc09').then(m => m.initVoiceTab),
+};
+const name = location.hash.slice(1) || (workshop ? 'units' : 'td');
+// the retired roadmap tab: the workshop opens with the docs overlay on the roadmap
+// a page being replaced boots nothing: location.replace() does not stop this script, and a lab would build its renderer
+let leaving = false;
+if (workshop && name === 'notes') { const to = new URL(location.href); to.hash = 'units'; to.searchParams.set('doc', 'roadmap'); location.replace(to.href); leaving = true; }
+// in the story, "the cinematic" is the arrival: ?cine=1 goes to the lab playing it, not the legacy cold open
+if (!workshop && name === 'td' && isStoryRoute(location.search) && q.get('cine') === '1') {
+  const to = new URL('./labs.html', location.href);
+  for (const key of ['sw', 'acceptance']) if (q.has(key)) to.searchParams.set(key, q.get(key));   // the harness switches ride along
+  to.searchParams.set('land', '1'); to.hash = 'story';
+  location.replace(to.href); leaving = true;
+}
+const target = routes[name] ? name : (workshop ? 'units' : 'td');
+const root = document.getElementById(`tab-${target}`);
+const gameRoutes = new Set(['td', 'record']);
+function navigate(url) {
+  const next = new URL(url, location.href);
+  const same = next.pathname === location.pathname && next.search === location.search;
+  location.href = next.href;
+  if (same) location.reload();
+}
+if (leaving) {
+  // one of the redirects above is replacing this page
+} else if (!root) {
+  const url = new URL(gameRoutes.has(target) ? './index.html' : './labs.html', location.href);
+  url.search = location.search; url.hash = target;
+  location.replace(url);
+} else {
+  const type = loadTypeFeel();
+  const pick = applyFontPack(q.get('font') || localStorage.getItem('ssg-font') || DEFAULT_FONT,
+    document.documentElement, type,
+    q.get('fontshout') || localStorage.getItem('ssg-font-shout') || DEFAULT_SHOUT_FONT);
+  if (q.has('font')) localStorage.setItem('ssg-font', pick);
+  if (q.get('coarse') === '1') {
+    for (const sheet of document.styleSheets) {
+      let rules; try { rules = sheet.cssRules; } catch { continue; }
+      for (const r of rules) {
+        if (!(r instanceof CSSMediaRule)) continue;
+        r.media.mediaText = r.media.mediaText
+          .replace(/\(pointer:\s*coarse\)|\(hover:\s*none\)/g, '(min-width: 0px)')
+          .replace(/\(pointer:\s*fine\)|\(hover:\s*hover\)/g, '(min-width: 99999px)');
+      }
+    }
+  }
+  // THE NAVIGATION SHELL: PLAYTEST | DEV top right with the build tag, one drawer per mode (src/fx/shell-nav.js)
+  const build = document.querySelector('meta[name="cb"]')?.content, rev = document.querySelector('meta[name="rev"]')?.content;
+  // EMBEDDED (?embed=1): a lab shown inside another view (the Units bench frames the sentry lab, 2026-10-02) has no shell of its own
+  if (q.get('embed') === '1') document.body.classList.add('embedded');
+  else mountShellNav({ navigate, query: q, buildText: [build && build !== '00000000' ? `build ${build}` : 'dev', rev].filter(Boolean).join(' · ') });
+  for (const evt of ['gesturestart', 'gesturechange', 'gestureend']) {
+    root.addEventListener(evt, e => e.preventDefault(), { passive: false });
+  }
+  addEventListener('hashchange', () => location.reload());
+  root.classList.remove('tab-hidden');
+  try {
+    const content = bootstrapContent();
+    // the story planet's bake rides in with the module: seconds of relaxing and carving skipped when it is there
+    // the laser lab builds the same story planet: without the bake it relaxed and carved it live, ~6 s of a 9 s load
+    if ((target === 'td' && isStoryRoute(location.search)) || target === 'story' || target === 'laser' || target === 'gunship') await loadPlanetBake();
+    const init = await routes[target]();
+    const api = init(root);
+    const choices = workshop
+      ? (await import('./labs/choice-browser.js?v=25f0cc09')).mountChoiceBrowser(root) : null;
+    api?.setActive?.(true);
+    addEventListener('pagehide', e => { if (!e.persisted) { choices?.dispose(); api?.dispose?.(); } });
+    record('app.ready', { route: target, workshop, content: content.id });
+    window.__stalheartContent = { id: content.id, base: content.base, preview: q.get('preset') === 'draft' };
+    window.__stalheartReady = true;
+  } catch (err) {
+    record('app.failed', { message: err.message, stack: err.stack });
+    const error = document.createElement('div');
+    error.className = 'boot-error';
+    error.textContent = `Stalheart could not start: ${err.message}. Reload or export diagnostics from Settings.`;
+    document.body.append(error);
+    console.error(err);
+  }
+}

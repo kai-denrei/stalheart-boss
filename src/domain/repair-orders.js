@@ -1,0 +1,76 @@
+// ISAO MENDS WHAT THE SWARM BROKE (owner, 2026-09-16: "Isao should go and build walls/a gate in between waves when a breach of the
+// base happened"). The gate already wore down under the pile outside it (src/domain/gate-integrity.js) and wall cells already blew
+// out to a strike or a rock breach — but nobody ever went out and put them back, so a sector that cost the colony its door left it
+// without one for good. This picks the next thing worth a trip: the GATE first, because it is the lane's only door, then the wall
+// segments in the order the caller lists them (the rim's own order).
+//
+// Only between waves: a repair is a print, and a print in the middle of a wave is Isao hovering over a lane full of bodies. And
+// never ahead of the player — an order of theirs on the board outranks the whole programme.
+//
+// Pure: the caller reports what is broken and whether the lane is quiet, and owns Isao's travel-and-print loop.
+
+// what a repair costs and when the gate is worth one; the caller passes src/content/base-programme.js BASE_REPAIR
+const SHARE = (gate) => (gate && gate.max > 0 ? gate.hp / gate.max : 1);
+
+// gate: { hp, max, broken } (null where the world has no gate). walls: cells that should be rock and are not, in the caller's order.
+// quiet: no wave is running and the lane is clear. busy: a worker already has an order (the player's, a build step, an earlier repair).
+// Returns { kind: 'gate' } | { kind: 'wall', ci } | null.
+// A HOLE IN THE WALL WILL NOT WAIT FOR THE WAVE (owner, 2026-10-03: "Isao is not reactive enough in fixing breaches with walls"): with
+// `clear(ci)` given, a wall cell no body is near is mended mid-wave as well; the gate still waits for a quiet lane, the pile is on it.
+export function nextRepair(state = {}, tune = {}) {
+  const { walls = [], quiet = false, busy = false, clear = null } = state;
+  if (busy) return null;
+  if (!quiet) { const ci = clear ? walls.find((c) => Number.isInteger(c) && c >= 0 && clear(c)) : undefined; return ci === undefined ? null : { kind: 'wall', ci }; }
+  const g = worstGate(state, tune);
+  if (g) return g;
+  const ci = walls.find((c) => Number.isInteger(c) && c >= 0);
+  return ci === undefined ? null : { kind: 'wall', ci };
+}
+
+// TWO DOORS NOW (2026-09-18). `gates` is every gate that stands, each { id, hp, max, broken }; `gate` alone is still the front door
+// and still means the same thing. Isao goes to the WORST one first — a broken door before a chewed one, and the lower share before
+// the higher — so neither side is left open while he tops the other one up. Ties keep the caller's order, the front door first.
+const wanting = (g, tune) => g && (g.broken || SHARE(g) < (tune.gateAt ?? 1));
+const rank = (g) => (g.broken ? -1 : SHARE(g));
+function gateList({ gate = null, gates = null }) { return (gates ?? (gate ? [gate] : [])).filter(Boolean); }
+function worstGate(state, tune) {
+  let best = null;
+  for (const g of gateList(state)) if (wanting(g, tune) && (!best || rank(g) < rank(best))) best = g;
+  return best ? { kind: 'gate', ...(best.id && best.id !== 'gate' ? { id: best.id } : {}) } : null;
+}
+
+// everything that wants mending right now, gate first — the HUD's count and the test's ordering check
+export function repairsPending(state = {}, tune = {}) {
+  const { walls = [] } = state;
+  const out = gateList(state).filter((g) => wanting(g, tune)).sort((a, b) => rank(a) - rank(b)).map((g) => ({ kind: 'gate', ...(g.id && g.id !== 'gate' ? { id: g.id } : {}) }));
+  for (const ci of walls) if (Number.isInteger(ci) && ci >= 0) out.push({ kind: 'wall', ci });
+  return out;
+}
+
+// the seconds and metres the print takes, by kind
+export const repairCost = (repair, tune) => ({ seconds: tune?.[repair.kind]?.seconds ?? 6, metres: tune?.[repair.kind]?.metres ?? 4 });
+
+// HOLES THE TANK BLEW IN THE BASE (owner, 2026-10-04: "opening a breach with a tank shell does not trigger Isao to fix it, it should").
+// A shell turns ROCK to floor; the walls list above only ever held the rim's own wall cells, so a hole shot through the base's rock
+// was never anyone's job. `shot` is every cell a shell opened; the ones still open and inside the base, no farther from the heart
+// than the farthest rim cell plus `margin` (world units), are holes, nearest the heart first. A hole out on an expedition stays open,
+// and `keep` (the back door's mouth, which the story opens and its own gate seals) is never refilled.
+export function shotHoles({ shot = [], keep = null, open = () => true, centers, heart, rim = [], margin = 0 }) {
+  if (heart == null || heart < 0 || !centers?.[heart] || !rim.length) return [];
+  const h = centers[heart], d = (ci) => Math.hypot(centers[ci][0] - h[0], centers[ci][1] - h[1], centers[ci][2] - h[2]);
+  let reach = 0;
+  for (const ci of rim) if (centers[ci]) reach = Math.max(reach, d(ci));
+  reach += margin;
+  const out = [];
+  for (const ci of shot) if (centers[ci] && !keep?.has(ci) && open(ci) && d(ci) <= reach) out.push(ci);
+  return out.sort((a, b) => d(a) - d(b));
+}
+
+// ONE WALL MORE THAN SEEMS NEEDED (owner, 2026-10-05: "a wall covering half a tile, and the enemies can still go through"): a wall cell
+// mended stands, but rock beside it that a beam, a strike or a shell blew open still lets the swarm round it. Every open cell next to a
+// rim wall cell that was rock (`wasRock`: the breach record) is a hole too, `keep` aside (the doors, the back mouth, the canyon cut)
+export function rimHoles({ walls = [], adj, open = () => true, wasRock = () => false, keep = null }) {
+  const out = new Set();
+  for (const w of walls) for (const nb of adj?.[w] ?? []) if (!keep?.has(nb) && open(nb) && wasRock(nb)) out.add(nb);
+  return [...out];
+}

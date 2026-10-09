@@ -1,0 +1,21 @@
+// THE CROWD GATE (src/domain/crowd-cap.js): the spawn queue's door. Each frame it times the real frame and counts the bodies up (a
+// site's guards are not the crowd); a queued body waits while the field holds the cap, and rises as the field thins. Guards never wait
+import { makeCrowdCap, stepCrowdCap } from '../domain/crowd-cap.js?v=25f0cc09';
+import { CROWD_CAP } from '../content/sectors.js?v=25f0cc09';
+
+export const crowdTrace = { cap: null, alive: 0, ema: null, held: 0, squads: 0, bodies: 0 };   // squads/bodies: the squads up and the bodies they and the singles stand for   // the acceptance probe's view (scripts/browser-test.mjs --crowd-probe)
+export function createCrowdGate(tune = CROWD_CAP, now = () => performance.now()) {
+  const c = makeCrowdCap(tune);
+  let last = null, alive = 0;
+  return {
+    // `timed`: a real frame (the zero-step calls between frames only recount)
+    frame(enemies, timed) {
+      alive = 0; let squads = 0, bodies = 0; for (const e of enemies) if (e.alive && !e.guard) { alive++; bodies += e.members || 1; if (e.members) squads++; }
+      crowdTrace.squads = squads; crowdTrace.bodies = bodies;
+      if (timed) { const t = now(); if (last != null) stepCrowdCap(c, t - last, alive); last = t; }
+      crowdTrace.cap = c.cap; crowdTrace.alive = alive; crowdTrace.ema = c.ema;
+    },
+    // whether this queued body must wait; one let through is counted at once
+    full(entry) { if (entry.guard) return false; if (alive >= c.cap) { crowdTrace.held++; return true; } alive++; return false; },
+  };
+}

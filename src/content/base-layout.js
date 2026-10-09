@@ -1,0 +1,138 @@
+// The story base: what stands where, and in which stage it appears. Frame
+// metres around the pole; -Z points at the clearing's open mouth. Plots are
+// the kit's reserved footprints (4 m cells), islands carry one scalable slab.
+import { STORY_SCALE } from './story-defaults.js?v=25f0cc09';
+
+export const STAGES = Object.freeze([
+  { n: 0, name: 'Empty pole' },
+  { n: 1, name: 'Landing' },
+  { n: 2, name: 'Foundations' },
+  { n: 3, name: 'Solar and Rotor' },
+  { n: 4, name: 'Gate and walls' },
+  { n: 5, name: 'HUGIN arm' },
+  { n: 6, name: 'Stalheart' },
+  { n: 7, name: 'Tank bay' },
+  { n: 8, name: 'Assembly line and radar' },
+  { n: 9, name: 'The colony' },   // printed in play, never a static stage: the armory, the farm, the chip plant, the ARC-01 (2026-10-01)
+]);
+
+// islands: id, plot in metres, centre, stage the slab appears
+export const ISLANDS = Object.freeze([
+  { id: 'landing', w: 16, d: 16, x: 0, z: -60, stage: 2 },
+  { id: 'solar', w: 20, d: 20, x: 44, z: -60, stage: 3 },
+  { id: 'hugin', w: 40, d: 40, x: -52, z: -40, stage: 5 },
+  { id: 'stalheart', w: 48, d: 56, x: 0, z: 0, stage: 6 },
+  { id: 'bay', w: 36, d: 32, x: 0, z: 62, stage: 7 },          // behind the Stalheart, doors toward the gate
+  { id: 'assembly', w: 20, d: 32, x: 56, z: 6, stage: 8 },
+  { id: 'radar', w: 20, d: 20, x: -56, z: 34, stage: 8 },
+  // THE COLONY (owner, 2026-10-01): the armory behind the bays beside the back lane, the farm east of the Stålheart between the solar
+  // array and the assembly line, the chip plant past the assembly line, and the ARC-01's long island on the west rim between HUGIN and
+  // the radar, its rail pointed out over the rock
+  // THE BOARDS, BIG (owner, 2026-10-03: "the diegetic scoreboards larger without using more fps? 4x larger if we can afford it"): the A6
+  // board is 380 triangles in one draw call, so size costs nothing; room does. Two boards at 2.25 (18 m wide each, 3x the old 6 m) stand
+  // end to end on a long slab west of the Stålheart, facing it, 4 m clear of HUGIN, the launcher and the radar (4x does not fit between them)
+  { id: 'board', w: 12, d: 36, x: -38, z: 2, stage: 9 },
+  { id: 'armory', w: 24, d: 20, x: -34, z: 62, stage: 9 },
+  { id: 'farm', w: 20, d: 22, x: 48, z: -30, stage: 9 },
+  { id: 'chips', w: 14, d: 12, x: 60, z: 40, stage: 9 },
+  { id: 'garage', w: 12, d: 18, x: 31, z: 62, stage: 9 },   // THE GARAGE (owner, 2026-10-03: "there is a new Garage to use"): the A6 open-roof paint bay east of the bays
+  { id: 'launcher', w: 16, d: 30, x: -62, z: 2, stage: 9 },
+]);
+
+// structures: asset, island they stand on, stage, model offset to centre the
+// authored origin on the plot, uniform scale, nodes to hide
+export const STRUCTURES = Object.freeze([
+  { id: 'sh02', asset: 'assets/models/story/sh_rocket.glb', island: 'landing', stage: 1, until: 2, scale: 1.5, offset: [0, 0, 0], clips: ['Legs_Deploy', 'Top_Door_Open', 'Landing_Shock'], hold: true },   // the intact rocket: from stage 2 it is the salvage layout below. Held at their ends (the shock ends where it began, at the rest pose the deploy ends on); the game's arrival scrubs all three (src/fx/arrival.js)
+  // THE ARRIVAL RECYCLED (docs/superpowers/specs/2026-09-14-arrival-foundry-design.md): the AFR-01 seed foundry and the SH02 cut into
+  // four sections share the landing island's origin. Loaded at stage 1 but hidden until the foundry beat reveals them; shown outright from stage 2.
+  { id: 'foundry', asset: 'assets/models/story/afr_01_seed_foundry_d0_lod1.glb', far: 'assets/models/story/afr_01_seed_foundry_d0_lod2.glb', island: 'landing', stage: 1, shown: 2, scale: 1.5, offset: [0, 0, 0], pose: { Recycle_Panel_To_Barrel: 0, Foundry_Process_Cycle: 0 } },   // both clips held at 0 until the beat drives them
+  { id: 'sh02-salvage', asset: 'assets/models/story/sh02_salvage_layout_stage1_lod1.glb', far: 'assets/models/story/sh02_salvage_layout_stage1_lod2.glb', island: 'landing', stage: 1, shown: 2, scale: 1.5, offset: [0, 0, 0] },
+  // far: the tier shown beyond KIT.lod.metres; the near tier is only fetched once the camera comes close. Authored tiers where the
+  // owner exports them (solar: LOD1 game, LOD2 distance); elsewhere derived under assets/models/far by npm run tiers (a tenth of the triangles)
+  { id: 'solar', asset: 'assets/models/astro/solar_power_complex_lod1_d0.glb', far: 'assets/models/astro/solar_power_complex_lod2_d0.glb', island: 'solar', stage: 3, scale: 1, offset: [0, 0, -1.6], batch: true },
+  { id: 'rotor', asset: 'assets/models/sentries/rotor_t1.glb', island: null, anchor: 'wall', stage: 3, scale: 3, offset: [0, 0, 0] },   // high ground: the rock beside the tunnel mouth
+  { id: 'hugin', asset: 'assets/models/astro/hugin_launchpad_d0_game.glb', far: 'assets/models/far/hugin.glb', island: 'hugin', stage: 5, scale: 1, offset: [-3, 0, 8], hide: ['REUSABLE_BOOSTER'], clips: ['Cargo_Recovery_Cycle'] },
+  { id: 'stalheart', asset: 'assets/models/astro/terraformer_3000_d0_game.glb', far: 'assets/models/far/stalheart.glb', island: 'stalheart', stage: 6, scale: 1, offset: [14.5, 0, 0], clips: ['Terraforming_Cycle'],
+    // Runtime LOD candidates pinned at c827eda for game-camera review (docs/landmark-tiers-assets.lock.json). Only
+    // ?landmarks=candidate reads them; asset and far above stay what ships, and far-tiers.mjs keeps deriving that far.
+    candidate: { asset: 'assets/models/astro/terraformer_3000_d0_lod1.glb', far: 'assets/models/astro/terraformer_3000_d0_lod2.glb' } },
+  // THE THREE HULLS ARE THE THREE LIVES. The kit's three-bay diorama: 01 sealed, 02 and 03 open with a
+  // MÖRK parked inside; the first hull leaves 03, the next 02, the last opens 01. The diorama is authored
+  // at the kit's 13.3 m MÖRK and scaled to the story's 10 m hull; its roll-out clip is held at 0 (all inside).
+  { id: 'bays', asset: 'assets/models/kit/mork_container_low_diorama.glb', island: 'bay', stage: 7, scale: STORY_SCALE.tankMetres / 13.28, offset: [0, 0, 0], heading: [0, -1], pose: { Tank_Roll_Out: 0 },
+    bays: [{ n: 1, x: -11, doors: '01', like: '02' }, { n: 2, x: 0, vehicle: 'VEHICLE_02' }, { n: 3, x: 11, vehicle: 'VEHICLE_03', rollout: 'Tank_Roll_Out' }] },   // bay centres along the model's X, doors at +Z
+  { id: 'assembly', asset: 'assets/models/astro/robotic_assembly_line_d0.glb', far: 'assets/models/far/assembly.glb', island: 'assembly', stage: 8, scale: 1, offset: [0, 0, 0], batch: true, clips: ['Assembly_Cycle'] },
+  { id: 'radar', asset: 'assets/models/kit/skyward_low_d0.glb', island: 'radar', stage: 8, scale: 1, offset: [0, 0, 0], clips: ['Array_Slew'] },
+  // THE COLONY (docs/colony-assets.lock.json): the research outpost's garage as the armory (its far tier derived), the VER-01
+  // greenhouse with three settlement cassettes as the bio containers along its island's edge, the LIT-01 chip writer, and the
+  // ARC-01 mass driver (+Z is its launch direction, turned to fire west over the rim; the SEED-01 satellite rides its sled only during
+  // the launch beat, src/fx/arc-launch.js, so it is not a structure)
+  { id: 'armory', asset: 'assets/models/astro/industry_garage_d0.glb', far: 'assets/models/far/armory.glb', island: 'armory', stage: 9, scale: 1, offset: [0, 0, 0], batch: true, heading: [0, -1] },
+  { id: 'greenhouse', asset: 'assets/models/astro/ver01_greenhouse_d0_lod1.glb', far: 'assets/models/astro/ver01_greenhouse_d0_lod2.glb', island: 'farm', stage: 9, scale: 1, offset: [-3, 0, 0], batch: true },
+  { id: 'bio-a', asset: 'assets/models/astro/bio_cassette_d0_lod1.glb', island: 'farm', stage: 9, scale: 1, offset: [6.5, 0, -6], batch: true },
+  { id: 'bio-b', asset: 'assets/models/astro/bio_cassette_d0_lod1.glb', island: 'farm', stage: 9, scale: 1, offset: [6.5, 0, -2.5], batch: true },
+  { id: 'bio-c', asset: 'assets/models/astro/bio_cassette_d0_lod1.glb', island: 'farm', stage: 9, scale: 1, offset: [6.5, 0, 1], batch: true },
+  { id: 'garage', asset: 'assets/models/garage/mork_garage_d0_lod1.glb', far: 'assets/models/garage/mork_garage_d0_lod2.glb', island: 'garage', stage: 9, scale: 1, offset: [0, 0, 0], heading: [0, -1] },   // not batched: its paint arm moves (assets/models/garage/runtime.js)
+  { id: 'chips', asset: 'assets/models/astro/lit01_chip_writer_d0_lod1.glb', far: 'assets/models/astro/lit01_chip_writer_d0_lod2.glb', island: 'chips', stage: 9, scale: 1, offset: [0, 0, 0], batch: true },
+  // THE AMMUNITION DUMP (owner, 2026-10-02: "add missiles of various sizes ... near the robotic assembly. It becomes a spot where the Tank
+  // can go to replenish shells"): three projectiles laid on their sides on the ground west of the assembly line, round the armory's
+  // reload pad (src/platform/story-world.js armoryPad); printed with the armory step, which is where they come from
+  { id: 'ammo-a', asset: 'assets/models/astro/ammo_missile_heavy_projectile_game.glb', island: 'assembly', stage: 9, scale: 1, offset: [-17, 0, -6], tilt: 90, lift: 0.45, heading: [0.3, 0.95], batch: true },
+  { id: 'ammo-b', asset: 'assets/models/astro/ammo_missile_cruise_projectile_game.glb', island: 'assembly', stage: 9, scale: 1, offset: [-21, 0, 1], tilt: 90, lift: 0.35, heading: [-0.2, 0.98], batch: true },
+  { id: 'ammo-c', asset: 'assets/models/astro/ammo_heavy_240_projectile_game.glb', island: 'assembly', stage: 9, scale: 1, offset: [-16, 0, 8], tilt: 90, lift: 0.15, heading: [0.6, 0.8], batch: true },
+  // the ARC-01 has no distance tier on the base: its launch is engine-driven on ONE model, and a near/far swap put the animation on the hidden tier
+  { id: 'launcher', asset: 'assets/models/astro/arc01_launcher_d0_lod1.glb', island: 'launcher', stage: 9, scale: 1, offset: [0, 0, 0], heading: [-1, 0] },
+  // EARLIER LANDINGS, out past the clearing on open ground (anchor 'open' snaps to the nearest open cell): two HUGIN boosters standing
+  // on their tripods and one wreck on its side. The flight GLBs sit on their mass reference, feet at -6.3 m, hence the offset; the wreck
+  // is tilted onto its side and lifted by its hull radius. Draft placement, to be moved once the tank trip beat is written.
+  { id: 'rocket-a', asset: 'assets/models/story/hugin_deployed.glb', far: 'assets/models/far/hugin_deployed.glb', anchor: 'open', clear: 16, x: -300, z: 140, stage: 1, scale: 1.5, offset: [0, 6.3, 0], heading: [0.6, 0.8] },
+  { id: 'rocket-b', asset: 'assets/models/story/hugin_deployed.glb', far: 'assets/models/far/hugin_deployed.glb', anchor: 'open', clear: 16, x: 330, z: -90, stage: 1, scale: 1.5, offset: [0, 6.3, 0], heading: [-0.5, -0.87] },
+  { id: 'wreck', asset: 'assets/models/story/hugin_wreck.glb', far: 'assets/models/far/hugin_wreck.glb', anchor: 'open', clear: 24, x: 120, z: -360, stage: 1, scale: 1.5, offset: [0, 0, 0], tilt: 92, lift: 3.6, heading: [0.9, 0.44] },
+  { id: 'rocket-c', asset: 'assets/models/story/hugin_deployed.glb', far: 'assets/models/far/hugin_deployed.glb', anchor: 'open', clear: 16, x: -430, z: -250, stage: 1, scale: 1.5, offset: [0, 6.3, 0], heading: [0.7, -0.7], shown: 9 },   // later site: above every stage, so it loads concealed until an expedition reveal shows it
+  { id: 'rocket-d', asset: 'assets/models/story/hugin_deployed.glb', far: 'assets/models/far/hugin_deployed.glb', anchor: 'open', clear: 16, x: 400, z: 320, stage: 1, scale: 1.5, offset: [0, 6.3, 0], heading: [-0.6, -0.8], shown: 9 },   // later site: above every stage, so it loads concealed until an expedition reveal shows it
+  { id: 'wreck-b', asset: 'assets/models/story/hugin_wreck.glb', far: 'assets/models/far/hugin_wreck.glb', anchor: 'open', clear: 24, x: -90, z: 520, stage: 1, scale: 1.5, offset: [0, 0, 0], tilt: 92, lift: 3.6, heading: [0.2, -0.98], shown: 9 },   // later site: above every stage, so it loads concealed until an expedition reveal shows it
+]);
+
+export const KIT = Object.freeze({
+  slab: 'assets/models/kit/foundation_slab.glb', slabReference: 40,
+  wall: 'assets/models/kit/wall_standard_d0.glb', wallLength: 4,
+  gate: 'assets/models/kit/gate_vehicle_d0.glb', gatePlot: [12, 8],
+  stage: 4, wallsPerSide: 6, wallInset: 3,   // walls flank the gate along the rim, inset from the rock
+  // THE BACK GATE (owner, 2026-09-18). The same kit door on the mouth behind the bays, printed only after the swarm has cracked that
+  // mouth and the breach behind it is closed. `sockets` is how many rock mounts beside the back lane come with it, so sentries can be
+  // ordered on that side from then on; `openRadius` is how close a friendly hull has to be for the door to open for it.
+  backGate: { openRadius: 22, sockets: 2 },
+  wallMetres: 4,                              // the lattice rock's roof height, where sentries mount
+  sightline: { metres: 130, halfWidth: 7 },   // a straight lane cut from the forward cell out to the sinkhole, so the Quiver has a long clear shot (owner, 2026-09-13); replaces the fodderSteps walk
+  fodderSteps: 28,                            // lane cells outward from the mouth where the ground opens: a tank trip to investigate
+  rotorSteps: 2, quiverSteps: 1, rotorEdge: 0.4,   // the Quiver's wall cell touches the lane one step nearer the gate, on the Rotor's side: the sightline to the gate pile is proven there              // the first Rotor's wall cell touches the lane cell this many steps past the forward cell; the lab's static model stands this share of the way toward the lane (the game perches every tower on its wall's edge)
+  bay: { roll: 2, doorSeconds: 2.4, rollOutMetres: 19, rollOutSeconds: 8 },
+  lod: { metres: 150, hysteresis: 1.3, ratio: 0.1 },   // camera closer than this shows the near tier (and first fetches it); it stays until 1.3x that; far tiers keep a tenth of the triangles   // a hull rolls two lane cells straight out of its doors; bay 03's authored roll-out carries the hull 19 model metres in 8 s
+});
+
+// LANDMARK TIERS UNDER REVIEW. A structure may carry `candidate` tiers: authored runtime LODs pinned for game-camera
+// review before they replace what ships. This is the ONE place a candidate becomes the structure, so the story lab and
+// the game world cannot disagree about which files a review is looking at — both call it on STRUCTURES before planBase,
+// which spreads every field through untouched. Anything but 'candidate' hands back the shipped structures unchanged.
+export const LANDMARK_TIER_MODES = ['shipped', 'candidate'];
+export function withLandmarkTiers(structures, mode = 'shipped') {
+  if (mode !== 'candidate') return structures;
+  return structures.map((s) => (s.candidate ? { ...s, ...s.candidate } : s));
+}
+
+// ONE PARSER FOR THE SWITCH, so the story lab and the game world read ?landmarks= the same way: two copies of this line
+// would be the drift the mapping above exists to prevent. Pure — a search string in, a mode out.
+export function landmarkTierMode(search) {
+  return new URLSearchParams(search || '').get('landmarks') === 'candidate' ? 'candidate' : 'shipped';
+}
+
+// THE BUILDINGS THAT STOP THE HULL (owner, 2026-10-03: "they should feel solid (except those where the tank can go under like the
+// Stalheart)"; src/fx/story-base.js solidAt). Not the Stålheart (the hull drives under its gantry), the bays (the hull lives in them)
+// or the Rotor on its wall. The standing landers at the expedition sites are solid; the two wrecks lie on their sides across their sites
+// and the part's crate waits beside them, so they stay passable
+// TOO MUCH, THE FIRST TIME (owner, 2026-10-03: "now the camp is hard to navigate as the tank bumps into everything"): the small pieces (the
+// salvage, the ammunition, the bio containers) are passable again. THE FOOTPRINT IS THE GEOMETRY'S (owner, 2026-10-07: "collision ON, but
+// not so much that its entire perimeter becomes an invisible wall"): the triangles near the ground on a grid (src/domain/footprint.js),
+// so a lander's body stops the hull where it stands and the lane past its legs is open, and the solar array can be solid at last, its
+// charging pad open between its panels
+export const SOLID_STRUCTURES = Object.freeze(['sh02', 'foundry', 'hugin', 'assembly', 'radar', 'armory', 'greenhouse', 'chips', 'launcher', 'solar', 'rocket-a', 'rocket-b', 'rocket-c', 'rocket-d']);   // the solar array too (owner, 2026-10-07): its panels block, its charging pad between them is open (the footprint is the geometry's now, src/domain/footprint.js)

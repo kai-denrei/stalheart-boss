@@ -1,0 +1,173 @@
+// Story lab: the 753 m story planet, its polar clearing and terraces, the
+// tiled pad and the SH02 arrival. Metres; pole at the origin.
+import * as THREE from '../../vendor/three.module.js?v=25f0cc09';
+import { OrbitControls } from '../../vendor/OrbitControls.js?v=25f0cc09';
+import { LOOKS } from '../looks.js?v=25f0cc09';
+import { STORY_RECIPE, STORY_CLEARING, LANDING_DEFAULTS, STORY_SOUNDS, STORY_DAY } from '../content/story-defaults.js?v=25f0cc09';
+import { createDaylight } from '../fx/daylight.js?v=25f0cc09';
+import { SOUNDS } from '../audiomanifest.js?v=25f0cc09';
+import { makeAudio } from '../audio.js?v=25f0cc09';
+import { buildStoryPlanet } from '../domain/story-planet.js?v=25f0cc09';
+import { planetBake } from '../platform/planet-bake.js?v=25f0cc09';
+import { makeLandingSequence } from '../domain/landing-sequence.js?v=25f0cc09';
+import { compileRail } from '../core/rail.js?v=25f0cc09';
+import { buildStoryPlanetMesh, buildMouthMarker } from './story-planet-mesh.js?v=25f0cc09';
+import { createStoryLanding } from './story-landing.js?v=25f0cc09';
+import { planBase } from '../domain/base-plan.js?v=25f0cc09';
+import { ISLANDS, STRUCTURES, KIT, STAGES, withLandmarkTiers, landmarkTierMode } from '../content/base-layout.js?v=25f0cc09';
+import { createStoryBase } from '../fx/story-base.js?v=25f0cc09';
+
+// camera rail in pad metres: orbit, descent chase, touchdown, the door, Isao
+const RAIL = [
+  { t: 0, pos: [0, 1500, 900], look: [0, 0, 0], fov: 40 },
+  { t: 4, pos: [180, 140, 260], look: [0, 150, 0], fov: 40 },
+  { t: 9, pos: [90, 50, 140], look: [0, 40, 0] },
+  { t: 12, pos: [70, 26, 110], look: [0, 16, 0] },
+  { t: 16, pos: [14, 41, 17], look: [0.5, 36.5, 0], fov: 40 },   // medium-close on the nose, held: the door opens, Isao comes out, angry then happy, no zoom
+];
+
+export function initStoryTab(root) {
+  const q = new URLSearchParams(location.search);
+  const container = root.querySelector('#story-app'), hud = root.querySelector('#story-hud');
+  const look = LOOKS.tronColors;
+  const renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  container.appendChild(renderer.domElement);
+  const scene = new THREE.Scene(); scene.background = new THREE.Color(look.bg);
+  const camera = new THREE.PerspectiveCamera(40, 1, 0.5, 6000);
+  const controls = new OrbitControls(camera, renderer.domElement); controls.enableDamping = true; controls.dampingFactor = 0.08;
+  // the lab's rig starts on the look's night values and the cycle blends it toward the day set, the same way the game does
+  const hemi = new THREE.HemisphereLight(look.hemi[0], look.hemi[1], look.hemi[2]); scene.add(hemi);
+  const sun = new THREE.DirectionalLight(look.sun[0], look.sun[1]); sun.position.set(120, 260, 90); scene.add(sun);
+  const fill = new THREE.DirectionalLight(look.sun[0], 0.5); fill.position.set(-200, 120, -160); scene.add(fill);
+  const daylight = createDaylight({ hemi, sun, bg: scene.background, day: STORY_DAY.day, tune: STORY_DAY, phase: 0.15 });   // the arrival lands mid-morning
+
+  let active = false, disposed = false, frameId = 0, planet = null, planetMesh = null, marker = null, landing = null, errors = [];
+  // the thrust bed loops under the descent and cuts at touchdown; the tank's
+  // pneumatics stand in for the legs, the landing and the door
+  const sfx = makeAudio({ seed: 3, persist: false, sounds: { ...STORY_SOUNDS, tank_spool_up: SOUNDS.tank_spool_up, tank_spool_down: SOUNDS.tank_spool_down } });
+  sfx.arm();
+  const cueLog = [];
+  const cue = (key, o) => { cueLog.push(key); if (cueLog.length > 40) cueLog.shift(); sfx.play(key, o); };
+  let thrust = null, heard = null, thrustAsked = false;
+  function audioSync(state, live) {
+    if (!live) { thrust?.stop(0.1); thrust = null; heard = null; thrustAsked = false; return; }
+    if (state.plume > 0) {
+      // loop() returns null until the buffer has decoded and the context is
+      // unlocked; log the intent once and keep asking each frame
+      if (!thrustAsked) { cueLog.push('rocket_thrust'); thrustAsked = true; }
+      if (!thrust) thrust = sfx.loop('rocket_thrust', { gain: 0 });
+      thrust?.set(0.4 + 0.6 * state.plume, 0.96 + 0.06 * state.plume);
+    } else { thrustAsked = false; if (thrust) { thrust.stop(0.08); thrust = null; } }
+    const was = heard; heard = { legs: state.clips.Legs_Deploy !== null, down: state.clips.Landing_Shock !== null, door: state.clips.Top_Door_Open !== null };
+    if (!was) return;
+    if (heard.legs && !was.legs) cue('tank_spool_up');
+    if (heard.down && !was.down) cue('tank_spool_down');
+    if (heard.door && !was.door) cue('tank_spool_up', { rate: 0.85 });
+  }
+  const sequence = makeLandingSequence(LANDING_DEFAULTS);
+  const rail = compileRail(RAIL);
+  let t = sequence.duration, playing = false, onRail = false, last = performance.now();
+  const clock = { time: 0 };
+
+  hud.innerHTML = '<div class="story-lines"><b>STORY PLANET</b><span id="story-status">generating 16,000-point planet...</span><span id="story-stage"></span></div>'
+    + '<div class="story-keys"><a class="story-back" href="index.html?story=4#td">back to the game</a><button id="story-land" type="button">L land</button><button id="story-skip" type="button">K skip</button><button id="story-reset" type="button">R reset</button><button id="story-overview" type="button">O overview</button><button id="story-gate" type="button">G gate</button><button id="story-play" type="button">P play here</button><span>drag to orbit, wheel to zoom</span></div>'
+    + '<div class="story-keys" id="story-stages"></div>';
+  const status = hud.querySelector('#story-status'), stageLine = hud.querySelector('#story-stage'), stageBar = hud.querySelector('#story-stages');
+  // Isao's comms as he comes out: the line the face is saying
+  const commsEl = document.createElement('div'); commsEl.id = 'story-comms'; commsEl.hidden = true; hud.prepend(commsEl);
+  const COMMS = { angry: ['#ff6a6a', 'Rough landing!'], glee: ['#7dff9e', 'So much to build!'] };
+  function comms(face) { const c = COMMS[face]; commsEl.hidden = !c; if (c) { commsEl.style.color = c[0]; commsEl.style.borderColor = c[0]; commsEl.textContent = `ISAO · ${c[1]}`; } }
+  // the same switch and the same mapping the game world uses, so a candidate reviewed here is the file the game would load
+  const LAYOUT = { islands: ISLANDS, structures: withLandmarkTiers(STRUCTURES, landmarkTierMode(location.search)), kit: KIT, stages: STAGES };
+  let stage = Math.min(STAGES.length - 1, Math.max(0, parseInt(q.get('stage') || '', 10) || 1)), base = null, gateForced = false;
+  for (const st of STAGES) { const b = document.createElement('button'); b.type = 'button'; b.textContent = `${st.n} ${st.name}`; b.dataset.stage = st.n; b.onclick = () => setStage(st.n); stageBar.appendChild(b); }
+  function setStage(n) {
+    stage = Math.min(STAGES.length - 1, Math.max(0, n));
+    if (!planet) return;
+    base?.dispose();
+    // the landing scene owns the rocket in the lab; the base draws everything else
+    base = createStoryBase(scene, { plan: planBase(planet, LAYOUT, stage), placer: { toWorld: (p) => new THREE.Vector3(...planet.frameToWorld(p)) }, metres: 1, kit: KIT, skip: ['sh02'], sfx });
+    for (const b of stageBar.children) b.classList.toggle('on', Number(b.dataset.stage) === stage);
+    stageLine.textContent = `Stage ${stage}: ${STAGES[stage].name}. Digits 0-8 change the stage; play opens the game at this stage.`;
+    landing?.setLanded(stage === 1);   // the cinematic's intact rocket stands only at the landing; from stage 2 the base draws it cut into the salvage layout beside the foundry
+  }
+
+  function frameCamera(pose, about = null) {
+    // rail keys are metres around the landing site (or the pole for the overview): x/z along the surface,
+    // y along the local vertical there, so a key at the rim's height is at the rim wherever the site sits
+    const site = about ?? ISLANDS.find((i) => i.id === 'landing');
+    const rot = ([x, y, z]) => planet.frameToWorld([site.x + x, y, site.z + z]);
+    const p = rot(pose.pos), l = rot(pose.look);
+    camera.position.set(p[0], p[1], p[2]); camera.fov = pose.fov; camera.updateProjectionMatrix();
+    controls.target.set(l[0], l[1], l[2]); camera.lookAt(controls.target);
+  }
+  function seek(time) {
+    t = Math.max(0, Math.min(sequence.duration, time));
+    const state = sequence.stateAt(t);
+    landing?.apply(state, t);
+    audioSync(state, playing);
+    if (onRail) frameCamera(rail.poseAt(t));
+  }
+  function land() { onRail = true; playing = true; heard = null; seek(0); }
+  function skip() { playing = false; onRail = true; seek(sequence.duration); onRail = false; controls.update(); }
+  function reset() { playing = false; onRail = false; seek(sequence.duration); frameCamera(rail.poseAt(sequence.duration)); controls.update(); }
+  function overview() { playing = false; onRail = false; seek(sequence.duration); frameCamera({ pos: [120, 210, 300], look: [0, 0, -40], fov: 40 }, { x: 0, z: 0 }); controls.update(); }
+
+  function build() {
+    if (disposed) return;   // the lab closed inside the 30 ms before its deferred build (2026-09-25): build nothing into a disposed scene
+    const t0 = performance.now();
+    planet = buildStoryPlanet(STORY_RECIPE, STORY_CLEARING, planetBake());
+    const built = performance.now() - t0;
+    planetMesh = buildStoryPlanetMesh(planet, look, { wallMetres: STORY_RECIPE.wallMetres }); scene.add(planetMesh);
+    const site = ISLANDS.find((i) => i.id === 'landing');
+    landing = createStoryLanding(scene, { placer: { toWorld: (p) => new THREE.Vector3(...planet.frameToWorld(p)) }, site: [site.x, site.z], onFace: comms });
+    landing.ready.then(() => { if (disposed) return; seek(t); if (q.get('land') === '1') land(); });   // ?land=1 opens on the cinematic
+    marker = buildMouthMarker(planet, look); if (marker) scene.add(marker);
+    setStage(stage);
+    const c = planetMesh.userData.counts;
+    status.textContent = `${c.cells.toLocaleString()} cells, radius ${planet.radius.toFixed(0)} m, built in ${(built / 1000).toFixed(1)} s. ${planet.clearing.mouths.length} lane mouths, one open and gate-sized. L to land.`;
+    reset();
+  }
+  controls.addEventListener('start', () => { onRail = false; });
+  // the same planet in the actual game, with sparse waves
+  const playUrl = () => `index.html?story=${stage}#td`;
+  const play = () => { location.href = playUrl(); };
+  hud.querySelector('#story-land').onclick = land; hud.querySelector('#story-skip').onclick = skip; hud.querySelector('#story-reset').onclick = reset; hud.querySelector('#story-overview').onclick = overview; hud.querySelector('#story-gate').onclick = () => { gateForced = !gateForced; }; hud.querySelector('#story-play').onclick = play;
+  function onKey(e) {
+    if (e.target.closest?.('input,textarea,select')) return;
+    if (e.key === 'l' || e.key === 'L') land(); else if (e.key === 'k' || e.key === 'K') skip(); else if (e.key === 'r' || e.key === 'R') reset(); else if (e.key === 'o' || e.key === 'O') overview(); else if (e.key === 'g' || e.key === 'G') gateForced = !gateForced; else if (e.key === 'p' || e.key === 'P') play(); else if (/^[0-8]$/.test(e.key)) setStage(Number(e.key));
+  }
+  addEventListener('keydown', onKey);
+  function resize() {
+    const w = container.clientWidth || innerWidth, h = container.clientHeight || innerHeight;
+    renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix();
+  }
+  addEventListener('resize', resize);
+  function loop() {
+    if (!active || disposed) return;
+    frameId = requestAnimationFrame(loop);
+    const now = performance.now(), dt = Math.min(0.05, (now - last) / 1000); last = now; clock.time += dt;
+    if (playing) { seek(t + dt); if (t >= sequence.duration) { playing = false; onRail = false; audioSync(sequence.stateAt(t), false); } }
+    landing?.tick(dt, camera); base?.tick(dt, null, gateForced, camera.position); daylight.tick(dt);
+    if (!onRail) controls.update();
+    renderer.render(scene, camera);
+  }
+  const api = {
+    setActive(on) { active = on; if (on) { resize(); last = performance.now(); loop(); } else cancelAnimationFrame(frameId); },
+    dispose() {
+      if (disposed) return; disposed = true; active = false; cancelAnimationFrame(frameId);
+      removeEventListener('resize', resize); removeEventListener('keydown', onKey);
+      thrust?.stop(0); sfx.dispose(); landing?.dispose(); base?.dispose(); planetMesh?.userData.dispose(); marker?.userData.dispose(); controls.dispose(); renderer.dispose(); renderer.domElement.remove();
+    },
+  };
+  if (q.get('acceptance') === '1') window.__stalheartStoryTest = {
+    state: () => ({ ready: !!planet && !!landing?.state().loaded, cells: planet?.dungeon.tags.length ?? 0, mouths: planet?.clearing.mouths.length ?? 0, openMouths: planet?.clearing.mouths.filter((m) => m.open).length ?? 0, gateMarker: !!marker, playUrl: playUrl(), stage, comms: commsEl.hidden ? null : commsEl.textContent, base: base ? { ...base.counts, errors: base.errors.slice(), children: base.group.children.length, gate: base.gate(), lod: base.lod() } : null, counts: planetMesh?.userData.counts ?? null, t, phase: sequence.stateAt(t).phase, playing, landing: landing?.state() ?? null, cues: cueLog.slice(), audioState: sfx.contextState, errors }),
+    land, skip, seek: (time) => { onRail = true; seek(time); }, reset, overview, setStage, gate: (on) => { gateForced = on; }, baseReady: () => base?.ready, dispose: api.dispose,
+    frame: (pose, about) => { playing = false; onRail = false; frameCamera(pose, about); controls.update(); },   // a free framing for screenshots: metres around `about` (an island, or {x,z})
+    daylight: () => daylight.state(), setDay: (phase) => daylight.set(phase),
+  };
+  resize();
+  setTimeout(build, 30);
+  return api;
+}

@@ -1,0 +1,220 @@
+// postfx.js — the bloom chain, with a PER-GROUP intensity.
+//
+// UnrealBloomPass is a full-screen effect: it has no idea what an object
+// is. So per-group bloom is not a parameter, it is a render path. One
+// chain is fed a WEIGHTED render of the scene (each object's colour
+// scaled by its group's weight), and the pure bloom from that is added to
+// a normal, unweighted render:
+//
+//     output = scene + bloom(scene x weights)
+//
+// which means a weight changes how hard something GLOWS without changing
+// how brightly it DRAWS. That is the point — dimming the board would have
+// calmed its glow and its lines together; this calms only the glow.
+//
+// The trick that makes it clean: r160's UnrealBloomPass blends its result
+// additively over its input and ignores this.clear at that step, so the
+// pass output is always input+bloom and can't be made bloom-only. But it
+// leaves the PURE bloom in renderTargetsHorizontal[0] just before that
+// blend, and that texture is readable. No scene term leaks into the add.
+import { EffectComposer } from '../vendor/EffectComposer.js?v=25f0cc09';
+import { RenderPass } from '../vendor/RenderPass.js?v=25f0cc09';
+import { UnrealBloomPass } from '../vendor/UnrealBloomPass.js?v=25f0cc09';
+import { ShaderPass } from '../vendor/ShaderPass.js?v=25f0cc09';
+import { OutputPass } from '../vendor/OutputPass.js?v=25f0cc09';
+import * as THREE from '../vendor/three.module.js?v=25f0cc09';
+import { buildWeightMap, materialConflicts, clampWeight, DEFAULT_BLOOM_WEIGHTS }
+  from './bloomweights.js?v=25f0cc09';
+
+const COARSE = typeof matchMedia === 'function'
+  && matchMedia('(pointer: coarse)').matches;
+
+// The bloom's target size, in DEVICE pixels. EffectComposer sizes every
+// pass at device pixels (it multiplies by the renderer's pixelRatio);
+// anything that RE-APPLIES a pass size afterwards has to do the same, or
+// it silently drops the ratio. Getting this wrong is invisible on a
+// dpr-1 display and blocky on every Retina one, so it is pure and tested.
+export function bloomTargetSize(cssW, cssH, pixelRatio, scale) {
+  const f = (pixelRatio || 1) * (scale || 1);
+  return {
+    w: Math.max(1, Math.round(cssW * f)),
+    h: Math.max(1, Math.round(cssH * f)),
+  };
+}
+
+// base + bloom, in linear space, before OutputPass converts. Same place
+// the bloom was applied before this change.
+const AddBloomShader = {
+  uniforms: { tDiffuse: { value: null }, tBloom: { value: null } },
+  vertexShader: /* glsl */`
+    varying vec2 vUv;
+    void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }
+  `,
+  fragmentShader: /* glsl */`
+    uniform sampler2D tDiffuse;
+    uniform sampler2D tBloom;
+    varying vec2 vUv;
+    void main() { gl_FragColor = texture2D(tDiffuse, vUv) + texture2D(tBloom, vUv); }
+  `,
+};
+
+export function makeBloom(renderer, scene, camera, opts = {}) {
+  const o = {
+    // Softer and WIDER than it was, and biting much lower: a 0.85
+    // threshold only ever caught the near-white highlights, so bloom read
+    // as a rim on a few bright edges. At 0.2 it catches the body colours
+    // too, which is why the strength has to come down to 0.3 — the same
+    // total light, spread over far more of the frame.
+    strength: 0.3, radius: 0.5, threshold: 0.2, enabled: true,
+    // UnrealBloomPass builds a mip chain — halve it on phones
+    scale: COARSE ? 0.5 : 1.0,
+    ...opts,
+  };
+  let enabled = o.enabled;
+  const weights = { ...DEFAULT_BLOOM_WEIGHTS };
+  let groupsFn = null;   // null => no weighting, i.e. the pre-change behaviour
+  let warnedConflict = false;
+
+  const size = renderer.getSize(new THREE.Vector2());
+  const b0 = bloomTargetSize(size.x, size.y, renderer.getPixelRatio(), o.scale);
+
+  // --- pass A: the weighted scene -> bloom
+  const bloomComposer = new EffectComposer(renderer);
+  bloomComposer.renderToScreen = false;
+  bloomComposer.addPass(new RenderPass(scene, camera));
+  const bloom = new UnrealBloomPass(
+    new THREE.Vector2(b0.w, b0.h), o.strength, o.radius, o.threshold);
+  bloomComposer.addPass(bloom);
+  // The pass ends by blending its bloom additively back over the composer's buffer at full device resolution. Nothing
+  // reads that buffer — the pure bloom is taken from renderTargetsHorizontal[0] below — so the blend's material is
+  // simply not drawn. Measured at dpr 2: one 2880x1974 half-float read+write a frame for a picture nobody sees.
+  bloom.blendMaterial.visible = false;
+
+  // --- pass B: the real scene + that bloom
+  const finalComposer = new EffectComposer(renderer);
+  // EffectComposer's targets are created WITHOUT samples, so compositing
+  // silently discards the renderer's antialias:true. On a wireframe board
+  // that is the most visible side effect of adding a chain at all — ask
+  // for MSAA back (samples survives setSize, so this is set once).
+  // ON THE SCENE'S BUFFER ONLY. RenderPass draws into the composer's readBuffer (renderTarget2) and does not swap;
+  // renderTarget1 only ever receives full-screen shader passes (the add, and the OutputPass when a film pass follows),
+  // and a full-screen triangle has no edge to antialias — every sample of a pixel is the same fragment, so the resolve
+  // returns that fragment and the picture is identical. What a multisampled, depth-carrying renderTarget1 cost was a
+  // second 4x clear and resolve of the whole frame. Measured with every draw call skipped (the fixed floor): 23.7 ms
+  // of GPU a frame at dpr 2 before this and the blend cut above, 13.3 ms after; the 404-enemy frame went from 21.6 ms
+  // to 16.7 ms there, and the floor at dpr 1 from 5.2 ms to 3.8 ms (2026-09-16 horde profile, artifacts/qa).
+  finalComposer.renderTarget1.samples = 0;
+  finalComposer.renderTarget1.depthBuffer = false;
+  finalComposer.renderTarget2.samples = 4;
+  finalComposer.addPass(new RenderPass(scene, camera));
+  const addPass = new ShaderPass(AddBloomShader);
+  finalComposer.addPass(addPass);
+  // linear render targets -> without OutputPass the whole scene washes out
+  finalComposer.addPass(new OutputPass());
+
+  bloomComposer.setSize(size.x, size.y);
+  finalComposer.setSize(size.x, size.y);
+
+  // --- weighting: applied before the bloom render, undone straight after
+  const saved = [];          // { mat, r, g, b } and { obj, visible }
+  const savedVis = [];
+  const black = new THREE.Color(0, 0, 0);
+  let sceneBgSaved, conflictClock = 0;
+
+  // one object's weight, applied: hidden at 0, its materials scaled at anything but 1
+  function weigh(obj, w, weightedMaterials) {
+    const mat = obj.material;
+    if (!mat) return;
+    if (w === 0) { savedVis.push({obj,visible:obj.visible}); obj.visible = false; return; }
+    if (w === 1) return; // nothing to do — the common case, kept cheap
+    const mats = Array.isArray(mat) ? mat : [mat];
+    for (const m of mats) {
+      if (!m.color || weightedMaterials.has(m)) continue;
+      weightedMaterials.add(m);
+      saved.push({ mat: m, r: m.color.r, g: m.color.g, b: m.color.b });
+      m.color.setRGB(m.color.r * w, m.color.g * w, m.color.b * w);
+    }
+  }
+  const inScene = (obj) => { let r = obj; while (r.parent) r = r.parent; return r === scene; };
+
+  function applyWeights() {
+    const map = buildWeightMap(groupsFn(), weights);
+    // the tripwire once a second, not once a frame: it walks every grouped node, and a conflict is a code change, not a frame event
+    if (!warnedConflict && conflictClock++ % 60 === 0) {
+      const bad = materialConflicts(map);
+      if (bad.length) {
+        warnedConflict = true;
+        console.warn(`[postfx] ${bad.length} material(s) shared across bloom groups — ` +
+          'the weighted pass can only render one weight. Give them separate materials.', bad);
+      }
+    }
+    const dflt = clampWeight(weights.effects);
+    const weightedMaterials=new Set();
+    // With the default weight at 1 an ungrouped object needs nothing, so only the grouped ones are visited — the
+    // whole-scene walk cost 0.4 ms a frame with 400 enemies on the board (2026-09-16 horde profile). A default that
+    // is not 1 (the lab's effects slider) still has to see everything.
+    if (dflt === 1) { for (const [obj, w] of map) if (inScene(obj)) weigh(obj, w, weightedMaterials); }
+    else scene.traverse((obj) => weigh(obj, map.has(obj) ? map.get(obj) : dflt, weightedMaterials));
+    sceneBgSaved = scene.background;
+    scene.background = black; // the sky must not bloom
+  }
+
+  function restoreWeights() {
+    for (const s of saved) s.mat.color.setRGB(s.r, s.g, s.b);
+    saved.length = 0;
+    for (const {obj,visible} of savedVis) obj.visible = visible;
+    savedVis.length = 0;
+    scene.background = sceneBgSaved;
+  }
+
+  return {
+    dispose() {
+      groupsFn=null;
+      for(const pass of new Set([...bloomComposer.passes,...finalComposer.passes]))pass.dispose?.();
+      bloomComposer.dispose();finalComposer.dispose();
+    },
+    render() {
+      if (!enabled) { renderer.render(scene, camera); return; }
+      // THE MATRICES ONCE, FOR BOTH PASSES. Each RenderPass would otherwise walk the whole scene again through
+      // renderer.render, recomposing every object's matrix, and nothing moves between the two passes (the weights only
+      // touch colours and visibility). Measured at 0.3 ms a frame with 400 enemies on the board. The flag is held off
+      // only across the passes, so the rest of the frame keeps three's ordinary behaviour.
+      const autoUpdate = scene.matrixWorldAutoUpdate;
+      if (autoUpdate) { scene.updateMatrixWorld(); scene.matrixWorldAutoUpdate = false; }
+      try {
+        if (groupsFn) applyWeights();
+        bloomComposer.render();
+        if (groupsFn) restoreWeights();
+        // the PURE bloom, taken before UnrealBloomPass's additive blend
+        addPass.uniforms.tBloom.value = bloom.renderTargetsHorizontal[0].texture;
+        finalComposer.render();
+      } finally { scene.matrixWorldAutoUpdate = autoUpdate; }
+    },
+    setSize(w, h) {
+      // ORDER MATTERS: composer.setSize() re-sizes EVERY pass (at device
+      // pixels), which would clobber the bloom's scaled target — re-apply
+      // the scaled bloom size AFTER it, and in DEVICE pixels too.
+      bloomComposer.setSize(w, h);
+      finalComposer.setSize(w, h);
+      const b = bloomTargetSize(w, h, renderer.getPixelRatio(), o.scale);
+      bloom.setSize(b.w, b.h);
+    },
+    setParams({ strength, radius, threshold } = {}) {
+      if (strength !== undefined) bloom.strength = strength;
+      if (radius !== undefined) bloom.radius = radius;
+      if (threshold !== undefined) bloom.threshold = threshold;
+    },
+    setEnabled(v) { enabled = !!v; },
+    get enabled() { return enabled; },
+    // a pass AFTER the OutputPass, in display space (the cinematics' film
+    // pass: letterbox, grain, titles). The composer renders its last
+    // enabled pass to the screen, so appending is enough.
+    addFinalPass(pass) { finalComposer.addPass(pass); },
+    // fn() -> [[group, [roots]], ...], read fresh each frame so the caller
+    // never has to tell us when its collections change.
+    setGroups(fn) { groupsFn = typeof fn === 'function' ? fn : null; },
+    renderer,
+    weights,
+    params: o,
+  };
+}

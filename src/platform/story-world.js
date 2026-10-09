@@ -1,0 +1,256 @@
+// Game-side composition of the story world: the planet through the world
+// recipe, plus the base at the requested stage, placed onto the game's unit
+// sphere. The controller only sees mesh, dungeon, wall height and a base
+// handle with tick/dispose.
+import * as THREE from '../../vendor/three.module.js?v=25f0cc09';
+import { buildWorld } from '../domain/world-recipe.js?v=25f0cc09';
+import { planBase } from '../domain/base-plan.js?v=25f0cc09';
+import { voiceSounds } from '../content/voice-hooks.js?v=25f0cc09';
+import { STORY_RECIPE, STORY_CLEARING, STORY_SOUNDS, STORY_PILOT, STORY_SCALE, STORY_BREACH, STORY_QUIVER, STORY_DAY, STORY_FODDER, STORY_HANDOVER, STORY_EXPEDITIONS, STORY_BACK_DOOR, STORY_SKIP, STORY_BEATS, STORY_CONSTRUCTION, STORY_ROLLOUT, STORY_CHAPTERS, STORY_CHAPTER_END, STORY_NUKE_TANK, STORY_CALM } from '../content/story-defaults.js?v=25f0cc09';
+import { findBackMouth } from '../domain/back-door.js?v=25f0cc09';
+import { CONTENT } from '../content/runtime.js?v=25f0cc09';
+import { FOUNDRY_TUNE } from '../content/foundry.js?v=25f0cc09';
+import { LASER_AUDIO } from '../content/orbital-laser.js?v=25f0cc09';
+// the story world's cues, with SOL-82's burning ground once the orbital laser is in the arsenal (src/fx/laser-arsenal.js)
+const STORY_WORLD_SOUNDS = Object.freeze({ ...STORY_SOUNDS, ...LASER_AUDIO, ...voiceSounds() });   // Isao's lines, lazy (src/fx/isao-voice.js)
+export { STORY_WORLD_SOUNDS as STORY_SOUNDS };
+import { ISLANDS, STRUCTURES, KIT, STAGES, SOLID_STRUCTURES, withLandmarkTiers, landmarkTierMode } from '../content/base-layout.js?v=25f0cc09';
+import { SHIELD_ARRAY } from '../content/shield-array.js?v=25f0cc09';
+import { createStoryBase, basisAt } from '../fx/story-base.js?v=25f0cc09';
+import { createArrival } from '../fx/arrival.js?v=25f0cc09';
+import { isStoryRoute, skipsTutorial } from '../core/story-route.js?v=25f0cc09';
+import { makeStoryBeats } from '../domain/story-beats.js?v=25f0cc09';
+import { STORY_PHASES } from '../domain/automation.js?v=25f0cc09';
+import { makeExpeditions } from '../domain/expeditions.js?v=25f0cc09';
+import { createStoryHud } from '../fx/story-hud.js?v=25f0cc09';
+import { planetBake } from './planet-bake.js?v=25f0cc09';
+import { BASE_PROGRAMME } from '../content/base-programme.js?v=25f0cc09';
+import { makeBuildProgramme } from '../domain/build-programme.js?v=25f0cc09';
+import { BASE_PERKS } from '../content/base-programme.js?v=25f0cc09';
+import { createBasePrint } from '../fx/base-print.js?v=25f0cc09';
+import { createHullIssue, doorBerth, nearestCell } from '../fx/hull-issue.js?v=25f0cc09';
+import { BLOCKED, PATH } from '../dungeon.js?v=25f0cc09';
+
+export const STORY_LAYOUT = { islands: ISLANDS, structures: STRUCTURES, kit: KIT, stages: STAGES };
+
+export function readStoryQuery(search) {
+  const q = new URLSearchParams(search);
+  // ?story=N is the deep link: the story world at stage N, sparse waves, no old heart, no cold open.
+  // A bare page is the story too; the legacy game names itself (classic, mission, ...).
+  const story = isStoryRoute(search);
+  const short = story && q.get('world') !== 'story';
+  // THE SESSION IS NOT A DEEP LINK (owner, 2026-09-16: "the waves are much too easy"). The sparse 0.35 threat exists so a jumped-to
+  // stage is quick to inspect, but a BARE page — no ?stage=, no ?story= — is the V1 session itself and was fighting a third of the
+  // waves its sector table asks for: sector 1 opened with two bodies. Only an explicit deep link keeps the sparse waves now.
+  // ?story=0 IS THE STORY FROM ITS START (owner, 2026-09-25: "?story=0#td. I expect a quick rocket landing ... Then a close-up of
+  // Isao"): the bare page's opening, growing base, landing and full threat. It used to read as a static stage-1 deep link (0 fell
+  // through to 1), a base with no gate, so the tutorial's fodder had no breach to rise from and there was nothing to shoot at.
+  const fromStart = q.get('story') === '0';
+  const deepLink = (q.has('stage') || q.has('story')) && !fromStart;
+  // SKIP TUTORIAL (?skip=defence): not a deep link and not a diorama — the finished base, the beats past the handover and
+  // the full threat of a real run. It is the whole opening replaced at once, so it overrides stage, phase and grow.
+  const skip = story && skipsTutorial(search);
+  // A TUTORIAL CHAPTER (?skip=<chapter>, src/content/story-defaults.js STORY_CHAPTERS): the opening from that chapter's start, a
+  // growing base at stage 1 with the beats at its first phase and the full threat. The world a run has there is built at boot.
+  const chapter = story && !skip ? [...STORY_CHAPTERS, STORY_CHAPTER_END].find((c) => c.id === q.get('skip')) ?? null : null;
+  return {
+    short, skip, chapter,
+    world: story ? 'story' : 'default',
+    threat: Math.min(4, Math.max(0.1, parseFloat(q.get('threat') || '') || (short && deepLink && !chapter ? 0.35 : 1))),
+    stage: skip ? STORY_SKIP.stage : chapter ? 1 : Math.min(STAGES.length - 1, Math.max(0, parseInt(q.get('stage') ?? q.get('story') ?? '', 10) || (story ? 1 : 0))),
+    landmarks: landmarkTierMode(search),   // ?landmarks=candidate: review the pinned runtime LOD candidates in the game camera
+    phase: skip ? STORY_SKIP.phase : chapter ? chapter.from : (STORY_PHASES.includes(q.get('phase')) ? q.get('phase') : null),   // ?phase=expedition: a jump past the handover starts the beats there
+    // ISAO GROWS THE BASE IN PLAY: ?grow=1, and a bare story page that names no stage; an explicit stage=N stays the static base
+    // the sector the run opens on: SKIP TUTORIAL's (sector 1), or ?sector=N beside it, which a harness or the drawer's BACK DOOR jump
+    // uses to open at the back door (src/fx/sector-run.js: a first sector at or past SECTOR_DOOR.earliest is the door)
+    firstSector: skip ? Math.max(1, parseInt(q.get('sector') ?? '', 10) || STORY_SKIP.sector) : 1,
+    grow: !!chapter || (!skip && story && (q.get('grow') === '1' || (q.get('grow') !== '0' && !q.has('stage') && (!q.has('story') || fromStart)))),
+  };
+}
+
+// lane cells between `lo` and `hi` hops outward from `from`, over open ground outside the clearing, and (given a perch) only the
+// ones a mount at that perch can see: the chord from the perch to the cell crosses no rock, the same test the optic applies
+function holdRing(built, planet, from, [lo, hi], perch = null) {
+  const ring = new Set(); if (from < 0) return ring;
+  const { centers, adj } = planet.graph, cell = (p) => { let best = -1, bd = Infinity; for (const nb of near) { const c = centers[nb]; const d = (c[0] - p[0]) ** 2 + (c[1] - p[1]) ** 2 + (c[2] - p[2]) ** 2; if (d < bd) { bd = d; best = nb; } } return best; };
+  let near = [];
+  const seen = (ci) => { if (!perch) return true; const a = perch, b = centers[ci], n = Math.max(2, Math.ceil(Math.hypot(b[0] - a[0], b[1] - a[1], b[2] - a[2]) / (planet.cellSide * 0.45))); for (let i = 1; i < n; i++) { const t = i / n, p = [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t], l = Math.hypot(...p); const c = cell(p.map((v) => v / l)); if (c >= 0 && c !== ci && built.dungeon.tags[c] === BLOCKED) return false; } return true; };
+  const hop = new Map([[from, 0]]); let frontier = [from]; const candidates = [];
+  for (let k = 1; k <= hi && frontier.length; k++) {
+    const next = [];
+    for (const ci of frontier) for (const nb of adj[ci]) if (!hop.has(nb) && !planet.clearing.cells.has(nb)) { hop.set(nb, k); if (built.dungeon.tags[nb] !== BLOCKED) { next.push(nb); if (k >= lo) candidates.push(nb); } }
+    frontier = next;
+  }
+  near = [...hop.keys()];   // the chord test looks up cells among everything the walk touched, rock included
+  for (const ci of candidates) if (seen(ci)) ring.add(ci);
+  return ring;
+}
+
+// the Quiver's two hard cores: the ring's two cells farthest from the forward cell that stand at least two cells apart
+function riseCells(ring, centers, from) {
+  if (from < 0 || !ring.size) return [];
+  const d = (a, b) => Math.hypot(centers[a][0] - centers[b][0], centers[a][1] - centers[b][1], centers[a][2] - centers[b][2]);
+  const far = [...ring].sort((a, b) => d(b, from) - d(a, from)), first = far[0], gap = d(first, from) / 9 * 2;
+  const second = far.find((ci) => d(ci, first) >= gap) ?? far[1];
+  return second == null ? [first] : [first, second];
+}
+
+// a berth on the lane, [a, b] cells out from `from` along the great circle to `to`: { ci, exit, pos, out } as the bays' are, or null
+function laneBerth(planet, dungeon, from, to, [a, b]) {
+  if (from < 0 || to < 0) return null;
+  const C = planet.graph.centers, f = C[from], t = C[to], span = Math.hypot(t[0] - f[0], t[1] - f[1], t[2] - f[2]) / planet.cellSide;
+  const at = (k) => { const u = Math.min(1, k / span), v = f.map((x, i) => x + (t[i] - x) * u), l = Math.hypot(...v); return v.map((x) => x / l); };
+  const pos = at(a), out = at(b), ci = nearestCell(C, pos), exit = nearestCell(C, out);
+  return ci === exit || dungeon.tags[ci] === BLOCKED || dungeon.tags[exit] === BLOCKED ? null : { ci, exit, pos, out };
+}
+
+export function buildGameWorld({ world, params, stage, scene, sfx = null, landmarks = 'shipped', phase = null, grow = false, warm = null, chapter = null }) {
+  const built = buildWorld({ world, params, story: { recipe: STORY_RECIPE, clearing: STORY_CLEARING, bake: planetBake() } });
+  if (!built.planet) return { ...built, base: null };
+  const { planet } = built;
+  // the game draws the unit sphere at the origin with the pole at +Y
+  const placer = { toWorld: ([x, y, z]) => { const p = planet.frameToWorld([x, y, z]); return new THREE.Vector3(p[0] / planet.radius, p[1] / planet.radius + 1, p[2] / planet.radius); } };
+  // the shipped layout untouched unless a review asks for the candidates; the swap happens before planBase, which spreads it through.
+  // A growing base plans every stage now and marks what is above the starting stage pending: Isao prints it in play
+  const backMouth = findBackMouth(planet, STORY_BACK_DOOR);
+  // THE COLONY GROWS PAST THE FINISHED BASE (2026-10-01): a growing page reaches every stage; the finished base (SKIP TUTORIAL and a
+  // stage-8 link) reaches the colony's stage too, pending, so Isao prints the armory, the farm, the chip plant and the ARC-01 in play
+  const reach = grow || stage >= STORY_SKIP.stage ? STAGES.length - 1 : stage;
+  const plan = planBase(planet, landmarks === 'shipped' ? STORY_LAYOUT : { ...STORY_LAYOUT, structures: withLandmarkTiers(STORY_LAYOUT.structures, landmarks) }, stage, { reach, backMouth });
+  // walls are rock to the pathfinder and the tank alike; the gate's cell stays open and the gate opens for the tank
+  for (const ci of plan.open) built.dungeon.tags[ci] = PATH;   // the ground under a landed rocket first, then the gate's walls on top
+  for (const w of plan.walls) if (w.cell >= 0 && !w.pending) built.dungeon.tags[w.cell] = BLOCKED;   // a pending wall blocks once it is printed (the controller's storyApi.printed)
+  // the game prints the real Rotor; the static model stays a lab thing
+  const base = createStoryBase(scene, { plan, placer, metres: 1 / planet.radius, kit: KIT, skip: ['rotor'], sfx, warm, solid: new Set(SOLID_STRUCTURES) });
+  // which gate (if any) owns a lattice cell: built from the plan once, so the pathfinder's per-step lookup is a map hit
+  const gateCellMap = new Map();
+  for (const g of plan.gates ?? []) for (const ci of g.cells ?? []) if (ci >= 0) gateCellMap.set(ci, g.id ?? 'gate');
+
+  // a pad at an island's centre: the solar array's charging ring, the armory's reload ring
+  const padOf = (id, [dx, dz] = [0, 0]) => { const i = ISLANDS.find((x) => x.id === id); if (!i) return null; const pos = placer.toWorld([i.x + dx, 0, i.z + dz]).normalize().toArray(); return { cell: dx || dz ? nearestCell(planet.graph.centers, pos) : plan.cells[i.id], pos, standing: stage >= i.stage }; };
+  // story state for the controller: floor sockets towers may mount on, Isao's home cell, and the scripted beats
+  // the lane end is the story's spawn: the optic faces it, and the fodder comes from it once a gate stands
+  if (plan.cells.fodder >= 0) built.dungeon.spawn = plan.cells.fodder;
+  // the build programme's steps that this plan holds, and which of them already stand (their perks come with them)
+  const pieces = (s) => [...s.islands.map((id) => plan.islands.find((i) => i.id === id)), ...s.structures.map((id) => plan.structures.find((x) => x.id === id)), ...(s.gate ? [(plan.gates ?? []).find((g) => (g.id ?? 'gate') === (s.gate === true ? 'gate' : s.gate)) ?? plan.gate].filter(Boolean) : []), ...(s.walls ? plan.walls : [])];
+  // what this plan must hold for a step to be in the programme at all: the pieces it prints, plus the standing machine an `over` beat
+  // works (Isao on the AFR-01 prints nothing, so a pieces-only filter dropped the beat out of the programme entirely)
+  const needs = (s) => [...pieces(s), ...(s.over ? [plan.structures.find((x) => x.id === s.over)] : [])];
+  const steps = BASE_PROGRAMME.filter((s) => needs(s).length > 0 && needs(s).every(Boolean));
+  // SECTOR 0 (owner, 2026-09-24: "The Tank is built by the Stalheart"): a growing page that starts in the opening has no hull until
+  // the step carrying `hull` stands, and then the first MÖRK rolls out of that building's door (src/fx/hull-issue.js); the beats
+  // defend its construction meanwhile. A static stage, SKIP TUTORIAL and a start past the handover have the hull from the first frame.
+  const hullStep = grow ? steps.find((s) => s.hull && pieces(s).some((p) => p.pending)) : null;
+  const hullHeld = !!hullStep && (phase == null || STORY_PHASES.indexOf(phase) < STORY_PHASES.indexOf('settled'));
+  // a tutorial chapter past the handover (EXPEDITION, the end) has the Stålheart printed at boot: its door is the hull's berth
+  const hullDoor = hullHeld || !!(hullStep && chapter?.printed.includes(hullStep.id));
+  const hullPlot = hullDoor ? plan.islands.find((i) => hullStep.islands.includes(i.id)) : null;
+  const door = hullPlot ? doorBerth({ at: [hullPlot.x, hullPlot.z], heading: STORY_ROLLOUT.heading, start: STORY_ROLLOUT.start, end: STORY_ROLLOUT.end, unit: (f) => placer.toWorld(f).normalize().toArray(), cellOf: (p) => nearestCell(planet.graph.centers, p), open: (ci) => built.dungeon.tags[ci] !== BLOCKED }) : null;
+  const bayBerths = plan.bays.length ? plan.bays.map((b) => ({ ci: b.cell, exit: b.exit, pos: b.pos, out: b.out })) : null;
+  // THE ARRIVAL (src/fx/arrival.js): every story START lands the SH02 first, which is a growing base at stage 1 with no phase to jump
+  // to: a bare page, the burger's Story, ?grow=1. SKIP TUTORIAL, stage=N and story=N links (static) and phase jumps do not
+  const sh02 = plan.structures.find((s) => s.id === 'sh02');
+  const arrives = grow && stage === 1 && phase == null && !!sh02 && ['sh02-salvage', 'foundry'].every((id) => plan.structures.some((s) => s.id === id));
+  const pastLanding = stage === 1 && phase != null && phase !== 'landed';   // a chapter or a jump past it: the rocket is already salvage
+  // the hard cores' holding ring: lane cells hold[0]..hold[1] hops outside the forward cell, seen from the Quiver; a held one only
+  // wanders within it. The Quiver's two rise beyond it (STORY_QUIVER.rise), on the horizon as its optic opens, and walk in (owner, 2026-10-05)
+  const perch = plan.sockets[1]?.pos ?? null, ring = holdRing(built, planet, plan.cells.forward, STORY_QUIVER.hold, perch), far = holdRing(built, planet, plan.cells.forward, STORY_QUIVER.rise, perch);
+  const rise = riseCells(far.size >= 2 ? far : ring, planet.graph.centers, plan.cells.forward);
+  const beats = stage >= 1 ? makeStoryBeats({ fodderEvery: STORY_FODDER.every, fodderAlive: STORY_FODDER.alive, fodderTotal: STORY_FODDER.total, fodderEmerge: STORY_FODDER, socket: plan.cells.rotor, lane: plan.cells.forward, fodder: plan.gate ? plan.cells.fodder : -1, gate: plan.gate ? plan.gate.cell : -1, ...STORY_BEATS, calmMax: STORY_CALM.maxHold, key: 'rotor', quiverSocket: plan.cells.quiver, quiver: STORY_QUIVER, quiverRise: rise, foundry: FOUNDRY_TUNE, startPhase: phase ?? 'landed', gateReady: () => base.gate().built, construction: hullStep ? STORY_CONSTRUCTION : null, arrival: arrives, foundryCut: chapter?.foundry ?? null }) : null;
+  const story = stage >= 1 ? {
+    sockets: new Set(), home: plan.cells.landing, socketLift: 0,
+    // the solar array's shield pad (src/content/shield-array.js): its island's centre on the unit sphere, standing once the island is; a build programme stands it later by setting `standing`
+    arrayPad: padOf(SHIELD_ARRAY.island),
+    paintPad: padOf(BASE_PERKS.paint.island, BASE_PERKS.paint.pad),   // PIMP MY RIDE: the purple pad beside the bays (src/fx/paint-pad.js)
+    armoryPad: padOf(BASE_PERKS.armory.island, BASE_PERKS.armory.pad),   // the armory's reload pad by the assembly line (src/fx/armory-pad.js), live once the armory is printed
+    // a run that starts at or past the expedition (a jump link) has no expedition of its own to wait for (src/fx/sector-run.js)
+    lateStart: phase != null && STORY_PHASES.indexOf(phase) >= STORY_PHASES.indexOf('expedition'),
+    beats, arrival: createArrival({ on: arrives, past: pastLanding, base, beats, site: sh02 ? basisAt(placer, sh02.x, sh02.z, sh02.heading) : null, metres: 1 / planet.radius }),
+    // A TUTORIAL CHAPTER'S START (src/fx/story-entry.js builds it at boot): its number, the steps it prints and the sentries it stands
+    // (`berths`: past the hull's issue the Stålheart's door is every berth, as the issue leaves it, src/fx/hull-issue.js)
+    chapter: chapter ? { id: chapter.id, n: STORY_CHAPTERS.includes(chapter) ? STORY_CHAPTERS.indexOf(chapter) : STORY_CHAPTERS.length, printed: chapter.printed, head: chapter.head, towers: chapter.towers.map((key) => ({ key, ci: plan.cells[key] ?? -1 })), berths: door && !hullHeld ? [door, door, door] : null } : null,
+    hull: createHullIssue({ held: hullHeld, perk: hullStep?.perk, door, lead: STORY_ROLLOUT.lead }),   // the first hull, held until the Stålheart stands
+    // the MK-9 blasts (src/fx/gunship-rig.js), and the berth the nuke's tank stands on: out of the gate toward the blast, or toward the
+    // sinkhole when that line runs into rock
+    nukes: [], nukeBerth: (ci) => (ci >= 0 && laneBerth(planet, built.dungeon, plan.cells.forward, ci, STORY_NUKE_TANK.berth)) || laneBerth(planet, built.dungeon, plan.cells.forward, plan.cells.fodder, STORY_NUKE_TANK.berth),
+    // the story's Quiver fires the TALON: the game's quiver config with the lab's heavy round on top
+    missiles: { quiver: { ...CONTENT.missiles.quiver, ...STORY_QUIVER.missile } },
+    ring, hardcore: STORY_QUIVER.hardcore, quiverZoom: STORY_QUIVER.zoom, quiverCone: Math.tan(STORY_QUIVER.coneDeg * Math.PI / 180),
+    hud: createStoryHud(), source: null,   // the radar overlay, and the breach the fodder comes from once it opens
+    // A CLOSED DOOR IS A WALL TO THE SWARM, and the tank opens it. Every gate on the plan answers for its own cells, so the back
+    // door blocks the back mouth exactly as the front gate blocks the lane; an unprinted gate seals nothing (2026-09-18).
+    sealed: (ci) => { const id = gateCellMap.get(ci); return id !== undefined && base.gateSealed(id); },
+    inside: (ci) => planet.clearing.cells.has(ci), gateCell: plan.gate ? plan.gate.cell : -1,   // the gate's cell: the sector loop wears it down under pressure (src/fx/sector-run.js)
+    // the doors the sector loop wears down, front first: each with the cells it blocks and whether it stands yet
+    gateAt: (ci) => gateCellMap.get(ci) ?? null, gateList: () => base.gateList(),
+    gateCellOf: (id) => (plan.gates ?? []).find((g) => (g.id ?? 'gate') === id)?.cell ?? -1,   // where Isao stands to mend a named door
+    backSockets: plan.backSockets ?? [],   // the mounts beside the back lane: they join socketToward when the back gate is printed
+    pilot: STORY_PILOT, breachShot: STORY_BREACH, day: STORY_DAY,
+    handover: { ...STORY_HANDOVER, stage },   // the phase and stage the towers turn automatic (src/domain/automation.js)
+    expeditions: makeExpeditions(STORY_EXPEDITIONS.sites),
+    siteCells: Object.fromEntries(plan.structures.filter((s) => s.anchor === 'open' && s.cell >= 0).map((s) => [s.id, { cell: s.cell, clear: s.clear }])),
+    // the hull's size in this world, and the bays as berths once the tank bay stands: the game's deploy
+    // starts a hull in its bay and drives it straight out of the doors (bay 3 first, then 2, then 1)
+    tankUnit: STORY_SCALE.tankUnit,
+    sites: (() => { const first = new Set(STORY_EXPEDITIONS.sites.filter((s) => !s.reveal).map((s) => s.id)); return plan.structures.filter((s) => s.anchor === 'open' && s.cell >= 0 && first.has(s.id)).map((s) => s.cell); })(),   // only the first-wave landing sites: the reveal beat's radar marks and framing leave the concealed ones out
+    socketToward: Object.fromEntries(plan.sockets.map((s) => [s.cell, s.toward])),   // the lane a story socket covers: the mount perches on that edge of its wall cell
+    berths: bayBerths && !plan.bays[0].pending ? bayBerths : null, bayBerths,   // pending bays: the invisible camp is the berths until Isao prints them
+    // ISAO KEEPS BUILDING: the programme, its print on the planet, and the wall cells that turn to rock when the gate step stands
+    // a beat that prints nothing (Isao working the standing foundry) has no piece to be standing: it is owed on a base that grows and
+    // already past on a static stage, which is exactly where the rest of the opening it belongs to is
+    grow, programme: makeBuildProgramme(steps, { standing: (s) => (pieces(s).length ? !pieces(s).some((p) => p.pending) : !grow) }), print: createBasePrint({ base, plan, placer }),
+    lost: new Set(),   // buildings SOL-82 burned away (src/content/orbital-laser.js LASER_STRUCTURES): they do not come back this run
+    wallCells: [...new Set(plan.walls.filter((w) => w.cell >= 0).map((w) => w.cell))],   // every wall cell, printed on a grown base or standing on a static one: Isao mends either, and the side breach (src/domain/side-breach.js) goes for one
+    shot: new Set(),   // every cell a tank shell opened: Isao mends the ones inside the base (src/domain/repair-orders.js shotHoles)
+    // THE SECOND FRONT: the sealed mouth behind the bays, recomputed per load like the rest of the clearing (the controller keeps
+    // only the mesh and the dungeon of the planet), with the clearing cells the back-breach rules need and the tunables
+    backMouth, backDoor: STORY_BACK_DOOR, backPlanet: { graph: planet.graph, clearing: planet.clearing },
+  } : null;
+  return { ...built, base, plan, story };
+}
+
+// Take-control shot: three quarters of a turn around the sentry, settling
+// behind it and looking down the lane. Positions are host units on the
+// unit sphere; the pose is written into the host's camera goal.
+// from: { pos, quat } of the camera the hand-over starts in (another seat): the first `pull` of the shot backs out of it, up and away,
+// before the orbit round the new mount (owner, 2026-10-02: "switch from Rotor to Quiver should zoom out of the Rotor")
+export function takeControlPose(centre, normal, lane, cellSide, wallHeight, from = null, pull = 0.3, direct = false) {
+  const c = new THREE.Vector3(...centre).multiplyScalar(1 + wallHeight), n = new THREE.Vector3(...normal).normalize();
+  const toLane = new THREE.Vector3(...lane).sub(new THREE.Vector3(...centre)); toLane.sub(n.clone().multiplyScalar(toLane.dot(n))).normalize();
+  const side = new THREE.Vector3().crossVectors(n, toLane).normalize();
+  const radius = cellSide * 2.1, height = cellSide * 0.9, tmp = new THREE.Matrix4();
+  const orbit = (u, goal) => {
+    const e = u * u * (3 - 2 * u), theta = Math.PI * 0.25 + e * Math.PI * 0.75;   // from beside the lane round to behind
+    const r = radius * (1.15 - 0.35 * e), h = height * (1.2 - 0.4 * e);
+    goal.pos.copy(c).addScaledVector(n, h).addScaledVector(toLane, Math.cos(theta) * r).addScaledVector(side, Math.sin(theta) * r);
+    const look = c.clone().addScaledVector(n, cellSide * 0.35).addScaledVector(toLane, e * cellSide * 1.5);
+    tmp.lookAt(goal.pos, look, n); goal.quat.setFromRotationMatrix(tmp);
+  };
+  if (!from) return orbit;
+  // THE FIRST HAND-OVER DIVES (owner, 2026-10-04: "the view deep dives directly towards the rotor, without cut"): from wherever the eye is
+  // (the tour's or the free camera's planet view) straight down on an arc to the mount's shoulder, turning to the lane as it comes
+  if (direct) {
+    const end = { pos: new THREE.Vector3(), quat: new THREE.Quaternion() };
+    orbit(1, end);
+    const lift = from.pos.distanceTo(end.pos) * 0.12;
+    return (u, goal) => {
+      const e = u * u * (3 - 2 * u), q = Math.min(1, u * 1.35), eq = q * q * (3 - 2 * q);
+      goal.pos.copy(from.pos).lerp(end.pos, e).addScaledVector(n, Math.sin(Math.PI * e) * lift * (1 - e));
+      goal.quat.copy(from.quat).slerp(end.quat, eq);
+    };
+  }
+  // FROM ONE SEAT TO THE NEXT, THREE STATES (owner, 2026-10-03: "Rotor action is over. Entirely switch off, to a high view, so we see the
+  // enemies in the distance, then it zooms back into the new sentry; the quiver. We need a clearer distinct change of states"): the eye
+  // leaves the old optic and climbs to a HIGH VIEW over the new mount looking out down its lane (the swarm in the distance) by `pull`,
+  // holds it until `hold`, then dives to the new mount's shoulder; the seat glide lands it on the optic
+  const high = { pos: c.clone().addScaledVector(n, cellSide * 7).addScaledVector(toLane, -cellSide * 5), quat: new THREE.Quaternion() };
+  tmp.lookAt(high.pos, c.clone().addScaledVector(toLane, cellSide * 12), n); high.quat.setFromRotationMatrix(tmp);
+  const end = { pos: new THREE.Vector3(), quat: new THREE.Quaternion() }, hold = 0.62;
+  orbit(1, end);
+  return (u, goal) => {
+    if (u < pull) { const k = u / pull, e = k * k * (3 - 2 * k); goal.pos.copy(from.pos).lerp(high.pos, e).addScaledVector(n, Math.sin(Math.PI * e) * cellSide * 2); goal.quat.copy(from.quat).slerp(high.quat, e); return; }
+    if (u < hold) { const k = (u - pull) / (hold - pull); goal.pos.copy(high.pos).addScaledVector(toLane, k * cellSide * 0.6); goal.quat.copy(high.quat); return; }
+    const k = (u - hold) / (1 - hold), e = k * k * (3 - 2 * k);
+    goal.pos.copy(high.pos).lerp(end.pos, e); goal.quat.copy(high.quat).slerp(end.quat, e);
+  };
+}

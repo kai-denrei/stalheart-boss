@@ -1,0 +1,558 @@
+// isaobriefs.js — what Isao says, and the face he says it with.
+//
+// Pure data. The presenter lives with the DOM in td-tab; the script lives
+// here so it can be read, argued with and rewritten without touching the
+// game, and so a translator or a voice pass has one file to work from.
+//
+// TEXT ONLY for now, by the operator's instruction. Every beat is written
+// so a line is a LINE — one breath, one thought — because these are going
+// to be spoken eventually (fish audio, on the operator's Ubuntu box) and a
+// paragraph that reads fine is a paragraph nobody can perform.
+//
+// `face` is an emotion id from emotions.js. `once` means the beat fires a
+// single time per browser, ever, and is remembered; the rest can repeat.
+
+// ISAO'S VOICE (owner, 2026-09-13). The stoic builder: no complaining, just
+// building. Upbeat, techno-optimist, protopian, wise beyond his looks. A loss
+// is a fact and then a plan: "Oh no! They destroyed my RADAR!" (angry)...
+// "Oh well. Rebuild." Two short lines at most; the second line is always what
+// he does next. Curiosity over dread, resources over blame.
+import { SECTORS, SECTOR_HOLD, BACK_DOOR_SECTOR, BOTH_WALLS_SECTOR, SECTOR_GENERATOR, SECTOR_CANYON_AGAIN } from './content/sectors.js?v=25f0cc09';
+
+export const BRIEFS = {
+  // --- THE STORY -----------------------------------------------------------
+  // Four beats the game had no way of saying. All of this was already written
+  // — in src/lore.js, the codex — and none of it was reachable from the TD
+  // tab, because lore.js is imported by units-tab.js and nowhere else. So this
+  // is delivery, not invention: the lines are drawn from the codex entries
+  // (world, heart, biomass, portal) so the game and the book cannot drift.
+  //
+  // Short on purpose. Three lines each, because the operator's note was that
+  // Isao crowds the view, and the cure for that is not only the auto-advance —
+  // it is having less to say.
+
+  // Fires once the player is actually on the shell, driving. Answers WHERE
+  // and WHO, which the cold open shows and never states.
+  arrival: {
+    id: 'arrival',
+    face: 'scan',
+    title: 'STÅLHEART',
+    once: true,
+    lines: [
+      'Stålheart. Eleven kilometres of engineered shell, found dark '
+        + 'and cold on a slow orbit of a dead world.',
+      'Nothing about it is natural. Nothing about it is finished.',
+      'One tank, landed light, weapons free. That is the entire survey.',
+    ],
+  },
+
+  // The thing at the pole, and the stakes. Fires the first time the player
+  // pulls out to the build view, which is the first time it is in frame.
+  stalheart: {
+    id: 'stalheart',
+    face: 'awe',
+    title: 'THE STÅLHEART',
+    once: true,
+    lines: [
+      'At the pole: the Stålheart. A terraformer, and the only one.',
+      'It is what turns this shell into somewhere that can be lived on. The '
+        + 'colony is downstream of it — all of it.',
+      'It does not defend itself. That part is us.',
+    ],
+  },
+
+  // The economy, taught at the first kill — PROACTIVELY. The existing biomass
+  // beat only fires on a refused order, which is a complaint and arrives
+  // after the player needed to know.
+  harvest: {
+    id: 'harvest',
+    face: 'focused',
+    title: 'WHAT WE BUILD WITH',
+    once: true,
+    lines: [
+      'You killed something. Good. That was income.',
+      'The lattice renders the tissue down and sends it back up the lanes — '
+        + 'warm grey slurry, and I can print with it.',
+      'Every tower on this shell is paid for in the bodies of the things it '
+        + 'was built to stop.',
+    ],
+  },
+
+  // Motive, as distinct from the `gates` beat below, which is about the wave
+  // economy — the RULES of a gate rather than the reason for one.
+  motive: {
+    id: 'motive',
+    face: 'determined',
+    title: 'WHY THEY COME',
+    once: true,
+    lines: [
+      'The gates dial from somewhere I cannot see. Whatever is on the far '
+        + 'side wants the Stålheart stopped.',
+      'Not taken. Not used. Stopped.',
+      'Why, I do not know. That is all the tactical picture requires.',
+    ],
+  },
+
+  // --- THE STORY OPENING (new world, 2026-09-11) ----------------------------
+  // Isao out of the rocket: first the landing he did not enjoy, then the
+  // work he does. Then the tremor, and the line that hands the player the
+  // Rotor. All short, all spoken once per browser except the override.
+  rough_landing: {
+    id: 'rough_landing', face: 'angry', title: 'COMMS · ISAO', once: true,
+    lines: ['Rough landing!'],
+  },
+  so_much_to_build: {
+    id: 'so_much_to_build', face: 'glee', title: 'COMMS · ISAO', once: true,
+    lines: ['So much to build!'],
+  },
+  // THE ARRIVAL IN THE GAME (owner, 2026-09-25: "Isao comes out, close up on his face; he's the narrator"): the three lines of the
+  // landing's close-up (src/fx/arrival.js), one beat so the one-deep queue cannot drop any, and said at every story start, not once
+  // per browser. `faces` is the drone's own face per line; `dwell` times each line (lineDwell below), and the close-up holds all three
+  // (owner, 2026-09-25, second playtest: "a close-up of Isao saying he'll cannibalize the rocket to get started with terraforming")
+  arrival_talk: {
+    id: 'arrival_talk', face: 'angry', faces: ['angry', 'glee', 'determined'], dwell: [1.0, 1.1, 2.6], title: 'COMMS · ISAO',
+    lines: ['Rough landing!', 'So much to build!', 'I\'ll cannibalize the rocket to get the terraforming started.'],
+  },
+  tremor: {
+    id: 'tremor', face: 'scan', title: 'TREMOR DETECTED', once: true,
+    lines: ['Tremor on the radar. Far out, past the tunnel.', 'Something is coming up through the ground.'],
+  },
+  manual_override: {
+    id: 'manual_override', face: 'focused', title: 'MANUAL OVERRIDE',
+    lines: ['The sentries are not ready for auto-targeting yet.', 'Manual override. The Rotor is yours.'],
+  },
+  // a throwaway, on the fifth kill: the seed of a much later story beat about
+  // reverse-engineering their language
+  alien_comms: {
+    id: 'alien_comms', face: 'curious', title: 'COMMS · ISAO', once: true,
+    lines: ['They are talking to each other. Some form of communication.', 'I am starting a study of the pattern. It will take a while.'],
+  },
+  // the first wave down: the views unlock
+  wave_cleared: {
+    id: 'wave_cleared', face: 'glee', title: 'COMMS · ISAO', once: true,
+    lines: ['Clear. Not one of them through the gate.', 'The strip below switches the view: the sentries, the MAP.'],   // no TANK promised: on a growing page the hull comes out of the Stålheart later
+  },
+  // the Quiver: introduced, handed over, and two for two
+  quiver_intro: {
+    id: 'quiver_intro', face: 'focused', title: 'COMMS · ISAO', once: true,
+    lines: ['Something heavier is coming up the lane. Solid cores.', 'Printing a Quiver across the lane: guided rounds, one lock at a time.'],
+  },
+  foundry_deploy: {
+    id: 'foundry_deploy', face: 'focused', title: 'COMMS · ISAO', once: true,
+    lines: ['The rocket got us here.', 'Now it builds the base.'],
+  },
+  // SECTOR 0 (owner, 2026-09-24: "its already in orbit, not equipped to develop a colony but its purpose is to defend new colonies"):
+  // the KORP / GS01 comes on station over the Stålheart's construction, a free first pass (src/domain/story-beats.js construction)
+  gunship_overhead: {
+    id: 'gunship_overhead', face: 'focused', title: 'COMMS · ISAO', once: true,
+    lines: ['GS01 is overhead. It guards colonies; it does not build them.', 'It holds the sky while I print. GUNSHIP takes its guns.'],
+  },
+  // THE SINKHOLE IS CLOSED WITH A STRIKE (owner, 2026-09-30): src/domain/story-beats.js construction says these, the reminder once per
+  // wave cleared off the field, the last when anything has filled it
+  sinkhole_strike: {
+    id: 'sinkhole_strike', face: 'focused', title: 'THE SINKHOLE',
+    lines: ['That wave is down, but the sinkhole is still open.', 'GUNSHIP on the strip: put a strike on it. Fill it and nothing more comes up.'],
+  },
+  sinkhole_strike_again: {
+    id: 'sinkhole_strike_again', face: 'determined', title: 'THE SINKHOLE',
+    lines: ['Clear again, and the sinkhole is still breathing.', 'One strike from the gunship and the construction is safe.'],
+  },
+  sinkhole_sealed: {
+    id: 'sinkhole_sealed', face: 'glee', title: 'SINKHOLE FILLED',
+    lines: ['The sinkhole is filled. Nothing more is coming up through it.', 'Now I can print in peace.'],
+  },
+  gunship_pass: {
+    id: 'gunship_pass', face: 'focused', title: 'COMMS · ISAO', once: true,
+    lines: ['The gunship is overhead. Fuel for a pass, not a landing.', 'I mark what it must not hit.'],
+  },
+  // SOL-82's first pass over the base, once it is online (src/fx/laser-station.js)
+  laser_pass: {
+    id: 'laser_pass', face: 'focused', title: 'COMMS · ISAO', once: true,
+    lines: ['SOL-82 is overhead. Twenty seconds of sky, ten of beam.', 'It burns whatever it touches, ours too. I keep clear of the ring.'],
+  },
+  // SOL AUTOMATED (owner, 2026-10-01: "first 2 are manual, later ISAO calibrated it and it can do it auto"): his word when the
+  // calibration is in hand, and the line as an automated pass arrives
+  laser_calibrated: {
+    id: 'laser_calibrated', face: 'determined', title: 'COMMS · ISAO', once: true,
+    lines: ['Two passes on your hands. That is the calibration I needed.', 'I am printing the ARC-01. We put up a platform that fires on its own.'],
+  },
+  laser_auto_fire: {
+    id: 'laser_auto_fire', face: 'focused', title: 'SOL-88 · AUTOMATED', once: true,
+    lines: ['SOL-88 overhead. It picks the thickest pile and burns it on its own.', 'The seat is still yours if you want the beam.'],
+  },
+  sol88_online: {
+    id: 'sol88_online', face: 'surprised', title: 'SOL-88 · IN ORBIT', once: true,
+    lines: ['Insertion stage lit. SOL-88 is in orbit and talking to the radar.', 'The first thing this colony has ever put up there. Not the last.'],
+  },
+  // THE ORBITAL WORKS (docs/superpowers/specs/2026-10-02-orbital-works-design.md): a collector loaded after a secured sector, and the
+  // first one in orbit
+  works_launch: {
+    id: 'works_launch', face: 'focused', title: 'ARC-01 · THE WORKS',
+    lines: ['Sector held. Loading a collector on the sled.', 'Every one of these up there is more sky for SOL to spend.'],
+  },
+  works_orbit: {
+    id: 'works_orbit', face: 'surprised', title: 'THE WORKS · IN ORBIT', once: true,
+    lines: ['Look up. That light is ours.', 'A ring of them one day, and then a shell. The colony builds outward now.'],
+  },
+  // THE COLONY GROWS (owner, 2026-10-01: "make the base more fully developed"): the armory, the farm, the chip plant, the launcher
+  // THE GUNSHIP ON AUTO (GUNSHIP_AUTO): his word when the calibration is in, and the line when it first flies itself
+  gunship_calibrated: {
+    id: 'gunship_calibrated', face: 'determined', title: 'COMMS · ISAO', once: true,
+    lines: ['I watched you fly the gunship twice. I know what you want from it now.', 'Call it, or do not: when the meter is full it comes, and flies itself unless you take the seat.'],
+  },
+  gunship_auto: {
+    id: 'gunship_auto', face: 'focused', title: 'KORP / GS01 · AUTO', once: true,
+    lines: ['The gunship is on station and on its own. More of them will come now; it can take them.', 'The seat is yours whenever you want it.'],
+  },
+  // THE FIRST SOL-88 LAUNCH, narrated over its cinematic (src/fx/arc-launch.js phases)
+  sol88_charge: {
+    id: 'sol88_charge', face: 'focused', title: 'ARC-01 · CHARGING', once: true,
+    lines: ['SOL-88 is on the sled. Rails charging.', 'Everything you taught SOL-82 is in its head. It will not need the seat.'],
+  },
+  sol88_away: {
+    id: 'sol88_away', face: 'glee', title: 'ARC-01 · AWAY', once: true,
+    lines: ['Away! Look at it go.', 'Petals out once it clears the air. Then it climbs to its orbit.'],
+  },
+  // THE OTHER ROCKETS (owner, 2026-10-02): the first thing he says once the camera is the player's
+  sites_seen: {
+    id: 'sites_seen', face: 'curious', title: 'COMMS · ISAO', once: true,
+    lines: ['We were not the only rocket. Three more came down off course.', 'See the beacons? Something worth fetching at each. Later, with a hull.'],
+  },
+  // the bays' purple pad (src/fx/paint-pad.js): his lines over the shop when the player parks on it
+  build_garage: { id: 'build_garage', face: 'glee', title: 'ISAO · THE GARAGE', lines: ['A paint bay. The crew asked. I said yes.'] },
+  paint_pad: {
+    id: 'paint_pad', face: 'glee', title: 'PIMP MY RIDE · ISAO',
+    lines: ['Parked on the pad. Good.', 'Pick a scheme. The hull has been grey long enough.'],
+  },
+  isao_strike_go: {
+    id: 'isao_strike_go', face: 'determined', title: 'ISAO · INBOUND', once: true,
+    lines: ['Hold on, I am coming. I am bringing something heavy.', 'It is very heavy.'],
+  },
+  isao_strike_hit: {
+    id: 'isao_strike_hit', face: 'glee', title: 'ISAO · ONE!', once: true,
+    lines: ['ONE! I GOT ONE! Look at the board!', 'One. That is a number. That is not zero.'],
+  },
+  build_board: {
+    id: 'build_board', face: 'focused', title: 'COMMS · ISAO', once: true,
+    lines: ['Printing a board by the pad. Your kills, my sentries\', and the sky\'s.', 'I am keeping count. So far it is not close.'],
+  },
+  board_lead: {
+    id: 'board_lead', face: 'surprised', title: 'THE BOARD', once: true,
+    lines: ['You are ahead of my sentries on the board.', 'Enjoy it. They do not sleep.'],
+  },
+  build_armory: {
+    id: 'build_armory', face: 'determined', title: 'COMMS · ISAO', once: true,
+    lines: ['You keep running dry out there.', 'Printing an armory behind the bays. Park on its pad and it reloads the rack.'],
+  },
+  build_farm: {
+    id: 'build_farm', face: 'focused', title: 'COMMS · ISAO', once: true,
+    lines: ['A colony that only eats what it kills is a hunting party.', 'Printing the greenhouse and the bio containers. They pay biomass every sector.'],
+  },
+  build_chips: {
+    id: 'build_chips', face: 'focused', title: 'COMMS · ISAO', once: true,
+    lines: ['Every guidance chip we own came down with us.', 'Printing the chip plant. Its first run goes to the uplink: SOL passes closer together.'],
+  },
+  build_launcher: {
+    id: 'build_launcher', face: 'determined', title: 'COMMS · ISAO', once: true,
+    lines: ['Printing the ARC-01 mass driver, pointed away from us.', 'When it stands I load SOL-88 on the sled and we put it up.'],
+  },
+  quiver_override: {
+    id: 'quiver_override', face: 'focused', title: 'MANUAL OVERRIDE', once: true,
+    lines: ['Its targeting chips are not ready either.', 'Manual override. Hold the reticle on it until the lock takes, then fire.'],
+  },
+  quiver_cleared: {
+    id: 'quiver_cleared', face: 'glee', title: 'COMMS · ISAO', once: true,
+    lines: ['Two for two.', 'The wall is yours: the strip cycles the mounts, MAP for the whole planet.'],
+  },
+  // after the Quiver: the study screen
+  // spoken in a close-up before the screen opens (owner, 2026-09-13): the face goes neutral, skeptical, then to work, one per line
+  vibration_study: {
+    id: 'vibration_study', face: 'neutral', faces: ['neutral', 'skeptical', 'determined'], title: 'COMMS · ISAO', once: true,
+    lines: ['They talk in vibration.', 'I started reverse-engineering it.', 'Need more compute.'],
+  },
+  // ISAO KEEPS BUILDING (V1, 2026-09-16): one line as each piece of the base starts printing (src/content/base-programme.js)
+  build_foundry: {
+    id: 'build_foundry', face: 'determined', title: 'COMMS · ISAO', once: true,
+    lines: ['AFR-01 is eating our rocket on its own.', 'Working the cut with the beam. Barrels first, then your gate.'],
+  },
+  build_gate: {
+    id: 'build_gate', face: 'determined', title: 'COMMS · ISAO', once: true,
+    lines: ['A Rotor on its own is a lookout.', 'Printing the gate, then the walls.'],
+  },
+  build_landing: {
+    id: 'build_landing', face: 'focused', title: 'COMMS · ISAO', once: true,
+    lines: ['The foundry is standing in the dirt.', 'Printing a pad under it.'],
+  },
+  // THE STÅLHEART BUILDS THE TANKS (owner, 2026-09-24): the goal of sector 0 said as the long print starts, and said again when it stands
+  stalheart_begins: {
+    id: 'stalheart_begins', face: 'determined', title: 'COMMS · ISAO', once: true,
+    lines: ['The pole has waited long enough. Printing the Stålheart.', 'It builds the tanks: when it stands, your MÖRK rolls out of it.'],
+  },
+  stalheart_stands: {
+    id: 'stalheart_stands', face: 'glee', title: 'COMMS · ISAO', once: true,
+    lines: ['The Stålheart stands. Here comes your MÖRK.', 'The ground is yours now. What we need is out there.'],
+  },
+  build_solar: {
+    id: 'build_solar', face: 'focused', title: 'COMMS · ISAO', once: true,
+    lines: ['The hull can drink from the sun.', 'Printing the array. Park on its pad for shield.'],
+  },
+  build_bays: {
+    id: 'build_bays', face: 'focused', title: 'COMMS · ISAO', once: true,
+    lines: ['Three hulls need a roof.', 'Printing the bays behind the Stålheart.'],
+  },
+  build_hugin: {
+    id: 'build_hugin', face: 'curious', title: 'COMMS · ISAO', once: true,
+    lines: ['The gunship could use a catcher on the ground.', 'Printing the HUGIN arm. Calls come sooner.'],
+  },
+  build_radar: {
+    id: 'build_radar', face: 'focused', title: 'COMMS · ISAO', once: true,
+    lines: ['SOL-82 needs someone to talk to.', 'Printing the radar.'],
+  },
+  build_assembly: {
+    id: 'build_assembly', face: 'determined', title: 'COMMS · ISAO', once: true,
+    lines: ['A lost hull is only parts.', 'Printing the assembly line to put them back.'],
+  },
+  // THE BACK GATE (owner, 2026-09-18): the surprise is held, and only then does he put a door on the mouth they came through.
+  build_back_gate: {
+    id: 'build_back_gate', face: 'determined', title: 'COMMS · ISAO', once: true,
+    lines: ['We held it. Now it gets a door.', 'Printing the back gate — mounts beside it.'],
+  },
+  // ISAO MENDS WHAT THE SWARM BROKE (V1, 2026-09-16): the first time he flies out to a broken gate or a blown-out wall between waves
+  isao_repair: {
+    id: 'isao_repair', face: 'determined', title: 'COMMS · ISAO', once: true,
+    lines: ['They took a piece out of the wall.', 'Printing it shut while the lane is quiet.'],
+  },
+  // after the analysis screen: the next objective, with the planet pulled back and the landing sites on the radar
+  rocket_sites: {
+    id: 'rocket_sites', face: 'focused', title: 'COMMS · ISAO', once: true,
+    lines: ['Compute needs material. The other rockets came down with cargo.', 'Take the tank to the landing sites. The triangles on the radar.'],
+  },
+  // the tenth kill: what the bodies are for
+  harvest_biomass: {
+    id: 'harvest_biomass', face: 'focused', title: 'COMMS · ISAO', once: true,
+    lines: ['Their biomass will do as a printing ingredient.', 'Keep them coming.'],
+  },
+
+  // 0 — the printer. Fires the first time an order goes on the book, which
+  // is the first moment the mechanic is a thing the player has DONE rather
+  // than a thing they have been told.
+  printer: {
+    id: 'printer',
+    face: 'focused',
+    title: 'HOW THIS WORKS',
+    once: true,
+    lines: [
+      'You have ordered a tower. I will build it. That is the arrangement.',
+      'I fly there. I hang over the cell. I print it out of rendered biomass, '
+        + 'one layer at a time, at the pace the material sets.',
+      'The pace is not negotiable. I have tried.',
+      'So: two clocks between you wanting a thing and having it. How far I '
+        + 'must fly, and how long it takes to set. Order accordingly.',
+    ],
+  },
+
+  // 2 — the relay. The single most under-signposted thing on the board: it
+  // sits at the far pole and nothing tells you it is there.
+  relay: {
+    id: 'relay',
+    face: 'surprised',
+    title: 'I SPOTTED A SERVER ROOM',
+    once: true,
+    lines: [
+      'Structure at the antipode. Powered. Not ours.',
+      'You should check it out — it might have interesting data for me to use.',
+      'Drive to it and I will get us in. Whatever is on it, I can print from.',
+    ],
+  },
+
+  // 3 — the ask. Fires when an order is refused for want of biomass, which
+  // is the moment the sentence is useful rather than merely charming.
+  biomass: {
+    id: 'biomass',
+    face: 'frustrated',
+    title: 'BRING ME MORE BIOMASS',
+    lines: [
+      'Empty. The reservoir is empty.',
+      'I cannot print what I am not given. Kill something and bring me what '
+        + 'is left of it.',
+      'Biomass! ISAO happy!',
+    ],
+  },
+
+  // the gates, said once, because "shoot it three times" is the shortest
+  // rule in the game and nobody has ever been told it
+  gates: {
+    id: 'gates',
+    face: 'determined',
+    title: 'THE GATES',
+    once: true,
+    lines: [
+      'The sector sends a fixed number of waves. When they are spent, no '
+        + 'more come.',
+      'The gates are not armoured. Three shells from close and one is down — '
+        + 'at any point, not only at the end.',
+      'But every gate you close early is a wave that never arrives. And the '
+        + 'biomass in that wave never arrives either.',
+      'Your call. I only build what you can pay for.',
+    ],
+  },
+
+  // THE EXPEDITIONS. Each landing site holds one tower's part behind a nest:
+  // the nest goes down, the tank drives in, the part comes home to the
+  // foundry, and Isao can print that tower. Three lines, one per step.
+  site_cleared: {
+    id: 'site_cleared',
+    face: 'surprised',
+    title: 'THE PART IS THERE',
+    lines: ['Nest cleared. I can see the part.', 'Drive in, grab it, bring it home to the foundry.'],
+  },
+  part_home: {
+    id: 'part_home',
+    face: 'glee',
+    title: 'PART HOME',
+    lines: ['That is the piece I was missing.', 'I can print it now. Pick a wall.'],
+  },
+  sites_revealed: {
+    id: 'sites_revealed',
+    face: 'surprised',
+    title: 'MORE LANDING SITES',
+    lines: ['New signals on the radar. More landers came down out there.', 'Same drill: clear the nest, bring the part home.'],
+  },
+
+  // SKIP TUTORIAL (owner, 2026-09-16): the first thing a friend who skipped the opening hears. Two lines: where they are,
+  // and what happens next. Everything he names is standing on the ground in front of them — the base, the two trophies at
+  // the landing, the rock behind the bays about to go.
+  skip_defence: {
+    id: 'skip_defence', face: 'determined', title: 'YOU ARE UP',
+    lines: ['Base is printed, and the Relay and the Mortar are ours.', 'They are already out on the lane. Build, and hold the gate.'],
+  },
+
+  // THE SECTORS (docs/superpowers/specs/2026-09-15-v1-session-design.md): Isao's two lines on each sector's brief. The lines
+  // are the content table's (src/content/sectors.js), so the brief and the debrief's "next sector" lines cannot drift.
+  ...Object.fromEntries(SECTORS.map((s) => [`sector_${s.n}`, { id: `sector_${s.n}`, face: s.n === 1 ? 'determined' : 'focused', title: `SECTOR ${s.n} · ${s.name}`, lines: [...s.brief] }])),
+  sector_hold: { id: 'sector_hold', face: 'focused', title: 'THE NEXT SECTOR', lines: [...SECTOR_HOLD.brief] },
+  sector_door: { id: 'sector_door', face: 'surprised', title: BACK_DOOR_SECTOR.name, lines: [...BACK_DOOR_SECTOR.brief] },
+  sector_both: { id: 'sector_both', face: 'determined', title: BOTH_WALLS_SECTOR.name, lines: [...BOTH_WALLS_SECTOR.brief] },
+  sector_next: { id: 'sector_next', face: 'determined', title: 'THE NEXT SECTOR', lines: [...SECTOR_GENERATOR.brief] },
+  sector_canyon_again: { id: 'sector_canyon_again', face: 'focused', title: SECTOR_CANYON_AGAIN.name, lines: [...SECTOR_CANYON_AGAIN.brief] },
+  // THE CANYON (sector 3, owner 2026-10-01: SOL-82's first use, "a satisfying use of its immense power"): the swarm rises at the far
+  // end of the canyon on the far side of the world, and SOL-82's first pass comes over it with the player in its seat
+  canyon_rises: {
+    id: 'canyon_rises', face: 'scan', title: 'THE FAR SIDE',
+    lines: ['The far side of the world: a canyon full of them. Hundreds.'],
+  },
+  canyon_again: {
+    id: 'canyon_again', face: 'focused', title: 'THE FAR SIDE · AGAIN',
+    lines: ['The canyon is full again, deeper than before. Same drill.'],
+  },
+  canyon_pass: {
+    id: 'canyon_pass', face: 'determined', title: 'SOL-82 · THE CANYON',
+    lines: ['SOL-82 is over the canyon. Hold the beam and walk it down: leave nothing to walk here.'],
+  },
+  // THE SIDE BREACH (sector 5, owner 2026-10-01: "it reveals that the walls can be breached"): the wall beside the gate is broken
+  side_breach: {
+    id: 'side_breach', face: 'surprised', title: 'THE WALL IS BREACHED',
+    lines: ['They came up beside the gate and through the wall!', 'The walls only stop what walks. Keep the sentries on that hole; I print it shut when it is quiet.'],
+  },
+  // the gate gives under the pile, and comes back
+  gate_broken: {
+    id: 'gate_broken', face: 'surprised', title: 'THE GATE IS DOWN',
+    lines: ['They pushed the gate in. They are inside the walls.', 'Hold them off it and I will mend it.'],
+  },
+  // WHAT IS HOLDING (owner, 2026-09-30: the gate's and the Stålheart's health "more explicit"): src/fx/integrity-hud.js says these
+  // as the numbers cross, once a run each (a mended gate may warn again)
+  gate_half: {
+    id: 'gate_half', face: 'focused', title: 'THE GATE · HALF',
+    lines: ['The gate is at half. That pile is chewing through it.', 'Thin them out before they are inside.'],
+  },
+  gate_failing: {
+    id: 'gate_failing', face: 'surprised', title: 'THE GATE IS FAILING',
+    lines: ['The gate is about to give!', 'Clear the front of it, now.'],
+  },
+  heart_hit: {
+    id: 'heart_hit', face: 'surprised', title: 'THE STÅLHEART IS HIT',
+    lines: ['One of them reached the Stålheart!', 'Every one that gets through takes a piece of it. Keep them off.'],
+  },
+  heart_half: {
+    id: 'heart_half', face: 'frustrated', title: 'THE STÅLHEART · HALF',
+    lines: ['The Stålheart is half gone.', 'If it falls, there is no colony. Hold the line.'],
+  },
+  heart_below_five: {
+    id: 'heart_below_five', face: 'angry', title: 'THE STÅLHEART · BELOW FIVE',
+    lines: ['GAME OVER MAN! GAME. OVER.'],   // the owner's lab 121 (2026-10-07), said at four hearts, once a run (src/fx/integrity-hud.js)
+  },
+  heart_critical: {
+    id: 'heart_critical', face: 'angry', title: 'THE STÅLHEART · CRITICAL',
+    lines: ['The Stålheart cannot take much more!', 'Nothing else gets through. Nothing.'],
+  },
+  gate_mended: {
+    id: 'gate_mended', face: 'glee', title: 'GATE MENDED',
+    lines: ['Gate is back on its hinges.', 'I keep a patch kit on it from now on.'],
+  },
+  // THE ARRAY STATION (V1 session design, section 3): the solar complex's pad
+  // feeds the shield from a reserve that refills once a sector. Said the first
+  // time it takes, and every time it runs dry.
+  array_charging: {
+    id: 'array_charging', face: 'focused', title: 'COMMS · ISAO', once: true,
+    lines: ['The solar array is feeding your shield. Sit still on the pad.', 'I keep the panels on the sun.'],
+  },
+  array_dry: {
+    id: 'array_dry', face: 'determined', title: 'COMMS · ISAO',
+    lines: ['The array is dry. That was all the sun it had stored.', 'I will have it charged for the next sector.'],
+  },
+  // THE SECTORS OWN THE BREACHES: the opening's sinkhole caves in as sector 1 begins, so every live breach is the sector's
+  old_breach: {
+    id: 'old_breach', face: 'focused', title: 'COMMS · ISAO',
+    lines: ['The first sinkhole caved in.', 'Two new ones are opening.'],
+  },
+  // THE BACK DOOR, FORESHADOWED (2026-09-24): the rock behind the bays rumbles a sector before it falls
+  back_rumble: {
+    id: 'back_rumble', face: 'scan', title: 'COMMS · ISAO', once: true,
+    lines: ['Did you feel that? Behind the bays.', 'That rock is not as solid as I thought.'],
+  },
+  back_crack: {
+    id: 'back_crack', face: 'surprised', title: 'COMMS · ISAO', once: true,
+    lines: ['It is cracking back there.', 'Whatever is out there wants in.'],
+  },
+  // THE SECOND FRONT: the mouth behind the bays falls, and the first wave through it is soft: a feast for the tank
+  back_door: {
+    id: 'back_door',
+    face: 'surprised',
+    title: 'THE BACK WALL',
+    lines: ['The back wall is down and they are pouring in.', 'Soft ones. Go through them!'],
+  },
+  // THE SCRAMBLE: the feast is down, the rest will not be soft, and the tank cannot be on both sides
+  back_scramble: {
+    id: 'back_scramble', face: 'determined', title: 'COMMS · ISAO',
+    lines: ['More are coming through the back and I cannot hold both sides.', 'Put turrets behind the bays. Now.'],
+  },
+};
+
+// HOW LONG A LINE HOLDS. Isao's running commentary used to wait for a tap —
+// per LINE, so a four-line beat was four taps over the board, and the operator's
+// note was exactly that: "always need to dismiss messages that cover the view."
+// A status report from a drone should not need acknowledging. Each line now
+// holds for as long as it takes to read and then moves on by itself.
+//
+// ~3.2 words/second is a deliberately unhurried 190wpm — these are spoken
+// lines (the fish-audio pass is coming) and a caption that outruns the voice
+// is worse than one that lingers. The floor stops a three-word line from
+// flashing past; the ceiling stops a long one from becoming a wall.
+export const BRIEF_WPS = 3.2;
+export const BRIEF_MIN = 2.4;   // seconds
+export const BRIEF_MAX = 7.0;
+export const BRIEF_LEAD = 0.9;  // fixed cost to notice the panel changed at all
+
+export function dwellFor(line) {
+  const words = String(line || '').trim().split(/\s+/).filter(Boolean).length;
+  if (!words) return BRIEF_MIN;
+  const secs = BRIEF_LEAD + words / BRIEF_WPS;
+  return Math.max(BRIEF_MIN, Math.min(BRIEF_MAX, secs));
+}
+
+// A LINE OF A BEAT: its own authored seconds where the beat is timed to a shot (`dwell`, per line; the arrival's close-up), and
+// the reading curve above for every other line
+export const lineDwell = (b, i) => b?.dwell?.[i] ?? dwellFor(b?.lines?.[i]);
+
+export const BRIEF_IDS = Object.keys(BRIEFS);
+export const brief = (id) => BRIEFS[id] || null;

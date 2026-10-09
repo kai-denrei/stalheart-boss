@@ -1,0 +1,322 @@
+// Presentation of the story base for both the lab and the game: instanced
+// island slabs with a shader-drawn 4 m grid, kit walls and gate, and the
+// landmark models on their islands. Consumes a base plan and a placer that
+// maps frame metres onto whichever sphere the host renders.
+import * as THREE from '../../vendor/three.module.js?v=25f0cc09';
+import { rasterFootprint } from '../domain/footprint.js?v=25f0cc09';
+import { GLTFLoader } from '../../vendor/GLTFLoader.js?v=25f0cc09';
+import { MeshoptDecoder } from '../../vendor/meshopt_decoder.module.js?v=25f0cc09';
+import { batchStaticAsset } from './asset-batching.js?v=25f0cc09';
+import { cloneSkinned } from './skinned-clone.js?v=25f0cc09';
+
+const loader = new GLTFLoader().setMeshoptDecoder(MeshoptDecoder);
+const cache = new Map();
+// no document means Node: the plan is still computed and reported, nothing is fetched
+const load = (url) => { if (typeof document === 'undefined') return Promise.resolve(null); if (!cache.has(url)) cache.set(url, loader.loadAsync(url)); return cache.get(url); };
+
+// world basis at a frame point: local +Y is the sphere normal, local +Z the frame heading
+export function basisAt(placer, x, z, heading) {
+  const o = placer.toWorld([x, 0, z]);
+  const up = placer.toWorld([x, 1, z]).sub(o).normalize();
+  const fwd = placer.toWorld([x + heading[0], 0, z + heading[1]]).sub(o).normalize();
+  const right = new THREE.Vector3().crossVectors(up, fwd).normalize();
+  const f2 = new THREE.Vector3().crossVectors(right, up).normalize();
+  return new THREE.Matrix4().makeBasis(right, up, f2).setPosition(o);
+}
+
+function gridShader(material) {
+  material.onBeforeCompile = (shader) => {
+    shader.vertexShader = shader.vertexShader
+      .replace('#include <common>', '#include <common>\nattribute vec2 aIsland; varying vec2 vIslandLocal;')
+      .replace('#include <begin_vertex>', '#include <begin_vertex>\nvIslandLocal = position.xz * aIsland / 40.0;');
+    shader.fragmentShader = shader.fragmentShader
+      .replace('#include <common>', '#include <common>\nvarying vec2 vIslandLocal;')
+      .replace('#include <color_fragment>', `#include <color_fragment>
+        vec2 g = abs(fract(vIslandLocal / 4.0 + 0.5) - 0.5) * 4.0;
+        float line = 1.0 - smoothstep(0.03, 0.09, min(g.x, g.y));
+        diffuseColor.rgb *= mix(1.0, 0.62, line);`);
+  };
+  material.customProgramCacheKey = () => 'story-island-grid';
+  return material;
+}
+
+// A door swing authored from the model itself: every DOOR/RAMP node of bay `from` turns from its own
+// (sealed) pose to the pose of its twin on bay `like`, which stands open. No numbers leave the asset.
+export function swingClip(root, from, like, seconds) {
+  const tracks = [];
+  root.traverse((o) => {
+    const m = /^(DOOR|RAMP)_(\d\d)/.exec(o.name); if (!m || m[2] !== from) return;
+    const twin = root.getObjectByName(o.name.replace(`_${from}`, `_${like}`)); if (!twin) return;
+    tracks.push(new THREE.QuaternionKeyframeTrack(`${o.name}.quaternion`, [0, seconds], [...o.quaternion.toArray(), ...twin.quaternion.toArray()]));
+  });
+  return new THREE.AnimationClip(`Doors_${from}`, seconds, tracks);
+}
+// loader names lose their dots (VEHICLE_02.001 becomes VEHICLE_02001): match the authored name as a prefix
+export const nodeNamed = (root, name) => { let hit = null; root.traverse((o) => { if (!hit && o.name.startsWith(name)) hit = o; }); return hit; };
+
+// `warm` (optional, src/fx/shader-warm.js): a landmark's near tier is handed to it as soon as it mounts, hidden, and
+// only becomes the tier to swap to once its programs are linked and first-used: the dive's pass over the base paid
+// 55 ms + 32 ms of links otherwise, and a tier shown on the frame it linked still paid 53-72 ms. The far tier stands a
+// few frames longer; the swap itself is unchanged.
+export function createStoryBase(scene, { plan, placer, metres = 1, kit, skip = [], sfx = null, warm = null, solid = new Set(), footCell = 0.5, footLip = 0.5 }) {
+  const solidV = new THREE.Vector3();
+  const group = new THREE.Group(); group.name = 'Story base'; scene.add(group);
+  const mixers = [], owned = new Set(), errors = [], bays = [], lod = [];
+  const records = new Map();   // every landmark by id, for the beats' hands (reveal, conceal, structure)
+  const patches = new Map();   // cell -> the meshes of a wall printed where the plan had rock (patchWall)
+  const dropped = new Set(), ZERO = new THREE.Matrix4().set(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);   // kit wall segments burned away (walls(), dropWall())
+  const own = (root) => root.traverse((o) => { if (o.geometry) owned.add(o.geometry); for (const m of [o.material].flat().filter(Boolean)) owned.add(m); });
+  // tilt (degrees about the local X, a wreck on its side) and lift (metres up, after the tilt) are for props that do not stand on their base
+  const place = (obj, x, z, y, heading, scale = 1, tilt = 0, lift = 0) => {
+    obj.matrixAutoUpdate = false;
+    obj.matrix.copy(basisAt(placer, x, z, heading)).multiply(new THREE.Matrix4().makeTranslation(0, (y + lift) * metres, 0)).multiply(new THREE.Matrix4().makeRotationX(tilt * Math.PI / 180)).multiply(new THREE.Matrix4().makeScale(scale * metres, scale * metres, scale * metres));
+    obj.matrixWorldNeedsUpdate = true;
+  };
+  const counts = { islands: plan.islands.length, walls: plan.walls.length, structures: 0, gate: !!plan.gate, gates: (plan.gates ?? (plan.gate ? [plan.gate] : [])).length };
+  // EVERY GATE ON THE BASE (2026-09-18), the front door first. Each opens when something friendly is inside its own radius and
+  // closes again behind it; each is built only once its print has reached the top. A plan with one gate behaves exactly as before.
+  const planGates = plan.gates ?? (plan.gate ? [plan.gate] : []);
+  const gates = planGates.map((g) => ({ id: g.id ?? 'gate', plan: g, mixer: null, action: null, duration: 0, position: null, radius: 0, open: false, want: false, t: 0, obj: null, built: !g.pending }));
+  const gate = gates[0] ?? { id: 'gate', plan: null, mixer: null, action: null, duration: 0, position: null, radius: 0, open: false, want: false, t: 0, obj: null, built: false };
+  // A GROWN BASE (src/domain/base-plan.js reach): pending pieces stand at zero scale, hidden, until Isao prints them. `k` is the print's
+  // progress, rising along the piece's local up, and it is remembered per piece, so a model still loading mounts at the height it reached
+  const grown = { islands: new Map(), walls: new Map(), structures: new Map(), gate: plan.gate?.pending ? 0 : 1, gates: gates.map((g) => (g.plan?.pending ? 0 : 1)) }, slabs = [], wallMeshes = [];
+  const kOf = (map, key, piece) => map.get(key) ?? (piece?.pending ? 0 : 1);
+  const rise = (k) => (k > 0 ? new THREE.Matrix4().makeScale(1, Math.max(0.02, Math.min(1, k)), 1) : new THREE.Matrix4().makeScale(0, 0, 0));
+  const islandMatrix = (i, src, k) => basisAt(placer, i.x, i.z, i.heading).multiply(new THREE.Matrix4().makeTranslation(0, i.top * metres, 0)).multiply(rise(k))
+    .multiply(new THREE.Matrix4().makeScale(i.w / kit.slabReference * metres, metres, i.d / kit.slabReference * metres)).multiply(src);
+  const wallMatrix = (w, src, k) => basisAt(placer, w.x, w.z, w.heading).multiply(new THREE.Matrix4().makeTranslation(0, w.y * metres, 0)).multiply(rise(k)).multiply(new THREE.Matrix4().makeScale(metres, metres, metres)).multiply(src);
+  const lift = (holder, k) => { holder.visible = k > 0; holder.matrix.copy(holder.userData.placed).multiply(rise(k)); holder.matrixWorldNeedsUpdate = true; };
+  function driveGate(g, dt) {
+    if (!g.action || !g.built) return;   // an unprinted gate plays no hydraulics
+    const before = g.t;
+    g.t = Math.max(0, Math.min(g.duration, g.t + (g.want ? dt : -dt)));
+    // HEARD BOTH WAYS (owner, 2026-09-30: "sound of the gate door opening and closing"): the hydraulics run on the opening and on the
+    // closing stroke, the slam lands at the bottom. The owner's hydraulics master is quiet (-31 dB mean), hence the lift
+    if (g.want && before === 0 && g.t > 0) sfx?.play('gate_hydraulics', { gain: 1.5 });
+    if (!g.want && before >= g.duration - 1e-6 && g.t < before) sfx?.play('gate_hydraulics', { gain: 1.5, rate: 0.92 });
+    if (!g.want && before > 0 && g.t === 0) sfx?.play('gate_slam');
+    if (!g.action.isRunning() && g.t > 0) { g.action.play(); }
+    g.action.paused = true; g.action.time = g.t; g.mixer.update(0);
+    g.open = g.t >= g.duration - 1e-6;
+  }
+  const ready = Promise.all([
+    plan.islands.length ? load(kit.slab).then((gltf) => {
+      if (!gltf) return;
+      const src = gltf.scene; src.updateMatrixWorld(true);
+      const sizes = new Float32Array(plan.islands.flatMap((i) => [i.w, i.d]));
+      src.traverse((o) => {
+        if (!o.isMesh) return;
+        const geo = o.geometry.clone(); geo.setAttribute('aIsland', new THREE.InstancedBufferAttribute(sizes, 2));
+        const mat = o.material.clone(); mat.polygonOffset = true; mat.polygonOffsetFactor = 1; mat.polygonOffsetUnits = 2; if (o.name === 'SLAB') gridShader(mat);
+        const inst = new THREE.InstancedMesh(geo, mat, plan.islands.length); inst.name = `island ${o.name}`;
+        const slab = { inst, src: o.matrixWorld.clone() }; slabs.push(slab);
+        plan.islands.forEach((i, k) => inst.setMatrixAt(k, islandMatrix(i, slab.src, kOf(grown.islands, k, i))));
+        inst.instanceMatrix.needsUpdate = true; inst.computeBoundingSphere(); inst.receiveShadow = true; owned.add(geo); owned.add(mat); group.add(inst);
+      });
+    }) : null,
+    plan.walls.length ? load(kit.wall).then((gltf) => {
+      if (!gltf) return;
+      const src = gltf.scene; src.updateMatrixWorld(true);
+      src.traverse((o) => {
+        if (!o.isMesh) return;
+        const inst = new THREE.InstancedMesh(o.geometry, o.material, plan.walls.length); inst.name = 'walls';
+        const wall = { inst, src: o.matrixWorld.clone() }; wallMeshes.push(wall);
+        plan.walls.forEach((w, k) => inst.setMatrixAt(k, wallMatrix(w, wall.src, kOf(grown.walls, k, w))));
+        inst.instanceMatrix.needsUpdate = true; inst.computeBoundingSphere(); inst.castShadow = true; group.add(inst);
+      });
+    }) : null,
+    ...gates.map((rec, n) => load(kit.gate).then((gltf) => {
+      if (!gltf) return;
+      const p = rec.plan, g = gltf.scene.clone(true); own(g); place(g, p.x, p.z, p.y, p.heading); g.name = n === 0 ? 'gate' : `gate ${rec.id}`; group.add(g);
+      rec.obj = g; g.userData.placed = g.matrix.clone(); if (p.pending) lift(g, grown.gates[n]);
+      const clip = gltf.animations.find((c) => c.name === 'Gate_Open');
+      if (clip) { rec.mixer = new THREE.AnimationMixer(g); rec.action = rec.mixer.clipAction(clip); rec.action.setLoop(THREE.LoopOnce, 1); rec.action.clampWhenFinished = true; rec.duration = clip.duration; }
+      rec.position = placer.toWorld([p.x, 0, p.z]); rec.radius = p.openRadius * metres;
+    })),
+    // A LANDMARK WITH A FAR TIER LOADS THAT FIRST and stands on it; the near tier is fetched only once the camera comes within
+    // kit.lod.metres, then the two swap by camera distance with hysteresis. Far away (the map, the orbit) the whole base is cheap.
+    ...plan.structures.filter((s) => !skip.includes(s.id)).map((s) => load(s.far ?? s.asset).then((gltf) => {
+      if (!gltf) return;
+      const holder = new THREE.Group(); place(holder, s.x, s.z, s.y, s.heading, s.scale, s.tilt ?? 0, s.lift ?? 0); group.add(holder);
+      if (s.shown != null && plan.stage < s.shown) holder.visible = false;   // a structure a beat reveals before the stage that shows it outright
+      holder.userData.placed = holder.matrix.clone(); if (s.pending) lift(holder, kOf(grown.structures, s.id, s));   // a grown base's landmark waits for its print
+      const root = mount(s, gltf, holder); records.set(s.id, s.far ? null : { holder, far: null, near: root });
+      // the files each tier came from ride on the record: a review switch that quietly loaded the shipped tiers should
+      // fail an assertion, and without them lod() could only say which tier is SHOWN, never which file it is
+      if (s.far) { const rec = { id: s.id, holder, far: root, near: null, loading: false, shown: 'far', files: { far: s.far, near: s.asset }, at: new THREE.Vector3().setFromMatrixPosition(holder.matrix) }; lod.push(rec); records.set(s.id, rec); }
+      counts.structures++;
+    }).catch((e) => errors.push(`${s.id}: ${e}`))),
+  ]);
+  // one tier of a landmark: batched or cloned, offset, hidden nodes, its clips, and for the bays their hooks
+  function mount(s, gltf, holder) {
+      // cloneSkinned, not clone(true): a rigged landmark (the foundry) keeps the CACHED glTF's bones otherwise, and
+      // nothing updates those, so its skin resolves into a huge sheet over the base instead of the model
+      const root = s.batch ? batchStaticAsset(gltf.scene, gltf.animations) : cloneSkinned(gltf.scene);
+      own(root); root.name = s.id;
+      for (const name of s.hide ?? []) { const n = root.getObjectByName(name); if (n) n.visible = false; }
+      holder.add(root); root.position.set(...s.offset);
+      const mixer = s.clips?.length || s.pose || s.bays ? new THREE.AnimationMixer(root) : null, held = {};
+      if (mixer) {
+        for (const clip of gltf.animations) {
+          const at = s.pose?.[clip.name];   // a clip held at a time: the bay's roll-out at 0 keeps every hull inside
+          if (!s.clips?.includes(clip.name) && at === undefined) continue;
+          const a = mixer.clipAction(clip);
+          if (s.hold || at !== undefined) { a.setLoop(THREE.LoopOnce, 1); a.clampWhenFinished = true; a.play(); a.time = at ?? clip.duration; a.paused = true; held[clip.name] = a; }
+          else a.play();
+        }
+        mixer.update(0); mixers.push(mixer);
+        root.userData.mixer = mixer; root.userData.actions = Object.fromEntries(gltf.animations.map((c) => [c.name, mixer.existingAction(c) ?? held[c.name] ?? null]).filter(([, a]) => a));   // a beat drives a landmark's clips by name
+      }
+      // the bays hand the game their parked hull (hidden once it has driven out), a one-shot door opening, and
+      // for the bay with an authored roll-out its clip length and a scrub: the game's deploy drives the clock
+      for (const b of s.bays ?? []) {
+        let opened = false;
+        const out = b.rollout ? held[b.rollout] : null;
+        bays.push({ n: b.n, vehicle: b.vehicle ? nodeNamed(root, b.vehicle) : null, rollout: out ? out.getClip().duration : 0, open() {
+          if (opened || !b.doors) return; opened = true;
+          const a = mixer.clipAction(swingClip(root, b.doors, b.like, kit.bay?.doorSeconds ?? 2.4)); a.setLoop(THREE.LoopOnce, 1); a.clampWhenFinished = true; a.play();
+        }, roll(t) { if (out) { out.paused = true; out.time = Math.max(0, Math.min(out.getClip().duration, t)); mixer.update(0); } } });
+      }
+      bays.sort((a, b) => a.n - b.n);
+      return root;
+  }
+  const lodSwitch = (kit.lod?.metres ?? 150) * metres, lodHyst = kit.lod?.hysteresis ?? 1.3;
+  function driveLod(eye) {
+    if (!eye) return;
+    for (const l of lod) {
+      const d = l.at.distanceTo(eye); l.d = d;
+      if (!l.holder.visible) continue;   // a hidden landmark (not yet printed, not yet revealed) never fetches its near tier
+      if (!l.near && !l.loading && d < lodSwitch * lodHyst) { l.loading = true; const s = plan.structures.find((x) => x.id === l.id); load(s.asset).then((gltf) => { if (!gltf) return; const near = mount(s, gltf, l.holder); near.visible = false; return Promise.resolve(warm?.compile(near)).then(() => { l.near = near; }); }).catch((e) => errors.push(`${l.id} near: ${e}`)); }
+      if (!l.near) continue;
+      const near = l.shown === 'near' ? d < lodSwitch * lodHyst : d < lodSwitch;
+      l.shown = near ? 'near' : 'far'; l.near.visible = near; l.far.visible = !near;
+    }
+  }
+  return {
+    ready, group, counts, errors,
+    tick(dt, near = null, force = null, eye = null) {
+      for (const m of mixers) m.update(dt);
+      driveLod(eye);
+      for (const g of gates) {
+        const f = force && typeof force === 'object' ? force[g.id] : force;   // `force` may be one flag for every door or a flag per gate id
+        if (g.position) g.want = f ?? (Array.isArray(near) && Math.hypot(near[0] - g.position.x, near[1] - g.position.y, near[2] - g.position.z) < g.radius);
+        driveGate(g, dt);
+      }
+    },
+    // THE HULL WAITS FOR THE DOOR (owner, 2026-10-03: "we auto-slow down in front of a gate to let the open animation play"; and "we can go
+    // through when half-open"): gateEase(p) is the hull's pace share near a built gate still opening, from `floor` at the door to 1 at
+    // `reach` door-radii; gateShut(p) is true inside the door's own span while it is less than `clear` open
+    gateEase(p, { reach = 0.9, floor = 0.12 } = {}) {
+      let k = 1;
+      for (const g of gates) { if (!g.built || !g.position || !g.duration || g.open) continue; const d = g.position.distanceTo(solidV.set(p[0], p[1], p[2])), r = g.radius * reach; if (d < r) k = Math.min(k, Math.max(floor + (1 - floor) * (g.t / g.duration), floor + (1 - floor) * Math.max(0, (d - r * 0.35) / (r * 0.65)))); }
+      return k;
+    },
+    gateShut(p, { span = 6, clear = 0.85 } = {}) {
+      for (const g of gates) if (g.built && g.position && g.duration && g.t / g.duration < clear && g.position.distanceTo(solidV.set(p[0], p[1], p[2])) < span * metres) return true;
+      return false;
+    },
+    gate: (id = null) => { const g = id ? gates.find((x) => x.id === id) : gate; return g ? { present: !!g.action, built: g.built, open: g.open, want: g.want, t: +g.t.toFixed(2) } : null; },
+    // a closed, standing door, by id: the pathfinder asks this once per enemy per step, so it allocates nothing
+    gateSealed: (id) => { const g = gates.find((x) => x.id === id); return !!g && g.built && !g.open; },
+    // every door, front first: the sector loop wears each one down and the HUD prints them side by side
+    gateList: () => gates.map((g) => ({ id: g.id, cells: g.plan?.cells ?? [], present: !!g.action, built: g.built, open: g.open, want: g.want, t: +g.t.toFixed(2) })),
+    // Isao's print, piece by piece (k 0..1): a slab or a wall rises along its local up, a landmark scales up from its plot, and the gate
+    // counts as built (it opens for the tank, it holds the swarm) once it reaches the top
+    growIsland: (id, k) => { const n = plan.islands.findIndex((i) => i.id === id); if (n < 0) return; grown.islands.set(n, k); for (const s of slabs) { s.inst.setMatrixAt(n, islandMatrix(plan.islands[n], s.src, k)); s.inst.instanceMatrix.needsUpdate = true; s.inst.computeBoundingSphere(); } },
+    growWall: (n, k) => { if (!plan.walls[n]) return; grown.walls.set(n, k); for (const s of wallMeshes) { s.inst.setMatrixAt(n, wallMatrix(plan.walls[n], s.src, k)); s.inst.instanceMatrix.needsUpdate = true; s.inst.computeBoundingSphere(); } },
+    grow: (id, k) => { grown.structures.set(id, k); const r = records.get(id); if (r) lift(r.holder, k); },
+    growGate: (k, id = null) => { const n = id ? gates.findIndex((x) => x.id === id) : 0, g = gates[n]; if (!g) return; grown.gates[n] = k; if (n === 0) grown.gate = k; if (g.obj) lift(g.obj, k); if (k >= 1) g.built = true; },
+    // a beat's hand on a landmark: show or hide it, or take its shown tier and clip actions
+    reveal: (id) => { const r = records.get(id); if (r) r.holder.visible = true; },
+    conceal: (id) => { const r = records.get(id); if (r) r.holder.visible = false; },
+    structure: (id) => { const r = records.get(id); return r ? { holder: r.holder, root: r.near ?? r.far, near: r.near, far: r.far } : null; },
+    bays: () => bays,
+    // THE KIT WALLS for a weapon that can burn them (SOL-82): each standing segment's index, its lattice cell (-1 on the
+    // gate's own cell) and where it stands on the host's sphere, halfway up; drop(k) takes segment k out of every walls
+    // mesh for good. anchors(): the cells under structures and sockets, which nothing breaks.
+    walls: () => plan.walls.map((w, k) => ({ index: k, cell: w.cell, pos: placer.toWorld([w.x, (w.y + kit.wallMetres / 2), w.z]).toArray() })).filter((w) => !dropped.has(w.index)),
+    dropWall: (k) => { if (dropped.has(k)) return; dropped.add(k); for (const o of group.children) if (o.isInstancedMesh && o.name === 'walls') { o.setMatrixAt(k, ZERO); o.instanceMatrix.needsUpdate = true; } },
+    // ...and the segment Isao prints back (src/domain/repair-orders.js), by its LATTICE CELL, which is what the repair rule and the
+    // dungeon tags speak in. Undoes a drop as well as a plain hole: a burned segment is standing again once he has stood over it.
+    // every kit segment standing on a lattice cell (several dress one cell): the side breach drops them, Isao's repair raises them all
+    // the lattice cells of the segments burned away whose cell still stands (SOL burns a segment and leaves the rock): Isao's repairs
+    droppedCells: () => [...new Set([...dropped].map((k) => plan.walls[k].cell).filter((c) => c >= 0))],
+    dropWallsAt: (cell) => { let n = 0; plan.walls.forEach((w, k) => { if (w.cell === cell && !dropped.has(k)) { n++; for (const o of group.children) if (o.isInstancedMesh && o.name === 'walls') { o.setMatrixAt(k, ZERO); o.instanceMatrix.needsUpdate = true; } dropped.add(k); } }); return n; },
+    // A WALL PRINTED INTO A HOLE THAT WAS ROCK (owner, 2026-10-05: "when the player opens a breach with a tank shell and Isao repairs it,
+    // Isao should create a wall or gate, not a rock"), AS A RUN ON THE RIM'S LINE (owner, 2026-10-06: "edge cases still fail: a few lone
+    // segments in an open area"; one copied segment per cell, turned to the nearest front wall's heading, stood alone at odd headings in
+    // the middle of a 10 m cell). The rim is the circle round the base's centre (the frame's pole) through the cell: segments are laid
+    // along that circle `wallLength` apart, each facing the centre, and the ones `owns(world point)` puts on this cell are printed, so
+    // neighbouring holes continue one another's run. None on it: false, and the caller leaves the cell rock
+    patchWall: (cell, at, owns = () => true) => {
+      if (!wallMeshes.length || patches.has(cell)) return false;
+      const pole = placer.toWorld([0, 0, 0]).normalize(), T = new THREE.Vector3(...at).normalize(), ring = Math.sqrt(Math.max(0, 1 - Math.min(1, pole.dot(T) ** 2)));
+      if (ring < 1e-6) return false;
+      const step = kit.wallLength * metres / ring, made = [];   // radians round the pole between neighbouring segments on this circle
+      for (let k = -3; k <= 3; k++) {
+        const p = T.clone().applyAxisAngle(pole, k * step), up = p.clone().normalize(), inward = pole.clone().addScaledVector(up, -pole.dot(up)).normalize();
+        if (!owns(p)) continue;
+        const right = new THREE.Vector3().crossVectors(up, inward).normalize(), fwd = new THREE.Vector3().crossVectors(right, up).normalize();
+        const basis = new THREE.Matrix4().makeBasis(right, up, fwd).setPosition(p).multiply(rise(1)).multiply(new THREE.Matrix4().makeScale(metres, metres, metres));
+        for (const s of wallMeshes) { const m = new THREE.Mesh(s.inst.geometry, s.inst.material); m.matrixAutoUpdate = false; m.name = 'wall patch'; m.castShadow = true; m.matrix.copy(basis).multiply(s.src); group.add(m); made.push(m); }
+      }
+      if (made.length) patches.set(cell, made);
+      return made.length > 0;
+    },
+    // THE BACK DOOR'S SHOULDERS (owner, 2026-10-06: "a gate only, no walls at its sides closing the area flush with the natural rock"):
+    // segments on the door's own line, spaced and turned as the front rim's are beside the front gate, out from the door's plot; the ones
+    // `owns(world point)` puts on this cell are printed. None on it: false, and the caller leaves the cell rock
+    patchLine: (cell, id, owns) => {
+      const g = planGates.find((p) => (p.id ?? 'gate') === id);
+      if (!g || !wallMeshes.length || patches.has(cell)) return false;
+      const ax = -g.heading[1], az = g.heading[0], made = [];
+      for (const side of [-1, 1]) for (let k = 0; k < 12; k++) {
+        const d = side * (kit.gatePlot[0] / 2 + kit.wallLength * (k + 0.5)), w = { x: g.x + ax * d, z: g.z + az * d, y: 0, heading: g.heading };
+        if (!owns(placer.toWorld([w.x, 0, w.z]))) continue;
+        for (const s of wallMeshes) { const m = new THREE.Mesh(s.inst.geometry, s.inst.material); m.matrixAutoUpdate = false; m.name = 'wall patch'; m.castShadow = true; m.matrix.copy(wallMatrix(w, s.src, 1)); group.add(m); made.push(m); }
+      }
+      if (made.length) patches.set(cell, made);
+      return made.length > 0;
+    },
+    patchedCells: () => [...patches.keys()],
+    patchedSegments: (cell) => (patches.get(cell)?.length ?? 0) / Math.max(1, wallMeshes.length),   // kit segments printed on a patched cell
+    restoreWall: (cell) => { let n = 0; plan.walls.forEach((w, k) => { if (w.cell !== cell) return; n++; dropped.delete(k); grown.walls.set(k, 1); for (const s of wallMeshes) { s.inst.setMatrixAt(k, wallMatrix(plan.walls[k], s.src, 1)); s.inst.instanceMatrix.needsUpdate = true; s.inst.computeBoundingSphere(); } }); return n > 0; },
+    // THE BUILDINGS ARE SOLID TO THE HULL (owner, 2026-10-03: "some structures in the base allow the Tank to pass through them, they should
+    // feel solid (except those where the tank can go under like the Stalheart)"). `solid` (src/content/base-layout.js SOLID_STRUCTURES) names
+    // the ones that stop it; each one standing and shown keeps a footprint measured once off its model in its holder's own frame: the
+    // box of the meshes that reach down to its ground (an arm or a gantry overhead is not a wall). solidAt(p, pad): a unit point within
+    // `pad` scene units of one
+    solidAt(p, pad = 0) {
+      for (const st of plan.structures) {
+        if (!solid.has(st.id) || kOf(grown.structures, st.id, st) < 1) continue;
+        const r = records.get(st.id), root = r && (r.near ?? r.far); if (!root || r.holder.visible === false) continue;
+        let f = r.foot;
+        if (!f || f.root !== root) {
+          // THE FOOTPRINT FROM THE GEOMETRY (owner, 2026-10-07: "collision ON, but not so much that its entire perimeter becomes an
+          // invisible wall"; src/domain/footprint.js): the triangles within `reach` of the structure's ground, in the holder's own frame,
+          // rasterised on `footCell`-metre cells; a lander's body and legs block where they stand, the lane beside them stays open, and
+          // the solar array's panels block round its open charging pad. A triangle that never rises `footLip` metres over the ground is
+          // the ground (a slab, a pad), not a wall. Once a tier, off whichever tier stands
+          r.holder.updateWorldMatrix(true, true);
+          const inv = new THREE.Matrix4().copy(r.holder.matrixWorld).invert(), scale = r.holder.matrixWorld.getMaxScaleOnAxis(), reach = 2.5 * metres / scale, lip = footLip * metres / scale, tris = [], v = new THREE.Vector3(), m = new THREE.Matrix4();
+          let low = Infinity;
+          root.traverse((o) => { if (!o.isMesh || !o.geometry?.attributes.position) return; m.multiplyMatrices(inv, o.matrixWorld); const pos = o.geometry.attributes.position, idx = o.geometry.index; const n = idx ? idx.count : pos.count, at = (k) => { v.fromBufferAttribute(pos, idx ? idx.getX(k) : k).applyMatrix4(m); return [v.x, v.y, v.z]; };
+            for (let k = 0; k + 2 < n; k += 3) { const a = at(k), b = at(k + 1), c = at(k + 2), y = Math.min(a[1], b[1], c[1]); if (y < low) low = y; tris.push(y, Math.max(a[1], b[1], c[1]), a[0], a[2], b[0], b[2], c[0], c[2]); } });
+          const xz = []; for (let k = 0; k < tris.length; k += 8) if (tris[k] <= low + reach && tris[k + 1] >= low + lip) xz.push(tris[k + 2], tris[k + 3], tris[k + 4], tris[k + 5], tris[k + 6], tris[k + 7]);
+          f = r.foot = { root, inv, scale, grid: rasterFootprint(xz, footCell * metres / scale) };
+        }
+        const q = solidV.set(p[0], p[1], p[2]).applyMatrix4(f.inv);
+        if (f.grid.hit(q.x, q.z, pad / f.scale)) return st.id;
+      }
+      return null;
+    },
+    // THE BUILDINGS A WEAPON CAN BURN (SOL-82): every landmark that is standing, printed and shown, with where it stands on the
+    // host's sphere. A structure still pending its print, or already concealed by a burn, is not there to be hit.
+    standing: () => plan.structures.filter((s) => (kOf(grown.structures, s.id, s)) >= 1 && records.get(s.id)?.holder?.visible !== false)
+      .map((s) => ({ id: s.id, cell: s.cell, pos: placer.toWorld([s.x, s.y ?? 0, s.z]).toArray() })),
+    anchors: () => new Set([...plan.structures, ...(plan.sockets || [])].map((s) => s.cell).filter((c) => Number.isInteger(c) && c >= 0)),
+    lod: () => lod.map((l) => ({ id: l.id, shown: l.shown, nearLoaded: !!l.near, visible: l.holder.visible, files: l.files, metres: l.d === undefined ? null : +(l.d / metres).toFixed(0) })),
+    dispose() { for (const m of mixers) m.stopAllAction(); gate.mixer?.stopAllAction(); for (const r of owned) r.dispose(); scene.remove(group); },
+  };
+}

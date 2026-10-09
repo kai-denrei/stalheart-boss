@@ -1,0 +1,758 @@
+# Roadmap
+
+Where this is going, and what is knowingly unfinished. `DEVLOG.md` is the
+backward view — what happened, generated from `docs/log/entries/`. This is the
+forward one, and unlike the devlog most of it is written by hand, because a
+roadmap is meant to be argued with and a generator cannot argue. If an item
+here looks wrong, it probably is.
+
+Three labels, used throughout:
+
+- **Committed** — decided, scoped, and next in line.
+- **Candidate** — wanted, but the design call has not been made.
+- **Question** — we do not know the right answer, and guessing would cost more than asking.
+
+One section is generated: [Open in the log](#open-in-the-log) is rebuilt from
+the entries by `npm run log -- render`, and `npm run check` fails if it drifted.
+Everything else is prose.
+
+---
+
+## Now
+
+Owner-directed sequence, unchanged: **architecture → visual/sound labs and
+clean exports → UX → playability**. `docs/STATE.md` holds the detail.
+
+| area | state |
+| --- | --- |
+| `src/td-tab.js` extraction | active. 13,505 lines against a 13,505 budget — it can only go down (13,858 on 2026-09-15; the V1 rounds moved the debrief, expeditions, site ring, dive shot and briefing cards out) |
+| FX package workflow | active. Weapons and audio done; beams, materials, portals and cinematics pending |
+| Enemy representation | **unblocked** — see below. Rendering and simulation both measured, neither is the constraint |
+| Heavy Gunship | built and in play: called from its meter, thermal always, creeping toward the busiest breach, rotary, Bofors and the MK-9 mini nuke that drops and ignites (`2026-09-16-gunship-mini-nuke-built`) |
+| Asset tiers | MÖRK LOW and the distance proxy pinned at `771e166` for review — `labs.html?unit=mork-low#units`. Shipped hull unchanged |
+| Isao-Birudorōn | production alpha upstream; review before integration |
+| Landmark LODs | Stålheart's LOD1/LOD2 pinned for game-camera review at `index.html?world=story&stage=6&landmarks=candidate#td`. HUGIN held back: its booster can no longer be hidden |
+| HUD, tutorial, off-screen threats | the V1 session teaches the tank once (controls card), sheds the campaign chrome in the story, and offers SKIP TUTORIAL into the back-door fight; off-screen threats still only on the radar |
+| Difficulty, economy, progression | first ramp shipped 2026-09-16 (a bare page had been given the sparse deep-link threat); every sector number is a first cut, and the 400-enemy waves are being profiled to hold 60 fps |
+
+## Committed
+
+### The V1 session (built overnight 2026-09-16, playtested the same day)
+
+Two ways in. A bare `index.html` plays start to finish: Isao works the foundry and prints the base, the Rotor and the Quiver are piloted once, sectors of two breaches follow the handover (close early and forfeit, hold and collect), the swarm wears the gate down and Isao mends it between waves, sector 2 cracks the back door and brings SOL-82 online, and every sector ends on the animated debrief. `index.html?skip=defence#td` (SKIP TUTORIAL) is the same run opened at the finished base with the Relay and the Mortar earned and the back door as the first fight. Design: `docs/superpowers/specs/2026-09-15-v1-session-design.md`; the 2026-09-16 entries record each piece, the playtest rounds that followed (input, difficulty, the grey sheet, the walls, the legacy hull, the Quiver's scope, the foundry beat, the MK-9, the skip) and their evidence.
+
+**Committed next:** two calls the owner has to make. Whether to trim the foundry beat's +14.5 s on the opening; and what to do about ~48 fps at 400+ concurrent enemies (406 alive at p50 20.9 ms in sector 3's biggest wave), which is being profiled before anything is optimised. The sector numbers are still a first cut, now climbing into the hundreds; more playtest decides the rest.
+
+**Candidate:** a second gate for the back door; Isao animating the gate repair and flying to the dropped crate; SOL-82 burning every building rather than only the Stålheart, and its scorch cleared on NEW RUN; the gunship seat's first-use hitch; the MK-9's ignition fireball at close range, and its one-release-per-pass seen end to end; touch labels on the pad; a clipping-plane print.
+
+**Question:** does closing a breach early read as a choice in play, or do players always hold (or always close)? One playtest can answer it.
+
+### The enemy representation decision — now an aesthetic call
+
+Measured 2026-09-13, twice, and both measurements overturned an assumption.
+
+```
+rendering   2000 static clouds   1.6 ms      2000 merged   <0.1 ms, ONE draw call
+            2000 jelly bodies    2.0 ms      (5.6M triangles)
+simulation  505 concurrent in the real game: locked 60fps, GPU flat
+            (7.3 ms at 12 enemies, 7.4 ms at 504)
+```
+
+Dot count is not a cost axis. Per-instance colour is free, so the BJJ belt
+ladder scales to thousands at no charge. Resolution LOD by crowd size buys
+nothing on this class of GPU. **Pick the representation on how it looks.**
+
+Two caveats that are not yet closed: concurrency above ~505 was never reached
+(`waveMult` caps at 20 and enemies die as fast as they spawn), and all of it is
+an M4. `labs.html#swarm` exists to answer both — run the lane and read the card.
+
+### The phage
+
+Diagnosed, not fixed. It is the white belt and the wave-1 swarm, and it is the
+only one of the three authored creatures without its own movement treatment —
+`waveJelly` is a blob squash-stretch applied to a rigid lunar lander. The
+jellyfish already has `swimWave`.
+
+Two ways out, both small. Give it a lander gait of its own; or swap the
+silhouette in `DOT_SHAPES`, which is **one line** and touches no story beat,
+cinematic, lore entry or test, because the type id stays `phage` — the
+precedent is `scoutufo`, already a bacterium, and `saucer`, already a `ufo`.
+The owner's instinct is a white amoeba at wave 1.
+
+### Heavy Gunship
+
+The spec is written and the decision recorded. KORP/GS01, in orbit, low on
+fuel: it cannot manoeuvre or land, so it passes on a fixed schedule and the
+player is a gunner, never a pilot. The 105mm **is** the orbital strike, which
+finally gives `src/strike.js` a home; `strike.js` itself is not modified.
+Collateral is soft warning only. Nothing is added to `td-tab.js`.
+
+Blocked on nothing. Its damage and blast numbers cannot be tuned until swarm
+scale above 500 is known, but the mount can be built before that.
+
+### Asset tiers: Full / Game-ready / Static distance
+
+Every asset family ships three ways, and they are three different jobs:
+
+| tier | job | loads when |
+| --- | --- | --- |
+| **Full** | close shots, cinematics, recording | chosen by hand |
+| **Game-ready** | anything articulated, damaged or fighting | near, and always before combat |
+| **Static distance** | background, bays, orbital views, loading | far, intact, and still |
+
+D0–D3 are **damage states**, a second axis — never read a LOD off a D-number.
+The distance proxy exists for D0 only.
+
+Landmarks already work this way through the `asset` / `far` pair in
+`src/content/base-layout.js`, which prefers an owner-authored far tier over a
+derived one. This convention names what that schema was already doing.
+
+### MÖRK moves to its LOW tier
+
+Upstream moved from our pin `8de41ec` to `771e166`, and the tank is now a
+tier × damage matrix. **We ship the tier the page calls "Original detail"** —
+our pin predates a game tier existing.
+
+| `771e166` | KB | triangles | prims | nodes | clips | callouts |
+| --- | --- | --- | --- | --- | --- | --- |
+| original d0 | 984 | 18,596 | 44 | 109 | 6 | 142 |
+| **LOW d0** | **448** | **5,208** | 43 | **109** | **6** | **142, byte-identical** |
+| LOD2 d0 | 218 | 1,706 | 1 | 41 | 0 | 0 |
+
+Measured through `prepareMork` itself — the scope `test/mork.mjs` pins — the
+game tier is **24,196 triangles in 50 batches and LOW is 6,742 in 49**: 3.59×
+less vertex work at the same draw-call count. The GLB table above counts unique
+geometry and is not the number a re-pin uses.
+
+LOW is **verified as a drop-in**: every node and clip `src/mork.js` reaches for
+resolves in it, checked through three.js's name sanitization (the raw node
+`"Long cannon barrel"` is what the heat sleeve hangs on). The only node lost
+since our pin is `Turret cheek armor`, which nothing references.
+
+Acceptance is test-enforced, which is the point. `test/mork.mjs` pins
+`triangles === 24196` and the browser test pins `batches === 50`, so the swap
+cannot land silently — those get re-pinned to what `mork.js` itself measures
+on LOW. The heat-sleeve and articulation tests must pass **unchanged**. Concretely: `24196` becomes `6742`, and `batches === 50` becomes `49`.
+
+**Status, 2026-09-14.** Pinned in `docs/hover-tank-tiers-assets.lock.json` and
+guarded by `scripts/assets.mjs`, which now demands all 17 sockets and six clips
+of LOW rather than of the shipped file alone. Reviewable beside the shipped hull
+at `labs.html?unit=mork-low#units` and `?unit=mork#units`. As built units in the
+viewer the two render `1.14 × 0.59 × 2.60` — the same size, so the swap will not
+pop. **What remains is a look by eye** at the lift, recoil and plasma sweep, then
+the re-pin and a decision entry to make it the default.
+
+Measured as built units with the viewer's pose frozen (`?yaw=0&sweep=0`), they
+agree to the fourth decimal: the shipped hull `1.1405 × 0.5905 × 2.6000`, LOW
+`1.1404 × 0.5900 × 2.6000`. Packing for the release removes 114 triangles from
+the hull and 104 from LOW, and the release acceptance run holds both to per-tier
+floors taken from those numbers.
+
+Needs its own lock at `771e166`: the existing lock pins the shipped model at
+`8de41ec`, and one lock is one revision. Then a visual and animation pass by
+eye, and a decision entry.
+
+### The distance proxy in the bays and the orbital views
+
+The owner's proposal, and it is the asset's written policy: *"Recurring intact
+tank displays in containers and other background views. Static D0 proxy only;
+swap to the articulated game tier before combat or visible damage."*
+
+- **Classic base bays** — `td-tab.js` builds a full hull at 0.32 scale inside
+  each container and never animates it. The proxy is a pure win: three hulls,
+  one primitive each.
+- **Story bays** — already on `mork_container_low_diorama.glb`, whose own
+  `Tank_Roll_Out` clip plays the roll-out; the game hands over at the end
+  (*"the authored hull hides, ours stands where it stopped"*). Nothing to change.
+- **Orbital and gunship views** — the tank is a few pixels, cold geometry in
+  thermal. Exactly what a proxy is for.
+
+The rule that keeps it honest: LOD2 has no barrel and no clips, so it can never
+be the hull the player drives. Swap before anything moves, fires or takes damage.
+
+Built in the viewer with the pose frozen, the proxy's footprint matches the hull
+to 0.01% — `1.1404 × 2.6000` against `1.1405 × 2.6000`. Only its height differs,
+by the authored 6.5% raised under Question. Packing removes nothing from it: it
+is one draw with no degenerate triangles to lose.
+
+### Isao-Birudorōn — review before integration
+
+*"Flying construction specialist that assembles the Stålheart Terraformer before
+it fabricates MÖRK vehicles."* ビルドローン — build drone. The author marks it
+**production alpha, for art-direction and gameplay review**, so it goes into a
+review surface first, not the game.
+
+| tier | KB | triangles | prims | clips |
+| --- | --- | --- | --- | --- |
+| LOD0 detailed | 3,284 | 45,780 | 99 | 17 |
+| **LOD1 game** | 1,534 | **17,264** | 49 | 17 |
+| LOD2 distance | 173 | 1,800 | 1 | 0 |
+
+LOD1 lands under its own 25,000-triangle target. Clips: `Hover_Idle`,
+`Rotor_Cycle`, `Tool_Fabricate`, and fourteen `Emotion_*` performances, each an
+LED glyph **with** a body or tool gesture — *"the screen alone is not the
+performance."*
+
+It must swap by **projected screen size**, not by metres: the manifest says
+outright not to assume the landmark 150 m threshold. That is new machinery; the
+landmark system only knows distance.
+
+### Stålheart's runtime LODs — in the game camera, for review
+
+The asset owner's roadmap (`jelaludo/SentryTowers_A6`, `docs/ROADMAP.md`) lists
+the HUGIN and Stålheart landmark LODs as **candidate delivered, review active**,
+with what remains being *game-camera, swap-threshold and reference-phone review*.
+That remaining work is this repository's. Stålheart is now set up for it.
+
+| `c827eda` | triangles | draws | plain | packed in the release |
+| --- | --- | --- | --- | --- |
+| shipped game tier | 40,506 | 105 | 4.1 MB | 555.5 KB |
+| **LOD1 candidate** | **7,342** | **10** | 329 KB | **57.7 KB** |
+| **LOD2 candidate** | **2,173** | **1** | 76 KB | **17.9 KB** |
+
+Every figure agrees with the author's own README, counted the same way. The
+budgets are read from the pinned `manifest-lods.json` rather than retyped, and
+`scripts/assets.mjs` fails the check if a tier exceeds them. LOD1 keeps
+`Terraforming_Cycle` on the nine machine controls — gantry, carriage, tool lift
+and J1–J6 — and each still **carries geometry**, not just a name. The forty
+flexible-feed segments are dropped by design.
+
+**How to review it.** `?landmarks=candidate` turns the pinned candidates into
+the structure through one mapping (`withLandmarkTiers` in
+`src/content/base-layout.js`) and one parser, used by both the game world and
+the story lab, so they cannot disagree about which files are under review:
+
+- game camera: `index.html?world=story&stage=6&landmarks=candidate#td`
+- story lab: `labs.html?stage=6&landmarks=candidate#story`
+
+Without the switch, a plain story link still loads the shipped tiers; both
+browser suites assert that. The review itself — swap distance, projected size,
+and frame rate on the reference phone — is yours to do by eye.
+
+## Candidate
+
+### Large swarms above 500 concurrent
+
+The ceiling was not found. The stock harness cannot force accumulation while
+enemies remain mortal, and `freezeEnemies` removes the very simulation being
+measured. Wanted: a way to hold a large live population without turning the
+game off. Note that `docs/STATE.md`'s 5,334 bodies at wave 75 are **scheduled
+across a wave, not concurrent** — concurrency is what costs.
+
+**Update, 2026-10-05.** Found, with `--crowd-probe` (held crowds on the story
+planet, M4): 500 bodies 16.7 ms a frame, 1,000 18 ms, 2,000 25.5 ms, 3,000
+34.8 ms. The enemies' own CPU is 2.6 ms of that at 3,000; the rest is drawing,
+about 2.5 draw calls a body (7,679 at 3,000). The owner played sector 6 at
+7 fps ("but FUN!") and sector 9 at 3 fps. Two answers are in: the **crowd cap**
+(`src/domain/crowd-cap.js`: the bodies alive at once follow the measured frame,
+a flood waits in the queue) and the **squads** (below). The lasting one is the
+next section.
+
+### Batched drawing of the crowd
+
+Wanted now (it was "worth doing when a weaker device says so": the owner's
+machine said so). One draw call per creature type instead of one per body: the
+dot clouds of a type merged into one `Points` buffer (or instanced), each
+body's place, scale, wobble phase, emergence and hit flash carried as
+per-instance attributes the dot shader reads. Squads stay as they are and
+batch the same way. Expected: the 7,679 calls at 3,000 bodies down to tens, so
+the crowd cap rises on every machine and the squads' 5x multiplies on top.
+
+The care it needs: everything that reaches for `e.obj` today (the hit flash,
+the slow tint, the scale step, disposal, the bloom groups, the breach
+emergence, the rotation idles) moves to the buffer's slot for that body.
+
+### Squads: what comes after the first cut
+
+Built 2026-10-05 (owner: "one unit 'representing' 5 or so ... if hit by a
+tank, it registers as 5 kills"): a wave with 150 soft bodies or more at one
+breach keeps 50 single and packs the rest five to an entity (`SQUADS` in
+`src/content/sectors.js`). Open:
+
+- **The numbers.** `over`, `single`, `size` and `dens` were set by eye on one
+  machine. A larger `size` (10) for the floods of the late sectors, and
+  squads in sector 0's construction waves and the canyon's far swarm, are the
+  obvious next turns.
+- **The look.** A squad is five copies in a loose file, shedding one per
+  body's worth of damage. Whether it should read as a squad (a formation, a
+  marker) or pass as five bodies is the owner's call.
+- **The walk.** A squad moves as one: it cannot split around a wall or a
+  ram. Splitting a squad into singles when it is hit by a ram, or when the
+  crowd cap has room, would hide that.
+- **The scores.** One contact rams five, so RAM ×N climbs five times as fast
+  in a squad wave. The ram milestones and the bests may want their own tiers.
+- **Single-target weapons.** A tower shot or a shell takes one member; the
+  gunship's rounds, strikes and SOL take all five (`SQUADS.area`). The tank's
+  shell splash and the Lancer's pierce are worth a look in play.
+
+### The autopilot is steering, and half of it is already pure
+
+AUTO carries six directives — `wander` / `avoid` / `ram` / `conserve` / `home`
+/ `portal` — and the firing half is already a pure module (`src/autofire.js`,
+"rules, not effects"). The steering half is not: the goal vectors and the
+solid-tier flee vector live inline in `src/td-tab.js` around line 3055.
+
+That asymmetry is the next obvious extraction, and it is the rare one that
+*helps* the ratchet: `td-tab.js` sits at 17,608 against a 17,609 budget that
+can only go down, so moving ~60 lines of pure vector rules into
+`src/domain/autopilot.js` pays the budget rather than spending it. It also
+makes the gunship's GET TO SAFETY beat a call rather than a copy.
+
+Not urgent. Worth doing the next time anything touches auto mode.
+
+### Type checking without TypeScript files
+
+Discussed 2026-10-05 (a friend's view: plain JavaScript is a mistake, it should be TypeScript). Not
+scheduled; we might do it later.
+
+The recommendation: **TypeScript checking without TypeScript files.** Keep `.js` and the no-build
+setup, but add `// @ts-check` with JSDoc type comments, and run `tsc --noEmit` as an extra check,
+like `npm run architecture`.
+
+- Most of the type safety (wrong arguments, misspelt fields, calling something that isn't a
+  function) with no change to how the game runs or deploys: the browser still loads the source as
+  it is, and the Node tests still import the same files.
+- Adoptable gradually: the pure layers (`src/domain`, `src/core`, `src/content`) first, since they
+  are small and have clear inputs and outputs, then `src/fx`, leaving `src/td-tab.js` for last.
+- Projects like Preact and webpack's own source take this approach.
+
+Why not convert to `.ts`: it adds a compile step between editing and running, to the build, the
+tests and the browser loading, and means typing hundreds of loosely shaped host objects: weeks of
+churn mid-playtest. Types would help here (this session's `lit?.()` on `false` and the `headWas`
+name clash are the kind they catch), but conversion is not the cheapest way to get them.
+
+First step, when it is picked up: `@ts-check` on `src/domain` as a trial, to see what it catches.
+
+## Question
+
+- **Does the shader wobble read well on the phage?** It deforms now; whether it
+  looks right is a judgement nobody has made. `labs.html#swarm`, body: phage.
+- **Is the jelly the small-enemy idiom?** 2000 of them cost 2.0 ms, so the
+  answer is no longer "too expensive". It is now a taste question.
+- **What does a weak device do?** Every number in this file is an M4.
+  `docs/STATE.md` has listed device performance review as open throughout.
+- **Where does simulation actually break?** Rendering is settled; pathing,
+  collision and the hard-core proximity sensor at swarm counts are not.
+- **Which emotion system is the source of truth?** The game has
+  `src/emotions.js`: twenty-one 8×8 faces ported verbatim from the Braille lab,
+  with a rule never to hand-edit them. The new Isao carries fourteen *original*
+  8×6 LED glyphs, each paired with a body gesture. Twelve names overlap. The
+  model adds `working` and `alarm`; the game's `awe`, `scared`, `frustrated`,
+  `focused`, `unimpressed`, `suspicious`, `blink`, `scan` and `grin` have no
+  performance. The sharp end: **`focused` is Isao's most-used face in the
+  briefs, six times, and the model has no `focused`** — `working` is the
+  nearest. And `emotion()` falls back to `neutral` without a word, so an
+  unmapped face would go blank silently rather than fail.
+- **Is the MÖRK proxy's lower height deliberate?** In its own metres it stands
+  2.819 against the hull's 3.016 — 6.6% shorter, base about 2 cm higher and top
+  about 18 cm lower — while its footprint matches to 0.1%. That reads like a
+  parked hull settled for a bay, which would be right for where it goes. If it is
+  not deliberate, the fix belongs in the A6 source rather than here. The test
+  pins the measured value instead of widening a tolerance, so either answer is a
+  one-line change.
+- **Can HUGIN's booster be hidden again?** The story places the launchpad with
+  `hide: ['REUSABLE_BOOSTER']`, and `docs/ASSET-COLLABORATION.md` names that part
+  as one the game may hide. At `c827eda` both LOD1 and LOD2 keep the node, but it
+  carries **no triangles** — against 6,572 in the shipped model — while 21.9% and
+  24.5% of their triangles sit inside the booster's box, against 1.6% of the
+  shipped model once the booster is removed. The geometry was merged into
+  consolidated static meshes, so the hide would do nothing and the launchpad would
+  show a booster the story deliberately removes. HUGIN is held back until a
+  revision restores the booster as its own geometry; its motion is otherwise
+  fine, with all six catcher joints still moving geometry.
+- **Which swap threshold?** The game swaps landmark tiers at 150 m and back past
+  **195 m** (`KIT.lod.hysteresis` is a ×1.3 multiplier). The author's provisional
+  contract is 150 m with **20 m** of hysteresis. One of them should move, and the
+  game camera and reference phone are what should decide which.
+
+---
+
+## Open in the log
+
+<!-- deban:open:start -->
+
+_Generated from `docs/log/entries/` by `npm run log -- render`. 62 open: `proposed` means the decision is not made, `observed` means it was seen and not yet resolved._
+
+### Open: the Nih-Dairia kit is GPL-3.0 and Stalheart's public repository has no licence; the owner decides before any push
+
+`2026-10-08-nih-dairia-kit-is-gpl-licence-open` · issue · **observed**
+
+Found while revising the boss lab spec (docs/superpowers/specs/2026-10-08-nih-dairia-boss-lab-design.md). The creature comes from the owner's lab-creatures project (/Users/minikai/Dev/Jelly-Baby, f2a4f89), which 'preserves the upstream GPL-3.0 license' of Jelly Baby by scottstts; its kit export carries the LICENSE file. Stalheart's repository (public, kai-denrei/stalheart, source on GitHub and the build on Pages) has no licence file and no licence field in package.json; docs/ASSETS.md licenses only the SentryTowers_A6 assets.
+
+### A tank stopped under an arm, inside the skin, stalls the kit's cradle for ever
+
+`2026-10-08-nih-dairia-cradle-stalls-under-an-arm` · issue · **observed**
+
+Found in the boss lab's final review (2026-10-08-nih-dairia-boss-lab-final-review-fixes). The port rule is kit unchanged, so it was not fixed there.
+
+### The Nih-Dairia boss lab: port the creature kit into the project's stack and prove it on the story planet, chasing the tank, before any boss
+
+`2026-10-08-nih-dairia-boss-lab-design` · decision · **proposed**
+
+Owner, 2026-10-08: "create a lab to test integrating this as a boss ... it would be quite large." Chosen in the brainstorm: two to four cells across (20 to 40 m), the kit's jelly look ported, the creature on the sphere chasing the tank, ported as a separate lab experiment first. The source is the owner's lab-creatures project (/Users/minikai/Dev/Jelly-Baby) at f2a4f89 through its own kit export, plus the b3cfb52 pursuit fix.
+
+### Explore mesh2motion (https://app.mesh2motion.org/) as a source of boss animation
+
+`2026-10-08-mesh2motion-as-a-boss-animation-source` · experiment · **proposed**
+
+Owner, 2026-10-08, while opening the Nih-Dairia boss lab (docs/superpowers/specs/2026-10-08-nih-dairia-boss-lab-design.md): "make a separate note to explore this project as a potential source for animation of bosses. https://app.mesh2motion.org/". Not part of the soft-body lab: the Nih-Dairia creature animates itself through physics and a gait; this is a separate route for bosses that are rigged meshes.
+
+### A boss mode: the tank draws the huge creature off the base and escapes its tentacles while the gunship and SOL take aim
+
+`2026-10-08-boss-mode-idea-draw-it-off-the-base` · decision · **proposed**
+
+Owner, 2026-10-08, opening the Nih-Dairia boss lab: "Idea for a game mode; the creature is huge, doesn't move too fast. The tank must draw its attention away from the base, moving around and escaping its tentacles, while the Gunship and the SOL take aim at it. goal: stress of avoiding tentacles, relying on the team, death from above." The creature is the owner's lab-creatures Nih-Dairia (soft-body, a spider gait, two probing arms, prey capture: unheld prey that stays within reach is cradled, covered and absorbed).
+
+### The boss fight prototype in the Nih-Dairia lab: the game's drive, the tank's cannon, the gunship's Bofors and SOL-88 from above with red landing rings, a health bar and the round, so a creature avoided for thirty seconds dies
+
+`2026-10-08-boss-fight-prototype-design` · decision · **proposed**
+
+Owner, 2026-10-08, after seeing the boss lab: "add the tank driving feel from the main game ... allows the tank to shoot ... health bar for the boss ... the gunship and SOL fire from above. goal of the player is to avoid where the shots will be landing (they show as red laser spots on the ground). goal: if the player avoid the creature for about 30 seconds the friendlies should have landed enough hits to kill it." Decided in the brainstorm: the friendlies take the health down, the tank provokes and does not wound; caught means a lost hull and the round resets; a red spot shows about 1.5 s before its shot lands; the v1 death is gravity 10 and every movement stopped (owner).
+
+### Next round of the boss fight (owner, 2026-10-08): every gunship strike including the nuke, SOL and the gunship's second weapon firing in front of the creature to protect the tank, a creature afraid of the laser and big blasts, obstacles in the arena, and the open question of walls
+
+`2026-10-08-boss-fight-next-round-airborne-friendlies-protect-the-tank` · decision · **proposed**
+
+Owner, 2026-10-08, after the fight prototype's final review, to be built in a fresh session on Opus 5.5: "1) include all strikes from the gunship, including the nuke. 2) the SOL fires for longer, and tries to shoot in front of the creature, to protect the tank. 3) the creature is afraid the SOL laser and large explosions, it avoids them. 4) gunship also shoots #2 weapons in front. goal: airborne friendlies try to protect the tank. the user is just in survival mode. 5) we add some obstacles in the arena. 6) we need to figure out how to have the creature deal with walls." The prototype as it stands: docs/superpowers/specs/2026-10-08-boss-fight-prototype-design.md and 2026-10-08-boss-fight-prototype-reviewed-and-fixed; the lab at labs.html#boss, the rules in src/domain/boss-fight.js, the shooters in src/labs/boss/friendlies.js, the creature's behaviour in src/fx/nih-dairia/behavior.js (a port of the owner's lab-creatures, pinned at f2a4f89 plus the b3cfb52 pursuit fix).
+
+### Open: the wave card draws its 96 px sprite with a second WebGL context
+
+`2026-10-07-wave-card-second-renderer` · issue · **observed**
+
+Found by the refactor run's ownership map (2026-10-07). src/fx/wave-card.js (until then src/td-tab.js) renders the NEW THREAT banner's spinning enemy with its own THREE.WebGLRenderer (alpha, preserveDrawingBuffer for the glossary's toDataURL snapshot), made by the controller at start-up (src/td-tab.js, the waveCard literal's makeRenderer). That is a second GL context on every device, phones included, for a 96 px canvas.
+
+### The welcome page's hover sound cannot start before the first click, tap or key: the browser's rule, not the page's
+
+`2026-10-07-the-welcome-hover-sound-waits-for-the-first-gesture` · issue · **observed**
+
+Owner, 2026-10-07: 'landing page pocket guide: sound fx and visual on hover; the sound only triggers after something has been clicked the first time. It should trigger right away on hovering.'
+
+### A gameplay change to investigate: the player starts with a truck that rams the weak and lures the hard-core to the defence; the tank with its cannon is unlocked later; the plasma thrusters after that
+
+`2026-10-07-start-with-the-truck-unlock-the-tank-then-the-thrusters` · decision · **proposed**
+
+Owner, 2026-10-07 (twenty-eighth notes, 6): 'thinking about a gameplay change: a) player starts with the truck (jelaludo.github.io/SentryTowers_A6/settlement-industry/) or a similar smaller machine; it can RAM weak enemies, but must avoid the hard-core ones and lure them to the defense. b) later stage we unlock the tank with the cannon. c) later we add the plasma thrusters. Just file as roadmap for now. We first investigate the implication for fps and gameplay.'
+
+### Open: sector-run hands the debrief h.beep, which td-tab never supplies, so the debrief's page ticks are silent
+
+`2026-10-07-sector-debrief-beep-never-supplied` · issue · **observed**
+
+Found by test/host-contracts.mjs on 2026-10-07. src/fx/sector-run.js builds the debrief with { play: h.sfx, beep: h.beep, ... }; td-tab's createSectorRun literal has no beep member and no beep name in scope. src/fx/sector-debrief.js returns early from its tick when beep is falsy (line 344) and falls back from play to beep elsewhere.
+
+### Open: gameHooks (about 170 members) is the only reader of many controller lets, which is what keeps them lets
+
+`2026-10-07-gamehooks-keeps-lets-lets` · issue · **observed**
+
+Found by the refactor run (2026-10-07). The acceptance adapter window.__stalheartTest (src/td-tab.js gameHooks, about 250 lines) reads and writes controller state directly; for many lets it is their only reader outside their owner's block, so every extraction had to keep the let in td-tab and hand it to the new module as a getter with a setter. The wave clock's seven lets (wave, waveActive, waveAge, waveIn, waveCharge, warnBeat, interClock) are the clearest case and the reason the run did not move the clock.
+
+### Reflection to design against: an enemy that makes the tank's shell meaningful
+
+`2026-10-07-an-enemy-that-makes-the-tank-shell-meaningful` · decision · **proposed**
+
+Owner, 2026-10-07 (twenty-eighth notes, 7): 'reflection; we need some enemy to make the tank shell feel meaningful.' Today the hull rams fodder for free, the dangerous tier hurts to touch, and the shells (the armory's pad, plasma dry) have no body that only a shell answers.
+
+### Session sync after the twenty-sixth notes and THE ENDING: lessons, and the owner's twenty-seventh notes queued for the next session
+
+`2026-10-06-session-sync-twenty-sixth-notes-and-the-twenty-seventh-queued` · issue · **observed**
+
+Nine commits since the last sync (7bc7ef58..78b55764): the back gate's shoulders, the welcome's keywords sound, the view back after the study, SOL's first aim, and THE ENDING in five steps (2026-10-06-the-ending-plan-and-the-run-recap). The owner played the build and closes the session ('sync, commit and push, then we will /clear'), handing over the next round's notes.
+
+### Session sync after the twenty-seventh notes: ten notes shipped, lessons, and what is left open
+
+`2026-10-06-session-sync-twenty-seventh-notes-shipped` · issue · **observed**
+
+The owner's twenty-seventh notes (queued in 2026-10-06-session-sync-twenty-sixth-notes-and-the-twenty-seventh-queued), worked on Fable in one session on main, one commit a note, and pushed on his word ('keep going, then sync and push when the round is done').
+
+### Session sync after the twenty-fifth notes: three lessons from the round, and the owner's twenty-sixth notes queued for the next session
+
+`2026-10-06-session-sync-twenty-fifth-notes-and-the-twenty-sixth-queued` · issue · **observed**
+
+One commit since the last sync (c07ad1a1, recorded in 2026-10-05-twenty-fifth-notes-quiver-horizon-calm-blind-climb-drop-off-pad). The owner closes the session ('sync, commit and push, then we will /clear') and hands over the next round's notes to work on after the clear.
+
+### Session close after the twenty-seventh round and the black hole: main 29f74569, everything pushed; what the owner has not yet seen
+
+`2026-10-06-session-close-twenty-seventh-round-and-the-black-hole` · issue · **observed**
+
+The owner closes the session ('sync, commit and push, then we will /clear') after the twenty-seventh notes (2026-10-06-session-sync-twenty-seventh-notes-shipped) and the accretion disk (2026-10-06-the-black-hole-not-far).
+
+### Session close: the black hole placed low behind the Stålheart (main dd834e1c); queued, a day/night cycle with a mini-HUD of it, and the owner's own better celestial objects
+
+`2026-10-06-session-close-the-black-hole-placed-and-the-day-night-queued` · issue · **observed**
+
+The owner, 2026-10-06, after three placements of the accretion disk (2026-10-06-the-black-hole-low-behind-the-stalheart and dd834e1c: a fiftieth of a radian up, 28 across, 40 out): 'sync, commit and push, then we will /clear. we need a bit night/day cycle and mini-hud viz of it too. and I will work on better celestial objects. the current galaxies are a bit underwhelming.'
+
+### Type checking without TypeScript files: @ts-check and JSDoc with tsc --noEmit, adopted layer by layer, rather than converting to .ts
+
+`2026-10-05-type-checking-without-typescript-files` · decision · **proposed**
+
+Owner, 2026-10-05: a friend says using JavaScript was a terrible decision and the project should be TypeScript. Discussed; the owner asked to keep the recommendation as a roadmap item that might be implemented in the future.
+
+### Session sync after the sixteenth to twenty-fourth notes, Isao's voice, the welcome and the squads: what broke along the way, why, and what the owner has not yet seen in play
+
+`2026-10-05-session-sync-rounds-sixteen-to-twenty-four-voice-welcome-squads` · issue · **observed**
+
+Seventeen commits on main since d85c8cf0, each round shipped live on the owner's standing OK for the playtest loop and recorded in its own entry: Isao's recorded voice (seiyu_voice drops, the Workshop's voice tab, the calibration bench, the unvoiced script), the opening's sound and its cuts, the FLIR pass, rounds sixteen to twenty-four, the intro straight to the action, the welcome guide, the crowd cap and the squads.
+
+### Batched drawing of the crowd: one draw call per creature type, the per-body effects as instance attributes, as the lasting cure for the crowd's frame rate
+
+`2026-10-05-batched-drawing-of-the-crowd` · decision · **proposed**
+
+Measured 2026-10-05 (--crowd-probe, M4): 3,000 bodies cost 34.8 ms a frame, 2.6 ms of it the enemies' CPU and most of the rest about 2.5 draw calls a body (7,679). The owner played sector 6 at 7 fps and sector 9 at 3 fps. The crowd cap and the squads are in; the owner agreed batching is the real fix and asked for it on the roadmap.
+
+### Session sync after the tenth to fifteenth notes: what broke along the way, why, and what no one has seen yet, before the session restarts
+
+`2026-10-03-session-sync-rounds-ten-to-fifteen-lessons-and-open-checks` · issue · **observed**
+
+Six owner rounds shipped on 2026-10-03 (2026-10-03-tenth-notes-boards-walls-handover-tiers-debrief-repairs-paint-pad through 2026-10-03-fifteenth-notes-fodder-print-looks-garage-mission-strike-dive; main up to b472b4a1, with docs/ISAO-VOICE-LINES.md). The owner playtested to sector 7 at a constant 50 fps and asked for much more fodder. The session restarts with a cleared context before the next round.
+
+### Proposed: two scoreboards (the player's and Isao's: kills, biomass gathered, biomass used), Isao's one missile that takes his kills from 0 to 1 with a celebration, and a livery Isao can print once he finds dyes in the biomass
+
+`2026-10-02-two-boards-isaos-missile-and-the-dies` · decision · **proposed**
+
+Owner, 2026-10-02: "Scoreboards, our asset team developed these (A6 planet-scoreboards). we can give them feedback for a better board. I am even thinking a friendly scoreboard of one for Isao and one for the player... perhaps kills/biomass accumulated and biomass used. Isao would be zero kills and high usage, player would be high kills and zero construction... then at some point we could have Isao drop ONE missile somewhere with high effort and his score triumphantly moving from zero to 1 to a huge celebration." And: "for customization options, we also played with a lab/metal, some elements could be re-used. Diegetic explanation; as Isao processes the biomass of the enemies for printing material, he discovers that he can also extract extra dyes and offers the player to pimp his ride."
+
+### Session sync after the seventh to ninth notes: what broke along the way, why, and what is still unseen before tomorrow's playtests
+
+`2026-10-02-session-sync-rounds-seven-to-nine-lessons-and-open-checks` · issue · **observed**
+
+Three owner rounds shipped on 2026-10-02 (2026-10-02-seventh-notes-day-contacts-repair-lance-tempo-seats-beacons-nuke, 2026-10-02-eighth-notes-study-lull-sentry-rules-vanishing-towers, 2026-10-02-ninth-notes-friendly-fire-sol-countdown-tracers-stampede-walls-burns-needle-one-source; main 94876435, 9771edc5, 5f5e1a11). The owner starts new rounds of playtesting and fine-tuning tomorrow. This records the failures found on the way and the checks no suite has made.
+
+### The owner's fourth playtest notes and the A6 workshop survey: a second canyon pass as the penultimate wave, SOL-82 automated later (SOL-88 launched by the ARC-01), the Units lab to show SOL and the gunship with wireframes, and new base buildings (chip plant, greenhouse, bio containers, an armory where the tank refills shells)
+
+`2026-10-01-playtest-four-notes-and-a6-survey` · decision · **proposed**
+
+Owner, 2026-10-01 evening, from the live build 7a54aaaf: "1) SOL first pass; very satisfying, let's add a second round of that as the penultimate wave. 2) very satisfying to see the remaining nuclear explosion strikes from the ground after they happened from the gunship or the SOL smoke. 3) it could be a time-unlock that once in a while SOL does targeted strikes to help us, automated. first 2 are manual, later ISAO calibrated it and it can do it auto. 4) UNITS are not showing all the units; we should see SOL, and the Gunship. also show Wireframe for all units. 5) https://jelaludo.github.io/SentryTowers_A6/ has new units for us. a) a better SOL to replace the current one (sol88) OR perhaps the story is that this one is automated... and replaces the old one, we launch it with the orbital launcher. we also have a CHIP Manufacturing unit, a Greenhouse, and bio containers to make the base more fully developed. We also need an armory/missile factory of sorts, and a spot for the tank to replenish its shells. check all the resources, plan the next move." Then: "before the next round of changes, git commit and git push these, and perhaps a /deban sync and starting a fresh session."
+
+### Three choices in the tutorial chapters were taken as defaults while the owner was away and wait for his word: six chapters (the first wave its own), SKIP ALL to the back door, and the STÅLHEART chapter half printed with the player in the Quiver's optic
+
+`2026-09-25-tutorial-chapter-defaults-for-the-owner` · decision · **proposed**
+
+The owner asked the skip control for two options (2026-09-25: "1) Showing 1/x in tutorial, where we are, skip to next phase. 2) skip entire tutorial"). The investigation of the tutorial left three product choices open. He was away and the session was to continue, so the build took a default for each (2026-09-25-tutorial-chapters, live since ce0a8252). They are recorded as proposed because he has not confirmed them.
+
+### Architecture review of the pacing branch: td-tab held its line budget by packing 5.1 KB into existing long lines; two duplications repaired, the rest queued for the refactoring round
+
+`2026-09-25-pacing-architecture-review` · issue · **observed**
+
+Project skill architecture-review over git diff main...pacing before building on it, and before the refactoring round the owner asked for on 2026-09-25 ("launch a round of refactoring; simplifying and making the code base more robust").
+
+### In Safari everything renders off to the right: the gunship HUD is miscalibrated against where it shoots and the tank sits right of centre
+
+`2026-09-24-safari-everything-right` · issue · **observed**
+
+Owner, 2026-09-24, Safari on macOS, build f1fd12b1 (after the seat contract and the eviction fix shipped): 'Gunship still has miscalibrated hud vs where it shoots. Tank still appears on the right of the screen instead of center. Everything off to the right.' The seat-contract work (2026-09-23-seat-changes-robust) measured zero offset in headless Chrome at dpr 1 and 2 and could not drive Safari; it fixed a real but different bug.
+
+### Cycling tank > gunship > SOL-82 > tank leaves the tank off to the right and the gunship aiming right of centre
+
+`2026-09-23-seat-changes-must-be-robust` · issue · **observed**
+
+Owner, 2026-09-23, playing build 91ba6850 in Safari on macOS: 'Something wrong with camera changes from tank to gunship to orbital. When it cycles back to Tank, the view is changed and the tank is off to the right side. Shooting with the Gunship is not centered, it appears everything is aiming more to the right, not the center. Explore the view changes, let's fix it and make it more robust, since changing views to control the game is a large part of it.' Seat switching is the game's core verb (docs/FUNMAP.md).
+
+### On a phone the seats say less: one readout, no hint box, the shell out of the way
+
+`2026-09-19-phone-seats-say-less` · decision · **proposed**
+
+Owner, 2026-09-19, from a phone screenshot of the gunship seat (build 992874ee): 'phone only needs some attention besides optimization; too much info on screen.' The frame shows the hint box (four lines), the full MK-9 telemetry plate, a status ribbon (MK-9 · MINI NUKE · IMPACT · SAFING) overprinting that plate, the PLAYTEST shell over ON STATION, the gun buttons, the radar, and a ground-truth monitor clipped at the right edge — all on 390 px. The 2026-09-18 phone pass proved no control is covered; it did not reduce what is shown.
+
+### A short punchy intro: the core loop as a scripted in-engine montage ending on Isao asking 'Are you ready?'
+
+`2026-09-18-intro-montage-spec` · decision · **proposed**
+
+Owner, 2026-09-18, for a later session: 'short core loop' — a punchy intro montage. Shot list in order, with the owner's durations: tank wireframe (2 s) >> tank ramming hordes (2 s); tremor and the swarm emerging (3 s); the gunship firing all three weapons, finishing with the MK-9 mini nuke, its explosion seen from the ground view; the Quiver PoV rocket launch; the Rotor PoV; 'TOO MANY ENEMIES!'; the orbital laser in wireframe (2 s); SOL-82 obliterating enemies from orbit; cut to the same obliteration from the ground view; cut to Isao asking 'Are you ready?'.
+
+### After the Quiver: normal waves, free tower building, and the occasional gunship and orbital laser run
+
+`2026-09-15-after-the-quiver-open-build-waves-and-runs` · decision · **proposed**
+
+Owner, 2026-09-15: after the Quiver, unlock normal waves and total liberty for the player (still beta) to build towers, with normal waves popping like a proper tower defence, and the occasional Gunship and Orbital Laser runs.
+
+### The Quiver's rocket leaves the frame during its pop-out, hover, drop and ignite
+
+`2026-09-15-quiver-rocket-leaves-frame` · issue · **observed**
+
+Owner playtest note, 2026-09-15: when the Quiver shoots its rocket, the rocket should never get out of frame during the initial pop-out, hover, drop and ignite motion.
+
+### Gunship lab: the orbital laser's screen for the gunship, through its FLIR optic, with short share links
+
+`2026-09-15-gunship-lab` · experiment · **proposed**
+
+Owner, 2026-09-15: the gunship's ground truth of its impacts reads too small. Of two options, (a) make the gunship's impact read larger in its current seat, or (b) give the gunship the orbital laser's layout (full-screen real-world view, a round scope at 0.44 of the width with reticles and telemetry) while keeping its thermal FLIR look, the owner chose (b), built as a lab. Both the gunship and orbital laser labs must be easy to deep link, to share with friends for feedback.
+
+### The laser lab's browser step no longer cuts a wall, and it failed before SOL-82 moved the scope
+
+`2026-09-16-laser-lab-step-fails-before-sol82` · issue · **observed**
+
+While bringing SOL-82 into the game, `node scripts/browser-test.mjs --laser` stopped at "the beam cut the wall (0)" after the burn step. The move of the lab's scope and inset HUD into src/fx was a suspect.
+
+### Isao works the recycling foundry with his beam before he prints the gate
+
+`2026-09-16-isao-tends-the-foundry` · decision · **proposed**
+
+Owner, playtesting the live V1 on 2026-09-16: 'before building the gates (nice, works), Isao should use his beam to work on the recycle factory we first see.' Today the AFR-01 seed foundry cuts the SH02 into feedstock on its own clock (src/content/foundry.js, src/domain/foundry.js, src/fx/foundry-fx.js) and Isao never touches it; his print beam only appears over a tower socket or a base-programme step (src/printpath.js, src/fx/base-print.js, the build programme in src/content/base-programme.js).
+
+### The gunship's third weapon fires a real missile that drops, ignites after two seconds and rides down
+
+`2026-09-16-gunship-mini-nuke-drops-then-ignites` · decision · **proposed**
+
+Owner, playtesting the live build on 2026-09-16: 'the Gunship should fire an actual missile, one of our large ones, we see it drop, then it ignites after 2 seconds and heads down (for Weapon #3 mini nuke)'. Today the gunship's third gun is the 105 (src/domain/gunship.js, src/content/gunship.js), which lands as a strike without a modelled round in flight; the game already owns a drop-then-ignite flight profile for the Quiver's TALON (src/domain/missile-flight.js: eject, coast, fall, ignite, climb) and modelled missiles in src/missiles.js / src/missile-presentation.js.
+
+### Idea: the Mortar can lay suppressing fire on a chosen area to scare and herd the swarm
+
+`2026-09-15-mortar-suppressing-fire-idea` · decision · **proposed**
+
+Owner, 2026-09-15, while brainstorming the orbital laser: the impact scare (src/domain/impact-scare.js, confirmed in play: small rounds herd the swarm) suggests a deliberate use. The Mortar today picks its own targets on the normal wave ladder.
+
+### The lab's explosions land at the gunship, strike, tank shell and TALON impacts; FLIR thermal; the white amoeba leads the first wave
+
+`2026-09-14-explosions-flir-amoeba-landed` · change · **observed**
+
+Owner: the new explosion effects in ~/Dev/lab-explosions, especially for the gunship, also the Quiver and tank shells; adopt FLIR; make the first enemy a white amoeba swapped with the phage. Spec docs/superpowers/specs/2026-09-14-explosions-flir-amoeba-design.md, plan docs/superpowers/plans/2026-09-14-explosions-flir-amoeba.md.
+
+### Direction: leave the spherical Stålberg grid and go back to a flat world; the sphere may seed a spin-off
+
+`2026-09-14-flat-world-direction` · decision · **proposed**
+
+Owner, after the PoC cleanup and the concept audit (2026-09-14-concept-audit-first-pass, which found the sphere interesting but paying emotionally only in a few scale moments while costing everywhere): leaning towards a major reform and simplification; abandon the spherical Stålberg grid as a PoC that is interesting but not fun enough to justify its complexity; go back to flat for this project; the sphere might be used for a spin-off. The full FunMap audit is to be reviewed together first.
+
+### Next, not yet started: an audit of the game's concepts, not its code, through Rosewater's lessons, and a FunMap kept beside the roadmap
+
+`2026-09-14-concept-audit-and-funmap-proposed` · decision · **proposed**
+
+Owner, at the end of the 2026-09-14 session: after the gunship, the foundry and the Rotor fixes, try something new. An audit, but of the concepts of the game rather than the code, inspired by https://kai-denrei.github.io/game-design-lessons/#rosewater: a reflection, through the early development, on where the game is going. Possibly a separate roadmap kept as a FunMap, logging what feels satisfying and what can be improved.
+
+### An explosion research brief for outside artists: procedural Three.js r160 modules built in their own lab, imported by contract
+
+`2026-09-14-explosion-research-brief` · change · **observed**
+
+Owner wants satisfying explosions, first from the gunship's seat, then in the ground game, with mini nuclear clouds for the orbital strike; asked whether artists could research procedural r160 explosions and we import the best. The researcher's first pass came back with six open questions (field of view, bloom, the device, the deciding load, scorches, the palette) and three risks (replays, rings on a curved planet, a cloud at a kilometre).
+
+### Still open after the story-opening playtest: the breach freeze, the Rotor's sound by ear, Rotor shots into the wall, and ISAO-Birudorōn's review
+
+`2026-09-14-story-playtest-open-items` · issue · **observed**
+
+The story-opening playtest batches (commit 89b81b5) fixed what could be measured and verified headlessly. Several items were changed or partly addressed without an acceptance the owner can rely on, and should be picked up rather than assumed done.
+
+### The gunship's own 105, separate from the orbital strike; heat, magazine and reload downtime for all three guns read on the HUD; the piloted Rotor's rounds seen as bigger, longer tracers with a wider hit and hit counters
+
+`2026-09-14-gunship-own-105-downtime-bars-and-rotor-tracers` · change · **observed**
+
+Owner's seventh brief (2026-09-14): the gunship should get its own strike, separate from the orbital strike; overheating and reloading of weapons 1, 2 and 3 must be communicated better, with infinite ammo while testing but downtime; the Rotor's PoV still feels off, add more tracer so where the bullets go is seen; enemies that look hit are not dying, cause unknown (landing wrong, hitbox, the wall under, the angle).
+
+### Idea: an orbital laser as its own weapon; the orbital strike console is hidden meanwhile
+
+`2026-09-14-orbital-laser-idea` · decision · **proposed**
+
+Owner, playing the gunship: the orbital strike console (the ORBIT percentage, the arm switch and the LAUNCH button) is redundant with the gunship, whose 105 already lands through the strike's code. They would like to try an Akira-style weapon in space instead: a powerful continuous laser fired at the planet for brief periods.
+
+### The gunship seat 340 m up looking straight down, M cycling normal / night vision / thermal, the owner's weapon 1 sample looped, a click that fires at once, the 105 honest about its re-orbit and never cutting away from the seat
+
+`2026-09-14-gunship-higher-straight-down-three-views-and-the-105-from-the-seat` · change · **observed**
+
+Owner's sixth brief (2026-09-14): the view should feel much higher and straight down; try GunShip_Weapon01_Test2.mp3 for weapon 1; weapon 2 needed a long click; weapon 3 launched unreliably and read 'paint the target' while a cooldown ran; the camera MUST start from the same PoV for weapon 3, no jump cut to the orbital strike, the gunship gets its own animation; M did nothing and should cycle normal, night vision (dark, enemies white) and thermal (enemies in yellow/red heat).
+
+### HUGIN's runtime LODs merge the booster into static geometry, so the story can no longer hide it
+
+`2026-09-14-hugin-booster-not-hideable` · issue · **observed**
+
+The story places the HUGIN launchpad with hide: ['REUSABLE_BOOSTER'], and docs/ASSET-COLLABORATION.md names REUSABLE_BOOSTER as a part the game may hide. The author's README for the c827eda candidates says static geometry is consolidated separately from the six moving groups, and that LOD2's lookup nodes remain but do not articulate its merged geometry.
+
+### Ship Stålheart's LOD1 and LOD2 as its landmark tiers
+
+`2026-09-14-stalheart-lods-as-shipped` · decision · **proposed**
+
+Stålheart's runtime LODs are pinned at c827eda and verified in the story lab and the real game camera (2026-09-14-stalheart-lods-in-game-camera-review). The author and the owner both mark them pending game-camera and reference-phone review.
+
+### Three reticles and a fire-control HUD for the gunship, per-gun zoom, the owner's 40 mm report and the Rotor's own muffled firing sound from its optic, impacts that land seconds after the report, and the 105's paint-then-guide flow; FX package base 8
+
+`2026-09-14-gunship-reticles-hud-sounds-and-the-rotor-optic-firing-sound` · change · **observed**
+
+Owner's brief 2026-09-14: from the Rotor's PoV add the supplied HeavyMachineGun_RotorGunPOVSound.mp3 only while it fires, muffled, over the spin-up and spin-down, separating the rotors turning from the barrels firing; in the gunship PoV three reticles to tell the selected weapon apart, more HUD (distance, contacts, planet coordinates, calibres), each gun its own zoom, the rotary closer with lots of impact feedback and rotor-like sounds slightly deeper, the 40 mm with the supplied GunshipWeapon2Blast.mp3 and small area explosions that decimate groups, the 105 keeping the strike's sounds and effects but starting from the seat with its own reticle as a one-two: paint a red laser area, then launch and guide as the current strike does; fire 1 and 2 with a lag between the report at the gunship and the impact on the ground.
+
+### Make MÖRK's LOW tier the default hull
+
+`2026-09-14-mork-low-as-default` · decision · **proposed**
+
+LOW is pinned at 771e166 and verified as a drop-in for src/mork.js by tests, by a real render and against the packed release (see 2026-09-14-mork-tiers-pinned-for-review). ASSETS.md requires a visual and animation acceptance pass before a pinned revision becomes what ships, and the owner's upstream candidates are marked pending game-camera and reference-phone review.
+
+### The gunship seat shows its contacts: white screen-sized markers per enemy, the map framed between the base and the swarm, a contacts and nearest-range readout, and a two-minute window while we debug
+
+`2026-09-14-gunship-seat-contacts-framing-two-minutes` · change · **observed**
+
+Owner's third playtest (2026-09-14): the briefing is not bad, the map view is right, but the enemies were black on black and could not be seen, nothing moved, the enemies were out of range with no way to track them, and the window was too short to test. Enemy markers on the map exist only for spawn points; the swarm is its dot clouds at orbit distance, which the surveillance filter drowns.
+
+### The arrival recycled, first pass: the foundry beat between landed and printing, the SH02 cut into its salvage layout beside the AFR-01, barrels paying for the Rotor and the Quiver
+
+`2026-09-14-arrival-foundry-beat-landed` · change · **observed**
+
+Design agreed in 2026-09-14-arrival-foundry-recycles-the-sh02. Plan: docs/superpowers/plans/2026-09-14-arrival-foundry.md. Branch heavy-gunship, alongside the gunship work, while the owner playtests.
+
+### First swarm-cost number under the gunship: 72 phage in view pulled the headless acceptance run to 28 fps
+
+`2026-09-14-gunship-swarm-cost-first-number` · issue · **observed**
+
+Spec §9 named the horde render cost as the unverified premise. The skip panel now keeps waves coming while the platform is overhead, so the number falls out of the acceptance screenshot.
+
+### The pre-A6 terraformer heart (the wide machine on a round pad) is purged; the Sentry Terraformer 3000 is the Stalheart everywhere and the story world always has the empty heart
+
+`2026-09-14-pre-a6-terraformer-heart-purged` · change · **observed**
+
+Owner saw enemies attacking the old heart model after the gunship's pass ended in the story world and ruled it a relic that must never appear again. Classification before deleting: not dead code. It was the classic mode's default heart look (params.heartLook 'terraformer' unless ?terraformer=a6), listed in the metal lab, and probed by ?heartprobe=1. The story world had built it because the gunship skip URL did not carry heart=none: only ?story=N implied the empty heart.
+
+### Skip-to markers beside the build tag: GUNSHIP opens the seat on station with a breach and enemies up; the pass runs over the approach and the seat settles its aim after the platform takes its track
+
+`2026-09-14-story-skip-markers-and-gunship-test-route` · change · **observed**
+
+Owner asked where to test the gunship and for skip-to-scene markers next to the [dev] tag (rotor, quiver, study, gunship) so a beat can be tested without playing up to it, with a way to raise more enemies. Only the gunship needed to be reliable now.
+
+### Open after the gunship mount: untuned guns, unmeasured horde cost, herding unverified, no seat on the practice map, and the story-world Rotor-kill acceptance step fails on main
+
+`2026-09-14-heavy-gunship-open-items` · issue · **observed**
+
+The gunship mount landed (2026-09-14-heavy-gunship-mount-landed) against a stage-6 story world with no enemies up, so nothing about its guns has been held against a horde.
+
+### The heavy gunship mount landed: a fixed pass on the game clock, a gunner-only seat on the story strip, three guns with the 105 as the strike, a thermal optic and soft-warning rings
+
+`2026-09-14-heavy-gunship-mount-landed` · change · **observed**
+
+Owner set the Heavy Gunship as the session's priority per docs/superpowers/specs/2026-09-13-heavy-gunship-design.md and 2026-09-13-heavy-gunship-mount-design. Constraints: no new top-level src module, src/td-tab.js may not grow (budget 17605), src/strike.js unchanged, danger rings are readouts never refusals, no fuel meter, the KORP asset pinned and hash-validated. Plan: docs/superpowers/plans/2026-09-13-heavy-gunship.md, executed on branch heavy-gunship.
+
+### Sniper modes remain unsatisfactory and require further playtesting and fixes
+
+`2026-09-08-sniper-modes-playtest-unresolved` · issue · **observed**
+
+After delivery of the first-map Sentry Control experiment, the owner explicitly reports that the sniper modes are not quite working yet and asks that this be captured in the development log. This applies to the Sniper range and the new actual-map manual-sentry experiment.
+
+### Curved breach waves, wall clearance and rendering comparisons
+
+`2026-09-08-breach-planet-wall-preview` · experiment · **observed**
+
+The owner wants ground breaches to replace wave portals eventually, with short wide fissures, wall destruction, and creatures climbing out on the spherical world.
+
+### Sinkhole ground-breach genre in Portal Lab
+
+`2026-09-08-sinkhole-portal-lab` · experiment · **observed**
+
+The owner intends enemies to breach from the ground and requested an initial effect study using the Monolith Rift import guide. Gameplay spawn replacement is later work.
+
+### Evaluate promotion pacing and strategic build capacity after wave-42 playtest
+
+`2026-09-08-playtest-progression-build-capacity` · decision · **proposed**
+
+Owner reports rapid tank promotion, plentiful biomass with too few meaningful spending choices, and potential tower overload after a 42-wave playtest. Owner explicitly framed prepared sites and power prerequisites as ideation.
+
+### Prototype an earned automation opening and a dedicated sniper Sentry
+
+`2026-09-08-earned-automation-sniper-proposal` · decision · **proposed**
+
+Owner wants a satisfying sniper tower and suggests replacing Howitzer with Needle or Railgun. Owner proposes a slow opening with only Isao and Tank, manual turret operation inspired by Sniper Lab, Isao constructing the Terraformer/Stalheart, and chip production subsequently enabling turret automation. This extends the prior build-capacity ideation without selecting its final rules.
+
+<!-- deban:open:end -->
+
+---
+
+## Conventions
+
+- Record decisions with the project `/deban` skill or `npm run log -- add FILE`.
+  Entries are immutable; `DEVLOG.md` and the block above are generated from them.
+- `docs/STATE.md` is the short current-state page and stays short.
+- `docs/IMPROVEMENTS.md` holds detailed completion criteria for the backlog.
+- `docs/PLAYFEEL.md` is the owner's playtest register and renders into the devlog.
