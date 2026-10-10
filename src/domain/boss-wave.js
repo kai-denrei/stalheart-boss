@@ -14,7 +14,7 @@
 // the tremor, the rise over `emerge.rise` s with its eased lift, up); `waveStep` the solver's fixed step for the Reeds alive (`coarse`); `keepOut` a point pushed
 // out of a disc (Isao's planner kept off the centre while something emerges there). A dead Reed's carcass is ./boss-carcass.js's.
 
-import { splashDamage } from './gunship.js?v=8825cf41';
+import { splashDamage } from './gunship.js?v=6e1ea8d0';
 
 const dist = (a, b) => Math.hypot(a[0] - b[0], a[1] - b[1]);
 const nearestTo = (contacts, at) => { let d = Infinity; for (const p of contacts ?? []) d = Math.min(d, dist(p, at)); return d; };

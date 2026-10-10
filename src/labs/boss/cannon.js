@@ -6,11 +6,11 @@
 // THE HIT IS THE LAB'S: `tick(dt, hitTest)` asks `hitTest(x, z)` for each shell; a hit point bursts there and calls `onHit(x, z)`.
 // A shell past its reach bursts on the ground. The burst is explosions.spawn('tank.shell') and `blast_fire`.
 // `clear()` drops every shell in flight (a new round). `shift(sx, sz)` moves every shell in flight with a re-anchor of the lab's frame (local metres), as the tank's position is kept.
-import * as THREE from '../../../vendor/three.module.js?v=8825cf41';
-import { makeOrdnanceShell } from '../../shell.js?v=8825cf41';
-import { fireTankFeel } from '../../tankfeel.js?v=8825cf41';
-import { FEEL } from '../../feelstore.js?v=8825cf41';
-import { SHELL_SPEED, SHELL_REACH } from '../../content/tank.js?v=8825cf41';
+import * as THREE from '../../../vendor/three.module.js?v=6e1ea8d0';
+import { makeOrdnanceShell } from '../../shell.js?v=6e1ea8d0';
+import { fireTankFeel } from '../../tankfeel.js?v=6e1ea8d0';
+import { FEEL } from '../../feelstore.js?v=6e1ea8d0';
+import { SHELL_SPEED, SHELL_REACH } from '../../content/tank.js?v=6e1ea8d0';
 
 const LIFT = 1.2;   // metres above the ground the shell flies at
 const Y = new THREE.Vector3(0, 1, 0);

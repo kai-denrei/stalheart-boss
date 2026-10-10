@@ -2,8 +2,8 @@
 // body rises in a story run, Isao's scanner logs it: a small card at the left edge with the creature's colour, its name, what it does
 // (src/enemyspec.js INTROS) and the two facts a driver needs, whether it goes under the treads and how much it takes. It never
 // pauses the game or covers the middle of the screen; cards that arrive together queue, one at a time. The UNITS bench has the rest.
-import { CREATURE_TINTS, ENEMY_SPEC, INTROS } from '../enemyspec.js?v=8825cf41';
-import { isaoSpeak } from './isao-voice.js?v=8825cf41';
+import { CREATURE_TINTS, ENEMY_SPEC, INTROS } from '../enemyspec.js?v=6e1ea8d0';
+import { isaoSpeak } from './isao-voice.js?v=6e1ea8d0';
 
 const SHOW_MS = 5200;
 

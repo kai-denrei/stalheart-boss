@@ -1,5 +1,5 @@
-import * as THREE from '../vendor/three.module.js?v=8825cf41';
-import { SHELL_GEOMETRY } from './content/shell-geometry.js?v=8825cf41';
+import * as THREE from '../vendor/three.module.js?v=6e1ea8d0';
+import { SHELL_GEOMETRY } from './content/shell-geometry.js?v=6e1ea8d0';
 // Synchronous, owned geometry: no old projectile fallback while a GLB loads.
 export function makeOrdnanceShell(length=1,axis='z'){
  const geometry=new THREE.BufferGeometry();

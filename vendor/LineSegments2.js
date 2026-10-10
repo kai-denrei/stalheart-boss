@@ -9,9 +9,9 @@ import {
 	Sphere,
 	Vector3,
 	Vector4
-} from './three.module.js?v=8825cf41';
-import { LineSegmentsGeometry } from './LineSegmentsGeometry.js?v=8825cf41';
-import { LineMaterial } from './LineMaterial.js?v=8825cf41';
+} from './three.module.js?v=6e1ea8d0';
+import { LineSegmentsGeometry } from './LineSegmentsGeometry.js?v=6e1ea8d0';
+import { LineMaterial } from './LineMaterial.js?v=6e1ea8d0';
 
 const _viewport = new Vector4();
 

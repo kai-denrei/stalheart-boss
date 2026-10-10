@@ -5,8 +5,8 @@
 // the section shrinking away when the scrap is accepted; a barrel at the
 // fill socket sliding to a rack. Pure presentation over the landmarks
 // story-base loaded; the host ticks it.
-import * as THREE from '../../vendor/three.module.js?v=8825cf41';
-import { FOUNDRY_TUNE } from '../content/foundry.js?v=8825cf41';
+import * as THREE from '../../vendor/three.module.js?v=6e1ea8d0';
+import { FOUNDRY_TUNE } from '../content/foundry.js?v=6e1ea8d0';
 
 export function createFoundryFx(scene, base, { cellSide, metresPerCell = 10, tune = FOUNDRY_TUNE }) {
   const metre = cellSide / metresPerCell;

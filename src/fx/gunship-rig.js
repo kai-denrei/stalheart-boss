@@ -9,19 +9,19 @@
 // than the rig, as getters (story, storyViews, graph, dungeon, cellSide, pilot, pilotHost, isao, t, gunshipBriefing, enemies,
 // spawnPoints, debris, player, towers, strikeTune); cellIndex as a call-through; and the two lets the seat's framing writes as
 // setters (setFollowSuspend, setBuildDist).
-import { sub3, scale3, norm3, len3 } from '../vec3.js?v=8825cf41';
-import { BLOCKED } from '../dungeon.js?v=8825cf41';
-import { makeDotBurst } from '../units.js?v=8825cf41';
-import { makeGunship, stepGunship, onStation, phaseLeft, passProgress, mountGunship, dismountGunship, selectGun, stepGun, aimOnSphere, splashDamage, dangerReport, fireRound, stepRounds, paintHeavy, launchHeavy, nudgeHeavy, stepHeavy, heavyState } from '../domain/gunship.js?v=8825cf41';
-import { makeGunshipCall, fillFromKill, isFull as callFull, passEnded, callProgress } from '../domain/gunship-call.js?v=8825cf41';
-import { makeTrack, steerTrack, parkTrack, breachLoads } from '../domain/gunship-track.js?v=8825cf41';
-import { farCell, laneCell } from '../domain/gunship-lanes.js?v=8825cf41';
-import { hasPerk as programmeHas } from '../domain/build-programme.js?v=8825cf41';
-import { BASE_PERKS } from '../content/base-programme.js?v=8825cf41';
-import { GUNSHIP_CALL, GUNSHIP_FAR, GUNSHIP_GUNS, GUNSHIP_GUN_ORDER, GUNSHIP_NUKE, GUNSHIP_ORBIT, GUNSHIP_PLATFORM, GUNSHIP_TRACK } from '../content/gunship.js?v=8825cf41';
-import { createGunshipOptic } from './gunship-optic.js?v=8825cf41';
-import { createGunshipDrop } from './gunship-drop.js?v=8825cf41';
-import { isaoSpeak } from './isao-voice.js?v=8825cf41';
+import { sub3, scale3, norm3, len3 } from '../vec3.js?v=6e1ea8d0';
+import { BLOCKED } from '../dungeon.js?v=6e1ea8d0';
+import { makeDotBurst } from '../units.js?v=6e1ea8d0';
+import { makeGunship, stepGunship, onStation, phaseLeft, passProgress, mountGunship, dismountGunship, selectGun, stepGun, aimOnSphere, splashDamage, dangerReport, fireRound, stepRounds, paintHeavy, launchHeavy, nudgeHeavy, stepHeavy, heavyState } from '../domain/gunship.js?v=6e1ea8d0';
+import { makeGunshipCall, fillFromKill, isFull as callFull, passEnded, callProgress } from '../domain/gunship-call.js?v=6e1ea8d0';
+import { makeTrack, steerTrack, parkTrack, breachLoads } from '../domain/gunship-track.js?v=6e1ea8d0';
+import { farCell, laneCell } from '../domain/gunship-lanes.js?v=6e1ea8d0';
+import { hasPerk as programmeHas } from '../domain/build-programme.js?v=6e1ea8d0';
+import { BASE_PERKS } from '../content/base-programme.js?v=6e1ea8d0';
+import { GUNSHIP_CALL, GUNSHIP_FAR, GUNSHIP_GUNS, GUNSHIP_GUN_ORDER, GUNSHIP_NUKE, GUNSHIP_ORBIT, GUNSHIP_PLATFORM, GUNSHIP_TRACK } from '../content/gunship.js?v=6e1ea8d0';
+import { createGunshipOptic } from './gunship-optic.js?v=6e1ea8d0';
+import { createGunshipDrop } from './gunship-drop.js?v=6e1ea8d0';
+import { isaoSpeak } from './isao-voice.js?v=6e1ea8d0';
 
 export function createGunshipRig(host) {
   const { scene, sfx, explode, automated, gunship, strike, sealedBreachCells, camDist, cellAtScreen, centerBuildOnHeart, damageEnemy, executeStrike, warnRing, showRangeRing, hideRangeRing } = host;

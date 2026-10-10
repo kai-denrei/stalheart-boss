@@ -1,8 +1,8 @@
 // Default A6 tank presentation. The host owns gameplay, sphere placement and time.
-import * as THREE from '../vendor/three.module.js?v=8825cf41';
-import { loadGlb, loadGlbWithClips, mergeByMaterial, fitModel } from './glbmodels.js?v=8825cf41';
-import { record } from './diagnostics.js?v=8825cf41';
-import { TURRET_SWEEP } from './content/tank.js?v=8825cf41';
+import * as THREE from '../vendor/three.module.js?v=6e1ea8d0';
+import { loadGlb, loadGlbWithClips, mergeByMaterial, fitModel } from './glbmodels.js?v=6e1ea8d0';
+import { record } from './diagnostics.js?v=6e1ea8d0';
+import { TURRET_SWEEP } from './content/tank.js?v=6e1ea8d0';
 
 const ammoNames = Array.from({ length: 9 }, (_, i) => `AMMO_PORT_LIGHT_${String(i).padStart(2, '0')}`);
 export function prepareMork(scene, clips) {

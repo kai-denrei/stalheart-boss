@@ -12,7 +12,7 @@
 //   d0 = [a, theta0, ecc, peri]   orbit: radius fraction, phase, eccentricity, periapsis
 //   d1 = [temp, size, seed, zk]   colour temperature, sprite size, hash, height off the disc
 //   pp = 1 for a bulge star, 0 for a disc star
-import { mulberry32 } from './rng.js?v=8825cf41';
+import { mulberry32 } from './rng.js?v=6e1ea8d0';
 
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
 

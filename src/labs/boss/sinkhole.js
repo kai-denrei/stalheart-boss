@@ -16,9 +16,9 @@
 // breach (`onClear`) are the game's board: the arena's centre is floor, so the lab passes nothing.
 // AFTERWARDS: `seal()` lays the game's rubble cap over a breach (the adapter's `seal`, the game's sealed sinkhole), and a breach opened while a cap lies hides the
 // caps once its ground breaks (they would sit over the new hole); `reset()` takes every breach and cap away for a new round.
-import * as THREE from '../../../vendor/three.module.js?v=8825cf41';
-import { createGameBreaches } from '../../game-breaches.js?v=8825cf41';
-import { makeShaderWarmer } from '../../fx/shader-warm.js?v=8825cf41';
+import * as THREE from '../../../vendor/three.module.js?v=6e1ea8d0';
+import { createGameBreaches } from '../../game-breaches.js?v=6e1ea8d0';
+import { makeShaderWarmer } from '../../fx/shader-warm.js?v=6e1ea8d0';
 
 // `sphere` the planet-centred group in metres, `renderer`/`scene`/`camera` the lab's (the warmer compiles against them), `audio` the lab's sounds (the
 // breach's quake is in them), `planet()` the lab planet ({ radius, cellSide }), `ground(x, z)` the sphere point under a local point, `north(w)` a tangent

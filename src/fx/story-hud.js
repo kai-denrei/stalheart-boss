@@ -1,7 +1,7 @@
 // Story overlays on the game's own instruments. The radar gets a tremor
 // contact: a pulsing red ring at the bearing of the source, clamped to the
 // rim when it is beyond range, with the words the operator asked for.
-import { radarBasis, radarProject } from '../radar.js?v=8825cf41';
+import { radarBasis, radarProject } from '../radar.js?v=6e1ea8d0';
 
 export function createStoryHud() {
   let tremor = null;   // unit direction of the source, or null

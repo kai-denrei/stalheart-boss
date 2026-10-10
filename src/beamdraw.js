@@ -22,9 +22,9 @@
 //
 // NOTE the vendor import carries no ?v= token, and must not: a tokened vendor
 // URL loads a SECOND copy of three.js.
-import * as THREE from '../vendor/three.module.js?v=8825cf41';
-import { createBeam } from './beamfx.js?v=8825cf41';
-import { arcPoint } from './arc.js?v=8825cf41';
+import * as THREE from '../vendor/three.module.js?v=6e1ea8d0';
+import { createBeam } from './beamfx.js?v=6e1ea8d0';
+import { arcPoint } from './arc.js?v=6e1ea8d0';
 
 // The plume's shape. Every one of these is a live knob on both surfaces,
 // because the shape of a flame is taste and a derived value is a starting

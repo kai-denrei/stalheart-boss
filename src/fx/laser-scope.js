@@ -5,8 +5,8 @@
 // The view renders into its own target at the lens's pixel size, then a lens quad composites it through a circle with a
 // darkened rim, scissored to the inset square, so the ground view shows around the lens instead of a black square.
 // Viewport and scissor are CSS pixels: WebGLRenderer multiplies them by the pixel ratio itself.
-import * as THREE from '../../vendor/three.module.js?v=8825cf41';
-import { LASER_VIEW } from '../content/orbital-laser.js?v=8825cf41';
+import * as THREE from '../../vendor/three.module.js?v=6e1ea8d0';
+import { LASER_VIEW } from '../content/orbital-laser.js?v=6e1ea8d0';
 
 // WHERE THE LENS SITS, in CSS pixels of a w x h view. Portrait: a lens centred across the top. Landscape: bottom left,
 // `share` of the width, `left` pixels in; the lab's left column below its HUD is the only corner that hides neither its

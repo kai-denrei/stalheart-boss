@@ -11,9 +11,9 @@
 // FITTING. A 5 m sentry and a 52 m satellite cannot share one camera distance, so with `fit` the stage measures the
 // loaded model's bounding box and frames it: the orbit radius, the height and the look-at come from the box, and the
 // label anchors are box-relative (-1..1 on each axis from its centre) for the same reason.
-import * as THREE from '../../vendor/three.module.js?v=8825cf41';
-import { GLTFLoader } from '../../vendor/GLTFLoader.js?v=8825cf41';
-import { MeshoptDecoder } from '../../vendor/meshopt_decoder.module.js?v=8825cf41';
+import * as THREE from '../../vendor/three.module.js?v=6e1ea8d0';
+import { GLTFLoader } from '../../vendor/GLTFLoader.js?v=6e1ea8d0';
+import { MeshoptDecoder } from '../../vendor/meshopt_decoder.module.js?v=6e1ea8d0';
 
 const WIRE = 0xbfe6ea, GRID_A = 0x2f5a62, GRID_B = 0x1d3a41;
 

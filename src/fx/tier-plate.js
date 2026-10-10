@@ -2,7 +2,7 @@
 // are level 1, 2, or 3. Square > hexagon > circle"). A flat glowing band round the pedestal's foot in the sentry's own colour, its shape
 // the level: a square at level 1, a hexagon at 2, a circle at 3. In the model's own units (the sentry's scale carries it), sized off
 // the pedestal's measured half-width, rebuilt only when the level changes. The size bump per level (TIER_BULK) stays as it was.
-import * as THREE from '../../vendor/three.module.js?v=8825cf41';
+import * as THREE from '../../vendor/three.module.js?v=6e1ea8d0';
 
 const SIDES = [4, 6, 48];
 

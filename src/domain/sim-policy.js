@@ -8,7 +8,7 @@
 // it hands in: trunk (the lanes, computed on demand), towers, wave, eco (canAfford), graph (adj), placeError, the roster and its
 // byKey index, the keys unlocked this wave and upgradeCost. A pick is { key, ci } (order that sentry on that cell), { tower }
 // (upgrade it) or null.
-import { BLOCKED } from '../dungeon.js?v=8825cf41';
+import { BLOCKED } from '../dungeon.js?v=6e1ea8d0';
 
 // traffic: greedy descent from each live portal toward the heart; a
 // cell on 2+ routes is trunk — the lanes the policy fortifies

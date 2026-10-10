@@ -1,7 +1,7 @@
 // Concrete placements for the story base at a stage: islands with their
 // pad heights, structures on them, the gate on the open mouth and the walls
 // flanking it. Frame metres; y is height above the pole's tangent plane.
-import { drop } from '../core/terrace-profile.js?v=8825cf41';
+import { drop } from '../core/terrace-profile.js?v=6e1ea8d0';
 
 // Every placement is tangent to the sphere at its own centre, so y is radial
 // altitude above the natural surface there. An island's pad touches the

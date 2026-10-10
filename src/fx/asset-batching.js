@@ -1,8 +1,8 @@
 // Static material batching for imported assets: merges stationary geometry
 // by material while preserving every animated node and tracker pivot. Used
 // by the Astro diorama and the story base.
-import * as THREE from '../../vendor/three.module.js?v=8825cf41';
-import { mergeByMaterial } from '../glbmodels.js?v=8825cf41';
+import * as THREE from '../../vendor/three.module.js?v=6e1ea8d0';
+import { mergeByMaterial } from '../glbmodels.js?v=6e1ea8d0';
 // Preserve animated nodes and solar tracking hinges before batching static parts.
 export function batchStaticAsset(root,clips=[]){
  const pivots=new Set(clips.flatMap(c=>c.tracks.map(t=>THREE.PropertyBinding.parseTrackName(t.name).nodeName))),old=new Set();

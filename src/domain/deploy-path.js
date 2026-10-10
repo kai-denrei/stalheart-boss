@@ -4,7 +4,7 @@
 //
 // Pure: a berth is { ci, exit } on the lattice or, a story bay, { ci, exit, pos, out } with the hull's own spot inside the bay
 // and the point past its doors; `centers` and `normals` are the graph's. Moved out of the game controller unchanged.
-import { add3, scale3, cross3, norm3, dist3, tangentDir } from '../vec3.js?v=8825cf41';
+import { add3, scale3, cross3, norm3, dist3, tangentDir } from '../vec3.js?v=6e1ea8d0';
 
 // a berth's run: from its cell centre to its exit's, or — a story bay — from the hull's spot inside the bay straight out of the doors
 export const berthRun = (b, centers) => [b.pos ?? centers[b.ci], b.out ?? centers[b.exit]];

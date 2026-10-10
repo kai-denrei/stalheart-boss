@@ -3,8 +3,8 @@
 // Mork"). A purple pad ring beside the bays (the solar array's and the armory's pads are the model, src/fx/shield-array.js),
 // standing once the bays stand. The hull inside it and still for `settle` seconds opens the paint shop (src/fx/paint-shop.js); it opens
 // again only after the hull has left the ring. Presentation and its own clock; the host opens the shop.
-import { makePadRing, glowPadRing } from './shield-array.js?v=8825cf41';
-import { metresToArc } from '../core/stage-units.js?v=8825cf41';
+import { makePadRing, glowPadRing } from './shield-array.js?v=6e1ea8d0';
+import { metresToArc } from '../core/stage-units.js?v=6e1ea8d0';
 
 const arcBetween = (a, b) => { const l = Math.hypot(a[0], a[1], a[2]) * Math.hypot(b[0], b[1], b[2]) || 1; return Math.acos(Math.max(-1, Math.min(1, (a[0] * b[0] + a[1] * b[1] + a[2] * b[2]) / l))); };
 

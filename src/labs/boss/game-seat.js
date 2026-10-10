@@ -50,21 +50,21 @@
 //
 // KEYS: the seat swallows every key but H in the capture phase. Esc is its `leave` (the lab goes back to the tank), P its `pause`; the
 // lab's R is a capture listener registered before any seat (boss-tab.js), so it runs first and the game's sentry-pilot.js is unchanged.
-import * as THREE from '../../../vendor/three.module.js?v=8825cf41';
-import { EffectComposer } from '../../../vendor/EffectComposer.js?v=8825cf41';
-import { RenderPass } from '../../../vendor/RenderPass.js?v=8825cf41';
-import { OutputPass } from '../../../vendor/OutputPass.js?v=8825cf41';
-import { createSentryPilot } from '../../sentry-pilot.js?v=8825cf41';
-import { makeCellIndex } from '../../cellindex.js?v=8825cf41';
-import { createStoryMonitor } from '../../fx/story-monitor.js?v=8825cf41';
-import { createThermalHeat } from '../../fx/thermal-heat.js?v=8825cf41';
-import { createGunshipOptic } from '../../fx/gunship-optic.js?v=8825cf41';
-import { createGunshipDrop } from '../../fx/gunship-drop.js?v=8825cf41';
-import { createWarnRing } from '../../fx/warn-ring.js?v=8825cf41';
-import { createExplosions } from '../../fx/explosions.js?v=8825cf41';
-import { makeGunship, stepGunship, onStation, phaseLeft, passProgress, mountGunship, dismountGunship, selectGun, stepGun, aimOnSphere, splashDamage, dangerReport, fireRound, stepRounds, paintHeavy, launchHeavy, nudgeHeavy, stepHeavy, heavyState } from '../../domain/gunship.js?v=8825cf41';
-import { GUNSHIP_GUNS, GUNSHIP_GUN_ORDER, GUNSHIP_NUKE, GUNSHIP_ORBIT, GUNSHIP_PLATFORM } from '../../content/gunship.js?v=8825cf41';
-import { orbitAt } from '../../domain/boss-orbit.js?v=8825cf41';
+import * as THREE from '../../../vendor/three.module.js?v=6e1ea8d0';
+import { EffectComposer } from '../../../vendor/EffectComposer.js?v=6e1ea8d0';
+import { RenderPass } from '../../../vendor/RenderPass.js?v=6e1ea8d0';
+import { OutputPass } from '../../../vendor/OutputPass.js?v=6e1ea8d0';
+import { createSentryPilot } from '../../sentry-pilot.js?v=6e1ea8d0';
+import { makeCellIndex } from '../../cellindex.js?v=6e1ea8d0';
+import { createStoryMonitor } from '../../fx/story-monitor.js?v=6e1ea8d0';
+import { createThermalHeat } from '../../fx/thermal-heat.js?v=6e1ea8d0';
+import { createGunshipOptic } from '../../fx/gunship-optic.js?v=6e1ea8d0';
+import { createGunshipDrop } from '../../fx/gunship-drop.js?v=6e1ea8d0';
+import { createWarnRing } from '../../fx/warn-ring.js?v=6e1ea8d0';
+import { createExplosions } from '../../fx/explosions.js?v=6e1ea8d0';
+import { makeGunship, stepGunship, onStation, phaseLeft, passProgress, mountGunship, dismountGunship, selectGun, stepGun, aimOnSphere, splashDamage, dangerReport, fireRound, stepRounds, paintHeavy, launchHeavy, nudgeHeavy, stepHeavy, heavyState } from '../../domain/gunship.js?v=6e1ea8d0';
+import { GUNSHIP_GUNS, GUNSHIP_GUN_ORDER, GUNSHIP_NUKE, GUNSHIP_ORBIT, GUNSHIP_PLATFORM } from '../../content/gunship.js?v=6e1ea8d0';
+import { orbitAt } from '../../domain/boss-orbit.js?v=6e1ea8d0';
 
 const GAME_LENS = { near: 0.004, far: 50 };   // td-tab.js's camera, in the game's units
 const RELOAD = 6;                // the lab's MK-9 reload, seconds (the knob's default; the game's is 20)
@@ -113,9 +113,10 @@ function createPost(renderer, scene, camera) {
 // `parts()` { creature, isao, ring } the meshes the thermal heats (the arena's bound ring warm), `resolve(plan, dt)` the friendlies', `gate()` the panel's switches
 // ({ fight, rotary, bofors, nuke }), `focus()` the local point a round opens on, `clear()` the stage's px the lab panel covers on the
 // right, `leave()` back to the tank, `pause()` the lab's pause, `orbitGround(x, z)` the sphere-space surface point (metres) of a point
-// [x, z] round the arena's centre, world-fixed (the orbit's ground track), `isaoCam()` Isao's camera ({ from, pos } sphere space, null when he is not flying)
+// [x, z] round the arena's centre, world-fixed (the orbit's ground track), `isaoCam()` Isao's camera ({ from, pos } sphere space, null when he is not flying),
+// `afterKill()` true while a KILLED round still has something to shoot at (the boss's carcass, ./remains.js): the guns stay live on it
 export function createGameSeat({ stage, renderer, scene, sphere, camera, audio, explosions, planet, ground, local,
-  tune, fight, now, creature, isao, parts, resolve, gate, focus, orbitGround, isaoCam = () => null, clear = () => 0, leave = () => {}, pause = () => {}, onError = () => {} }) {
+  tune, fight, now, creature, isao, parts, resolve, gate, focus, orbitGround, isaoCam = () => null, afterKill = () => false, clear = () => 0, leave = () => {}, pause = () => {}, onError = () => {} }) {
   const params = { reload: RELOAD };
   let camIsao = true;   // the monitor on Isao (ISAO'S CAMERA); false: the game's GROUND TRUTH
   const feed = { last: null, cost: { isao: [0, 0], game: [0, 0] } };   // the descriptor drawn last frame (null: the game's) and the monitor's ms and frames by view
@@ -135,7 +136,7 @@ export function createGameSeat({ stage, renderer, scene, sphere, camera, audio, 
   const quake = { trauma: 0, time: 0, peak: 0, count: 0, saved: new THREE.Quaternion(), q: new THREE.Quaternion(), e: new THREE.Euler() };
 
   const norm = (p) => { const l = Math.hypot(p[0], p[1], p[2]) || 1; return [p[0] / l, p[1] / l, p[2] / l]; };
-  const live = () => fight().phase === 'fight' && gate().fight !== false;
+  const live = () => (fight().phase === 'fight' || (fight().phase === 'killed' && afterKill())) && gate().fight !== false;
   const allowed = (k) => gate()[NAME[k]] !== false;
   const camDist = (p) => Math.hypot(camera.position.x - p[0], camera.position.y - p[1], camera.position.z - p[2]);
   const toGame = (w) => { const R = planet().radius; return [w[0] / R, w[1] / R, w[2] / R]; };

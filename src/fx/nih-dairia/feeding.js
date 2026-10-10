@@ -1,7 +1,7 @@
 // Ported from lab-creatures src/monster/feeding.ts (kai-denrei, f2a4f89, export of 2026-10-08; derived from Jelly Baby by scottstts; GPL-3.0, see ./LICENSE), types stripped; the solver, the gait, the pursuit and the feeding are unchanged.
-import { Vector3 } from '../../../vendor/three.module.js?v=8825cf41';
-import { PREY_SHAPES } from './prey-shapes.js?v=8825cf41';
-import { ARENA } from './arena.js?v=8825cf41';
+import { Vector3 } from '../../../vendor/three.module.js?v=6e1ea8d0';
+import { PREY_SHAPES } from './prey-shapes.js?v=6e1ea8d0';
+import { ARENA } from './arena.js?v=6e1ea8d0';
 
 const smooth=(value)=>{const t=Math.max(0,Math.min(1,value));return t*t*(3-2*t);};
 

@@ -11,11 +11,11 @@ import {
   Sphere,
   DynamicDrawUsage,
   DoubleSide
-} from '../../../../vendor/three.module.js?v=8825cf41';
-import { noiseGLSL } from '../shaders/lib/noise.glsl.js?v=8825cf41';
-import { commonGLSL } from '../shaders/lib/common.glsl.js?v=8825cf41';
-import { sharedUniforms } from '../core/FrameUniforms.js?v=8825cf41';
-import { LAYER } from '../core/Layers.js?v=8825cf41';
+} from '../../../../vendor/three.module.js?v=6e1ea8d0';
+import { noiseGLSL } from '../shaders/lib/noise.glsl.js?v=6e1ea8d0';
+import { commonGLSL } from '../shaders/lib/common.glsl.js?v=6e1ea8d0';
+import { sharedUniforms } from '../core/FrameUniforms.js?v=6e1ea8d0';
+import { LAYER } from '../core/Layers.js?v=6e1ea8d0';
 
 /** Fragment silhouettes. Everything is procedural — no sprite textures. */
 export const ParticleShape = Object.freeze({

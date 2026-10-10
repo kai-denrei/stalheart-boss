@@ -1,7 +1,7 @@
 // The site marker (moved out of src/td-tab.js): a ring of points on the wall top, in the tower's own colour, that says "something is
 // coming here". It is the ONLY thing an ordered-but-unbuilt cell shows until Isao arrives; the tower itself grows out of the ground
 // while he prints it, which is a better progress bar than a progress bar. Unit-sphere host coordinates.
-import * as THREE from '../../vendor/three.module.js?v=8825cf41';
+import * as THREE from '../../vendor/three.module.js?v=6e1ea8d0';
 
 const norm = (v) => { const l = Math.hypot(v[0], v[1], v[2]) || 1; return [v[0] / l, v[1] / l, v[2] / l]; };
 const cross = (a, b) => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];

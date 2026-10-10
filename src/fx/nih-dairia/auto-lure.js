@@ -1,6 +1,6 @@
 // Ported from lab-creatures src/monster/auto-lure.ts (kai-denrei, f2a4f89, export of 2026-10-08; derived from Jelly Baby by scottstts; GPL-3.0, see ./LICENSE), types stripped; the solver, the gait, the pursuit and the feeding are unchanged.
-import { Vector3 } from '../../../vendor/three.module.js?v=8825cf41';
-import { ARENA } from './arena.js?v=8825cf41';
+import { Vector3 } from '../../../vendor/three.module.js?v=6e1ea8d0';
+import { ARENA } from './arena.js?v=6e1ea8d0';
 
 /** Bounded, smooth figure-eight stimulus. Manual grabbing switches it off. */
 export class AutoLure {

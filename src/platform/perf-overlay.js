@@ -4,10 +4,10 @@
 // `host` hands in the controller: its fixed objects as values (renderer, scene, lab, statsEl and the live lists: beams, debris,
 // enemies, plasmaBeams, projectiles, spawnPoints, towerSeekers, towerShots, towers) and what it rebinds as getters (heartSprite,
 // pilotMode, playerMesh, shieldObj, wave, and perfCtl, the dev panel's control, assigned after this is built).
-import { TOWERS } from '../towers.js?v=8825cf41';
-import { renderWorkload, performanceSummary } from '../render-workload.js?v=8825cf41';
-import { labLine } from '../lab.js?v=8825cf41';
-import { record } from '../diagnostics.js?v=8825cf41';
+import { TOWERS } from '../towers.js?v=6e1ea8d0';
+import { renderWorkload, performanceSummary } from '../render-workload.js?v=6e1ea8d0';
+import { labLine } from '../lab.js?v=6e1ea8d0';
+import { record } from '../diagnostics.js?v=6e1ea8d0';
 
 export function createPerfOverlay(root, host) {
   // --- THE FRAME READOUT (operator, 2026-09-02) ---------------------------
