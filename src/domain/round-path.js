@@ -6,9 +6,9 @@
 // Pure: the controller hands in its board as `terrain` = { cellAt(unit point) -> cell or -1, tags, wallHeight, step (the march's
 // sample spacing), clearance (how far into terrain the lance's march must go before it stops), rockClearance (the same into a
 // rock, for the lance's curve: marchAlongArc), ownCi (the gun's own cell) }.
-import { norm3, dot3, sub3 } from '../vec3.js?v=829a36dd';
-import { BLOCKED } from '../dungeon.js?v=829a36dd';
-import { aimOnSphere } from './gunship.js?v=829a36dd';
+import { norm3, dot3, sub3 } from '../vec3.js?v=ceff5e94';
+import { BLOCKED } from '../dungeon.js?v=ceff5e94';
+import { aimOnSphere } from './gunship.js?v=ceff5e94';
 
 const at = (from, dir, m) => [from[0] + dir[0] * m, from[1] + dir[1] * m, from[2] + dir[2] * m];
 

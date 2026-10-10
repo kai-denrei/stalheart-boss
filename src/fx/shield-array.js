@@ -2,7 +2,7 @@
 // campaign's heart pad, the story's solar array) and the panel line that reads
 // the meter, the rack and the array's reserve. Presentation only: the numbers
 // come from src/domain/shield.js state and src/content/shield-array.js.
-import * as THREE from '../../vendor/three.module.js?v=829a36dd';
+import * as THREE from '../../vendor/three.module.js?v=ceff5e94';
 
 const cross = (a, b) => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
 const unit = (v) => { const l = Math.hypot(v[0], v[1], v[2]) || 1; return [v[0] / l, v[1] / l, v[2] / l]; };

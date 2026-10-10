@@ -2,7 +2,7 @@
 // becomes a rising, rolling torus cap on a narrowing stem, a base surge that
 // runs out along the ground, long-lived embers, and two ground rings. The cap
 // cools from white through orange to grey and fades slowly.
-import { assemble, mulberry32, range, direction, prewarm } from './common.js?v=829a36dd';
+import { assemble, mulberry32, range, direction, prewarm } from './common.js?v=ceff5e94';
 
 export { prewarm };
 

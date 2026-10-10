@@ -13,7 +13,7 @@
 // holds the boss back ({ alive, count }, else null): the row reads `WAVE 1 · REED <alive>/<count>`, its fill the share still standing (./wave.js).
 // THE BAR is the integrity HUD's gate row (src/fx/integrity-hud.js: `ih-lbl`, `ih-bar > i`, `ih-num`, `ih-low` at a quarter)
 // in the stage's `.sw-hud`, with the fight's clock `m:ss.t` and `hits <n>`; hidden while `on()` is false (the fight switch off).
-import { kill, tick as tickFight } from '../../domain/boss-fight.js?v=829a36dd';
+import { kill, tick as tickFight } from '../../domain/boss-fight.js?v=ceff5e94';
 
 const LOW = 0.25;   // the HUD's gate threshold: the fill turns amber at a quarter
 

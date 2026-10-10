@@ -1,6 +1,6 @@
-import { PointLight } from '../../../../vendor/three.module.js?v=829a36dd';
-import { settings } from '../config/settings.js?v=829a36dd';
-import { damp } from '../utils/math.js?v=829a36dd';
+import { PointLight } from '../../../../vendor/three.module.js?v=ceff5e94';
+import { settings } from '../config/settings.js?v=ceff5e94';
+import { damp } from '../utils/math.js?v=ceff5e94';
 
 const POOL_SIZE = 6;
 

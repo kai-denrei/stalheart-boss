@@ -1,7 +1,7 @@
 // The game's Sentry models use the same pinned GLBs and rig names as labs #sentry.
-import * as THREE from '../vendor/three.module.js?v=829a36dd';
-import { loadGlb, loadGlbWithClips, mergeByMaterial, fitModel } from './glbmodels.js?v=829a36dd';
-import { TOWERS } from './towers.js?v=829a36dd';
+import * as THREE from '../vendor/three.module.js?v=ceff5e94';
+import { loadGlb, loadGlbWithClips, mergeByMaterial, fitModel } from './glbmodels.js?v=ceff5e94';
+import { TOWERS } from './towers.js?v=ceff5e94';
 // A temporary loading marker, never an alternate tower model.
 function makeLoadingMarker(def) {
   const root=new THREE.Group();

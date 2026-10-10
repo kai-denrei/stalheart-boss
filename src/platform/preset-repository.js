@@ -1,6 +1,6 @@
 // Browser persistence adapter. Validation happens before storage or game mutation.
-import { parsePreset, serializePreset } from '../content/preset.js?v=829a36dd';
-import { STORAGE_PREFIX } from '../storage.js?v=829a36dd';
+import { parsePreset, serializePreset } from '../content/preset.js?v=ceff5e94';
+import { STORAGE_PREFIX } from '../storage.js?v=ceff5e94';
 export const DRAFT_KEY = STORAGE_PREFIX + 'ssg.fx-draft.v1';
 export function createPresetRepository(backing = () => globalThis.localStorage) {
   return {

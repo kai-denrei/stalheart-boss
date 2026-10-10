@@ -1,6 +1,6 @@
 // Pure authoring contract: selected subject, changed fields, three-way merge.
-import { clone, validatePreset } from './preset.js?v=829a36dd';
-import { SENTRY_BY_KEY } from './sentries.js?v=829a36dd';
+import { clone, validatePreset } from './preset.js?v=ceff5e94';
+import { SENTRY_BY_KEY } from './sentries.js?v=ceff5e94';
 
 export function subjectPaths(subject, preset) {
   if (!subject || Object.keys(subject).some(k => !['kind', 'key'].includes(k))) throw Error('Invalid authoring subject');

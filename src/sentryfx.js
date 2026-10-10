@@ -12,10 +12,10 @@
 //               happens where it lands.
 //   towerlooks  the authored Sentry body, tier and animation pivots.
 // Identity and display order live in content/sentries.js. Profiles use stable keys.
-import { IMPACT_TUNE } from './content/impact-schema.js?v=829a36dd';
+import { IMPACT_TUNE } from './content/impact-schema.js?v=ceff5e94';
 
-import { SENTRY_FX } from './content/runtime.js?v=829a36dd';
-import { DEFAULT_FX, WEAPON_KINDS } from './content/weapon-defaults.js?v=829a36dd';
+import { SENTRY_FX } from './content/runtime.js?v=ceff5e94';
+import { DEFAULT_FX, WEAPON_KINDS } from './content/weapon-defaults.js?v=ceff5e94';
 export { SENTRY_FX, DEFAULT_FX, WEAPON_KINDS };
 
 // Resolve a tower def to its profile. The ONE door — a call site that reads

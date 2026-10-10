@@ -11,12 +11,12 @@
 //
 // The host must be a positioned element; the card covers it (position absolute, inset 0) and sizes its columns by the
 // host's width through a container query, so a 400 px host stacks even on a wide screen.
-import { SAFE_HUES, ALARM_HUES } from '../enemyspec.js?v=829a36dd';
+import { SAFE_HUES, ALARM_HUES } from '../enemyspec.js?v=ceff5e94';
 import {
   clamp01, easeRoll, easeGrow, formatValue, formatClock, accuracy, closedByLabel, sideLabel, breachLetter,
   stampLabel, stampNote, beltEntries, sourceRows, debriefPageLabels, tempoPath, campaignTotals,
-} from '../core/debrief-format.js?v=829a36dd';
-import { recapRows, runTempo, runBests, bars } from '../core/run-recap.js?v=829a36dd';
+} from '../core/debrief-format.js?v=ceff5e94';
+import { recapRows, runTempo, runBests, bars } from '../core/run-recap.js?v=ceff5e94';
 
 const BELT_ORDER = [...Object.keys(SAFE_HUES), ...Object.keys(ALARM_HUES)];
 const BELT_HEX = { ...SAFE_HUES, ...ALARM_HUES };

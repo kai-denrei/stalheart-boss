@@ -7,11 +7,11 @@
 // Input, as in the lab: the pointer hovering or dragging in the scope aims (a touch drag aims without burning); the
 // mouse button held in the scope, Space or the HOLD button burns; W/A/S/D or the arrows glide the aim while the beam is
 // off and drag it with the beam's inertia while it burns; Esc or TANK leaves.
-import * as THREE from '../../vendor/three.module.js?v=829a36dd';
-import { LASER_GAME, LASER_TELEMETRY, LASER_VIEW } from '../content/orbital-laser.js?v=829a36dd';
-import { seatHint } from './seat-hint.js?v=829a36dd';
-import { createLaserScope, scopeRect } from './laser-scope.js?v=829a36dd';
-import { createInsetHud } from './laser-inset-hud.js?v=829a36dd';
+import * as THREE from '../../vendor/three.module.js?v=ceff5e94';
+import { LASER_GAME, LASER_TELEMETRY, LASER_VIEW } from '../content/orbital-laser.js?v=ceff5e94';
+import { seatHint } from './seat-hint.js?v=ceff5e94';
+import { createLaserScope, scopeRect } from './laser-scope.js?v=ceff5e94';
+import { createInsetHud } from './laser-inset-hud.js?v=ceff5e94';
 
 const PAD_KEYS = { KeyW: [0, 1], ArrowUp: [0, 1], KeyS: [0, -1], ArrowDown: [0, -1], KeyA: [-1, 0], ArrowLeft: [-1, 0], KeyD: [1, 0], ArrowRight: [1, 0] };
 const AMBER = '#ffb020';

@@ -1,7 +1,7 @@
 // The spotting monitor: a second, small render of the same scene through a
 // camera riding just behind a guided round, scissored into a corner box.
 // One renderer, one scene; the box only shows while a round is in flight.
-import * as THREE from '../../vendor/three.module.js?v=829a36dd';
+import * as THREE from '../../vendor/three.module.js?v=ceff5e94';
 export function createStoryMonitor(root) {
   const box = document.createElement('div'); box.id = 'story-monitor'; box.innerHTML = '<div class="head">TALON · seeker feed</div>'; box.style.display = 'none'; root.append(box);
   // THE FEED IS ITS OWN CANVAS (owner, 2026-09-15: the ground truth in true colour, apart from the FLIR). The seat's night

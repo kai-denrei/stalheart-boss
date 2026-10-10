@@ -18,8 +18,8 @@
 // cannot say two things at once, so anything per-body has to become a
 // per-instance ATTRIBUTE before this is usable in gameplay. Here the crowd is
 // uniform, so it is not yet paid for.
-import * as THREE from '../../vendor/three.module.js?v=829a36dd';
-import { wobbleGlsl } from '../content/dot-wobble.js?v=829a36dd';
+import * as THREE from '../../vendor/three.module.js?v=ceff5e94';
+import { wobbleGlsl } from '../content/dot-wobble.js?v=ceff5e94';
 
 export function createDotSwarm(basePoints, capacity, { size = 2.1, wobble = true,
   color = 0xffffff, highlight = 0xffffff, opacity = 0.95 } = {}) {

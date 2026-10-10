@@ -6,7 +6,7 @@
 //
 // `begin(camera)` captures the start before the seat is entered; `place(camera, goal, dt)` puts the camera on the seat's goal, or on
 // the blend while a glide runs. `cancel()` ends it at once (a seat left mid-glide). `hold()` true (the game paused): no glide starts.
-import * as THREE from '../../vendor/three.module.js?v=829a36dd';
+import * as THREE from '../../vendor/three.module.js?v=ceff5e94';
 
 // `wait()` true (the scripted hand-over shot is flying): the glide holds, the seat's chrome stays hidden and the camera follows the goal,
 // so the next optic's HUD only shows once the eye is on it (owner, 2026-10-03: "we only ever see the HUD of what we commandeer")

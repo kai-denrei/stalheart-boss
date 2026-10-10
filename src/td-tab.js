@@ -1,108 +1,108 @@
-import { createSentryPilot } from './sentry-pilot.js?v=829a36dd';
-import { DEFAULT_TANK, SHELL_SPEED, SHELL_REACH, TANK_DRIVE, TANK_STEER, TANK_WALL } from './content/tank.js?v=829a36dd'; import { makeDriveRamp } from './domain/drive-ramp.js?v=829a36dd'; import { hullDepth, deepensContact } from './domain/hull-contact.js?v=829a36dd'; import { makeSteerEase, steerBank } from './domain/steer-ease.js?v=829a36dd'; import { baseFor, restoreSeatView } from './domain/seat-view.js?v=829a36dd'; import { BASE_REPAIR } from './content/base-programme.js?v=829a36dd';
-import { createGameBreaches } from './game-breaches.js?v=829a36dd'; import { ramShotPose } from './domain/showcase-shot.js?v=829a36dd';   /* THE RAM BEAT'S OWN FRAMING: low behind the hull (src/domain/showcase-shot.js; the band of cells it drives into is the showcase hooks') */
-import { createBoardSurface } from './fx/board-surface.js?v=829a36dd'; import { createCampaignDebrief, sparkline } from './fx/campaign-debrief.js?v=829a36dd'; import { createSectorRun } from './fx/sector-run.js?v=829a36dd'; import { createBackDoor } from './fx/back-door.js?v=829a36dd'; import { isaoFace, orbitFrame, tourFrame, tourSeconds } from './domain/story-shots.js?v=829a36dd';
-import { startDiveShot } from './fx/dive-shot.js?v=829a36dd'; import { createCameraShots } from './fx/camera-shot.js?v=829a36dd'; import { createIntegrityHud } from './fx/integrity-hud.js?v=829a36dd'; import { createSeatGlide } from './fx/seat-glide.js?v=829a36dd'; import { viewEdge, viewportLine } from './domain/view-edge.js?v=829a36dd'; import { boxOverlaps } from './domain/box-overlaps.js?v=829a36dd'; import { makeShaderWarmer } from './fx/shader-warm.js?v=829a36dd'; 
-import { BREACH_SOUNDS } from './content/breach-defaults.js?v=829a36dd';
-import { SOUNDS } from './content/runtime.js?v=829a36dd';
-import { applyScare } from './domain/impact-scare.js?v=829a36dd';
-import { EXPLOSION_SCARE } from './content/explosions.js?v=829a36dd';
-import { createThermalHeat } from './fx/thermal-heat.js?v=829a36dd';
-import { isAutomated } from './domain/automation.js?v=829a36dd';
-import { fillFromKill, fillFromWaveClear, isFull as callFull, callProgress } from './domain/gunship-call.js?v=829a36dd';
-import { GUNSHIP_CALL, GUNSHIP_FAR } from './content/gunship.js?v=829a36dd';
-import { unlockedTowers } from './domain/expeditions.js?v=829a36dd';
-import { createExpeditionsHost } from './fx/expedition-glue.js?v=829a36dd';
-import { CARGO_LOOK } from './content/cargo.js?v=829a36dd';
-import { STORY_EXPEDITIONS } from './content/story-defaults.js?v=829a36dd'; import { RECKLESS_MSGS, HEART_MSGS, DIRECTIVE_LABEL, SHELL_WORDS, VERDICT_LOW, VERDICT_MID, VERDICT_HIGH } from './content/controller-copy.js?v=829a36dd';
-import { hasPerk as programmeHas, snapshot as programmeSnapshot, lose as programmeLose } from './domain/build-programme.js?v=829a36dd';
-import { createProgramWarm } from './fx/program-warm.js?v=829a36dd';
-import { createControlsCard } from './fx/controls-card.js?v=829a36dd';
-import { createTutorialCard } from './fx/tutorial-card.js?v=829a36dd';
-import { openStoryAt } from './fx/story-entry.js?v=829a36dd';
-import { isStoryRoute } from './core/story-route.js?v=829a36dd';
+import { createSentryPilot } from './sentry-pilot.js?v=ceff5e94';
+import { DEFAULT_TANK, SHELL_SPEED, SHELL_REACH, TANK_DRIVE, TANK_STEER, TANK_WALL } from './content/tank.js?v=ceff5e94'; import { makeDriveRamp } from './domain/drive-ramp.js?v=ceff5e94'; import { hullDepth, deepensContact } from './domain/hull-contact.js?v=ceff5e94'; import { makeSteerEase, steerBank } from './domain/steer-ease.js?v=ceff5e94'; import { baseFor, restoreSeatView } from './domain/seat-view.js?v=ceff5e94'; import { BASE_REPAIR } from './content/base-programme.js?v=ceff5e94';
+import { createGameBreaches } from './game-breaches.js?v=ceff5e94'; import { ramShotPose } from './domain/showcase-shot.js?v=ceff5e94';   /* THE RAM BEAT'S OWN FRAMING: low behind the hull (src/domain/showcase-shot.js; the band of cells it drives into is the showcase hooks') */
+import { createBoardSurface } from './fx/board-surface.js?v=ceff5e94'; import { createCampaignDebrief, sparkline } from './fx/campaign-debrief.js?v=ceff5e94'; import { createSectorRun } from './fx/sector-run.js?v=ceff5e94'; import { createBackDoor } from './fx/back-door.js?v=ceff5e94'; import { isaoFace, orbitFrame, tourFrame, tourSeconds } from './domain/story-shots.js?v=ceff5e94';
+import { startDiveShot } from './fx/dive-shot.js?v=ceff5e94'; import { createCameraShots } from './fx/camera-shot.js?v=ceff5e94'; import { createIntegrityHud } from './fx/integrity-hud.js?v=ceff5e94'; import { createSeatGlide } from './fx/seat-glide.js?v=ceff5e94'; import { viewEdge, viewportLine } from './domain/view-edge.js?v=ceff5e94'; import { boxOverlaps } from './domain/box-overlaps.js?v=ceff5e94'; import { makeShaderWarmer } from './fx/shader-warm.js?v=ceff5e94'; 
+import { BREACH_SOUNDS } from './content/breach-defaults.js?v=ceff5e94';
+import { SOUNDS } from './content/runtime.js?v=ceff5e94';
+import { applyScare } from './domain/impact-scare.js?v=ceff5e94';
+import { EXPLOSION_SCARE } from './content/explosions.js?v=ceff5e94';
+import { createThermalHeat } from './fx/thermal-heat.js?v=ceff5e94';
+import { isAutomated } from './domain/automation.js?v=ceff5e94';
+import { fillFromKill, fillFromWaveClear, isFull as callFull, callProgress } from './domain/gunship-call.js?v=ceff5e94';
+import { GUNSHIP_CALL, GUNSHIP_FAR } from './content/gunship.js?v=ceff5e94';
+import { unlockedTowers } from './domain/expeditions.js?v=ceff5e94';
+import { createExpeditionsHost } from './fx/expedition-glue.js?v=ceff5e94';
+import { CARGO_LOOK } from './content/cargo.js?v=ceff5e94';
+import { STORY_EXPEDITIONS } from './content/story-defaults.js?v=ceff5e94'; import { RECKLESS_MSGS, HEART_MSGS, DIRECTIVE_LABEL, SHELL_WORDS, VERDICT_LOW, VERDICT_MID, VERDICT_HIGH } from './content/controller-copy.js?v=ceff5e94';
+import { hasPerk as programmeHas, snapshot as programmeSnapshot, lose as programmeLose } from './domain/build-programme.js?v=ceff5e94';
+import { createProgramWarm } from './fx/program-warm.js?v=ceff5e94';
+import { createControlsCard } from './fx/controls-card.js?v=ceff5e94';
+import { createTutorialCard } from './fx/tutorial-card.js?v=ceff5e94';
+import { openStoryAt } from './fx/story-entry.js?v=ceff5e94';
+import { isStoryRoute } from './core/story-route.js?v=ceff5e94';
 // SKIP TUTORIAL (owner, 2026-09-16): the player's own way past the opening, and the state ?skip=defence starts in
-import { STORY_SKIP, STORY_MISSION } from './content/story-defaults.js?v=829a36dd';
+import { STORY_SKIP, STORY_MISSION } from './content/story-defaults.js?v=ceff5e94';
 // THE SHOWCASE (owner, 2026-09-18): the core loop as a montage over this very world, before the landing
-import { createShowcase } from './fx/showcase.js?v=829a36dd';
-import { showcaseOn } from './platform/showcase-entry.js?v=829a36dd';
-import { createHullLoss } from './fx/hull-loss.js?v=829a36dd'; import { bayContainers, syncBays } from './fx/life-bays.js?v=829a36dd';
-import { METRES_PER_CELL, arcToMetres, metresToArc } from './core/stage-units.js?v=829a36dd';
-import { pickMissileTarget, missileLimits } from './domain/missile-targeting.js?v=829a36dd';
-import { createRunContext } from './domain/run-context.js?v=829a36dd'; import { trunkCells, simDirective, simPick } from './domain/sim-policy.js?v=829a36dd'; import { towerPerch } from './domain/tower-perch.js?v=829a36dd';
-import { createRunTimers } from './platform/run-timers.js?v=829a36dd'; import { createSimRun } from './platform/sim-run.js?v=829a36dd'; import { createDiagOverlay } from './platform/diag-overlay.js?v=829a36dd'; import { readGameFlags } from './platform/game-flags.js?v=829a36dd'; import { createPerfOverlay } from './platform/perf-overlay.js?v=829a36dd'; import { createDevPanel } from './platform/dev-panel.js?v=829a36dd';
-import { createMissilePool, launchDart, advanceDart } from './missiles.js?v=829a36dd';
-import { MISSILE_LAUNCH_ELEVATION } from './content/missile-defaults.js?v=829a36dd';
-import { CONTENT } from './content/runtime.js?v=829a36dd';
-import { preloadSentryTerraformer, makeSentryTerraformer } from './terraformer.js?v=829a36dd';
-import { GAME_START_BIOMASS, SINK, tollFor, breachGrant, debriefAffordable } from './campaign.js?v=829a36dd';
-import { record } from './diagnostics.js?v=829a36dd';
-import { storage as localStorage } from './storage.js?v=829a36dd';
+import { createShowcase } from './fx/showcase.js?v=ceff5e94';
+import { showcaseOn } from './platform/showcase-entry.js?v=ceff5e94';
+import { createHullLoss } from './fx/hull-loss.js?v=ceff5e94'; import { bayContainers, syncBays } from './fx/life-bays.js?v=ceff5e94';
+import { METRES_PER_CELL, arcToMetres, metresToArc } from './core/stage-units.js?v=ceff5e94';
+import { pickMissileTarget, missileLimits } from './domain/missile-targeting.js?v=ceff5e94';
+import { createRunContext } from './domain/run-context.js?v=ceff5e94'; import { trunkCells, simDirective, simPick } from './domain/sim-policy.js?v=ceff5e94'; import { towerPerch } from './domain/tower-perch.js?v=ceff5e94';
+import { createRunTimers } from './platform/run-timers.js?v=ceff5e94'; import { createSimRun } from './platform/sim-run.js?v=ceff5e94'; import { createDiagOverlay } from './platform/diag-overlay.js?v=ceff5e94'; import { readGameFlags } from './platform/game-flags.js?v=ceff5e94'; import { createPerfOverlay } from './platform/perf-overlay.js?v=ceff5e94'; import { createDevPanel } from './platform/dev-panel.js?v=ceff5e94';
+import { createMissilePool, launchDart, advanceDart } from './missiles.js?v=ceff5e94';
+import { MISSILE_LAUNCH_ELEVATION } from './content/missile-defaults.js?v=ceff5e94';
+import { CONTENT } from './content/runtime.js?v=ceff5e94';
+import { preloadSentryTerraformer, makeSentryTerraformer } from './terraformer.js?v=ceff5e94';
+import { GAME_START_BIOMASS, SINK, tollFor, breachGrant, debriefAffordable } from './campaign.js?v=ceff5e94';
+import { record } from './diagnostics.js?v=ceff5e94';
+import { storage as localStorage } from './storage.js?v=ceff5e94';
 // td-tab.js — the game controller: one closure (initTdTab) that owns the world, the frame loop and the wiring between them. The
 // rules live in src/core, src/domain and src/content and the composition in src/fx and src/platform (docs/ARCHITECTURE.md). The
 // story is the game (docs/STATE.md); the campaign board under it serves the acceptance runs and the wave simulator.
 
-import { makeStuck } from './domain/hull-stuck.js?v=829a36dd'; import { highlightSeat } from './fx/seat-highlight.js?v=829a36dd'; import { HULL_STUCK, TANK_PLASMA } from './content/tank.js?v=829a36dd'; import { QUIVER_SPLASH, STORY_SENTRIES } from './content/sentries.js?v=829a36dd';   // the hull gets unstuck (owner, 2026-10-02)
-import { makeKick } from './domain/hover-kick.js?v=829a36dd'; import { showMission } from './fx/mission-card.js?v=829a36dd'; 
-import * as THREE from '../vendor/three.module.js?v=829a36dd';
-import GUI from '../vendor/lil-gui.esm.js?v=829a36dd';
-import { bfsDist, BLOCKED, PATH, ROOM } from './dungeon.js?v=829a36dd';
-import { buildGameWorld, readStoryQuery, STORY_SOUNDS, takeControlPose } from './platform/story-world.js?v=829a36dd';
-import { createUnlockHost } from './fx/story-views.js?v=829a36dd';
-import { buildReadout } from './fx/build-readout.js?v=829a36dd';
-import { createStoryMonitor } from './fx/story-monitor.js?v=829a36dd';
-import { createDaylight } from './fx/daylight.js?v=829a36dd';
-import { createStoryScope, createScopeFeed } from './fx/story-scope.js?v=829a36dd';
-import { createSyntheticModal } from './fx/synthetic-modal.js?v=829a36dd';
-import { mulberry32, randomSeed } from './rng.js?v=829a36dd';
-import { createLaserStation, structureLostHtml } from './fx/laser-station.js?v=829a36dd'; import { LASER_GAME } from './content/orbital-laser.js?v=829a36dd'; import { createGlossaryModals } from './fx/glossary-modals.js?v=829a36dd'; import { makeTriadIcon, glossCard, GAMEPLAY_TIPS } from './fx/briefing-cards.js?v=829a36dd';
-import { computeBerths, berthIndexFor } from './berths.js?v=829a36dd'; import { createProgrammeHost } from './fx/programme-host.js?v=829a36dd'; import { strikeFallPose, droneRidePose, bastionPose, tankViewPose } from './domain/camera-goal.js?v=829a36dd'; import { createShopRadial } from './fx/shop-radial.js?v=829a36dd'; import { berthRun, berthHeading, deployU, easeDeploy, deployFraming } from './domain/deploy-path.js?v=829a36dd';
-import { createSkyRig } from './fx/sky-rig.js?v=829a36dd'; import { createIsaoMoments } from './fx/isao-moments.js?v=829a36dd'; import { createColonyTick } from './fx/colony-tick.js?v=829a36dd'; import { createAutoSupport } from './fx/auto-support.js?v=829a36dd';
-import { createCanyonRun } from './fx/canyon-run.js?v=829a36dd'; import { createEndingHost } from './fx/ending-host.js?v=829a36dd'; import { createIsaoWorker } from './fx/isao-worker.js?v=829a36dd'; import { createHullDrive } from './fx/hull-drive.js?v=829a36dd'; import { createTowerCombat } from './fx/tower-combat.js?v=829a36dd';
-import { createEnemyStep } from './fx/enemy-step.js?v=829a36dd'; import { createTankLaser } from './fx/tank-laser.js?v=829a36dd'; import { createPlasmaBeams } from './fx/plasma-beams.js?v=829a36dd'; import { createWarnRing } from './fx/warn-ring.js?v=829a36dd'; import { createHullHost } from './fx/hull-issue.js?v=829a36dd'; import { createWaveCard } from './fx/wave-card.js?v=829a36dd'; import { createTankInput } from './platform/tank-input.js?v=829a36dd'; import { createBuildPointer } from './fx/build-pointer.js?v=829a36dd';
-import { createStrikeConsole } from './fx/strike-console.js?v=829a36dd'; import { createTerraformerYard } from './fx/terraformer-yard.js?v=829a36dd';
-import { wantsSecondary, shellsForAll } from './autofire.js?v=829a36dd';
-import { PLASMA_DEFAULTS } from './beamdraw.js?v=829a36dd';
-import { sub3, add3, scale3, dot3, cross3, norm3, len3, dist3, segKey } from './vec3.js?v=829a36dd';
-import { CREATURES, waveJelly } from './creatures.js?v=829a36dd';
-import { brief, lineDwell, BRIEFS } from './isaobriefs.js?v=829a36dd'; import { lookIsao } from './fx/isao-look.js?v=829a36dd';
-import { drawEmotion } from './emotions.js?v=829a36dd';
+import { makeStuck } from './domain/hull-stuck.js?v=ceff5e94'; import { highlightSeat } from './fx/seat-highlight.js?v=ceff5e94'; import { HULL_STUCK, TANK_PLASMA } from './content/tank.js?v=ceff5e94'; import { QUIVER_SPLASH, STORY_SENTRIES } from './content/sentries.js?v=ceff5e94';   // the hull gets unstuck (owner, 2026-10-02)
+import { makeKick } from './domain/hover-kick.js?v=ceff5e94'; import { showMission } from './fx/mission-card.js?v=ceff5e94'; 
+import * as THREE from '../vendor/three.module.js?v=ceff5e94';
+import GUI from '../vendor/lil-gui.esm.js?v=ceff5e94';
+import { bfsDist, BLOCKED, PATH, ROOM } from './dungeon.js?v=ceff5e94';
+import { buildGameWorld, readStoryQuery, STORY_SOUNDS, takeControlPose } from './platform/story-world.js?v=ceff5e94';
+import { createUnlockHost } from './fx/story-views.js?v=ceff5e94';
+import { buildReadout } from './fx/build-readout.js?v=ceff5e94';
+import { createStoryMonitor } from './fx/story-monitor.js?v=ceff5e94';
+import { createDaylight } from './fx/daylight.js?v=ceff5e94';
+import { createStoryScope, createScopeFeed } from './fx/story-scope.js?v=ceff5e94';
+import { createSyntheticModal } from './fx/synthetic-modal.js?v=ceff5e94';
+import { mulberry32, randomSeed } from './rng.js?v=ceff5e94';
+import { createLaserStation, structureLostHtml } from './fx/laser-station.js?v=ceff5e94'; import { LASER_GAME } from './content/orbital-laser.js?v=ceff5e94'; import { createGlossaryModals } from './fx/glossary-modals.js?v=ceff5e94'; import { makeTriadIcon, glossCard, GAMEPLAY_TIPS } from './fx/briefing-cards.js?v=ceff5e94';
+import { computeBerths, berthIndexFor } from './berths.js?v=ceff5e94'; import { createProgrammeHost } from './fx/programme-host.js?v=ceff5e94'; import { strikeFallPose, droneRidePose, bastionPose, tankViewPose } from './domain/camera-goal.js?v=ceff5e94'; import { createShopRadial } from './fx/shop-radial.js?v=ceff5e94'; import { berthRun, berthHeading, deployU, easeDeploy, deployFraming } from './domain/deploy-path.js?v=ceff5e94';
+import { createSkyRig } from './fx/sky-rig.js?v=ceff5e94'; import { createIsaoMoments } from './fx/isao-moments.js?v=ceff5e94'; import { createColonyTick } from './fx/colony-tick.js?v=ceff5e94'; import { createAutoSupport } from './fx/auto-support.js?v=ceff5e94';
+import { createCanyonRun } from './fx/canyon-run.js?v=ceff5e94'; import { createEndingHost } from './fx/ending-host.js?v=ceff5e94'; import { createIsaoWorker } from './fx/isao-worker.js?v=ceff5e94'; import { createHullDrive } from './fx/hull-drive.js?v=ceff5e94'; import { createTowerCombat } from './fx/tower-combat.js?v=ceff5e94';
+import { createEnemyStep } from './fx/enemy-step.js?v=ceff5e94'; import { createTankLaser } from './fx/tank-laser.js?v=ceff5e94'; import { createPlasmaBeams } from './fx/plasma-beams.js?v=ceff5e94'; import { createWarnRing } from './fx/warn-ring.js?v=ceff5e94'; import { createHullHost } from './fx/hull-issue.js?v=ceff5e94'; import { createWaveCard } from './fx/wave-card.js?v=ceff5e94'; import { createTankInput } from './platform/tank-input.js?v=ceff5e94'; import { createBuildPointer } from './fx/build-pointer.js?v=ceff5e94';
+import { createStrikeConsole } from './fx/strike-console.js?v=ceff5e94'; import { createTerraformerYard } from './fx/terraformer-yard.js?v=ceff5e94';
+import { wantsSecondary, shellsForAll } from './autofire.js?v=ceff5e94';
+import { PLASMA_DEFAULTS } from './beamdraw.js?v=ceff5e94';
+import { sub3, add3, scale3, dot3, cross3, norm3, len3, dist3, segKey } from './vec3.js?v=ceff5e94';
+import { CREATURES, waveJelly } from './creatures.js?v=ceff5e94';
+import { brief, lineDwell, BRIEFS } from './isaobriefs.js?v=ceff5e94'; import { lookIsao } from './fx/isao-look.js?v=ceff5e94';
+import { drawEmotion } from './emotions.js?v=ceff5e94';
 import { ACHIEVEMENTS, ACHV_GROUPS, achievement, blankRun, earned, freshlyEarned,
   sanitiseRecord }
-  from './achievements.js?v=829a36dd';
-import { applyFontPack, currentFontPack, loadTypeFeel } from './fonts.js?v=829a36dd';
-import { UNITS, buildUnit, buildCreature, preloadMork, makeShieldShell, preloadContainer, makeContainerFixture, makeBulletCloud, makeRewardSolid, makeShellSolid, makeDebris, makeDotBurst, makeHeartCloud, makeDotEnemy } from './units.js?v=829a36dd';
-import { LOOKS } from './looks.js?v=829a36dd';
-import { makeCellIndex } from './cellindex.js?v=829a36dd';
-import { CREATURE_TINTS, ENEMY_SPEC, INTROS } from './enemyspec.js?v=829a36dd';
-import { PICKUPS } from './pickups.js?v=829a36dd'; import { hushRotor } from './fx/rotor-voice.js?v=829a36dd';
-import { rankFor, rankLabel, badgeSVG } from './ranks.js?v=829a36dd';
-import { beamStep, isBeamStep } from './beamranks.js?v=829a36dd';
-import { marchToTerrain, roundEnd, marchAlongArc, arcOf } from './domain/round-path.js?v=829a36dd';
-import { impactOf } from './sentryfx.js?v=829a36dd'; // the package's muzzle recipe is the one master setting
-import { makeSeekerMesh, aimSeeker } from './shotfx.js?v=829a36dd';
+  from './achievements.js?v=ceff5e94';
+import { applyFontPack, currentFontPack, loadTypeFeel } from './fonts.js?v=ceff5e94';
+import { UNITS, buildUnit, buildCreature, preloadMork, makeShieldShell, preloadContainer, makeContainerFixture, makeBulletCloud, makeRewardSolid, makeShellSolid, makeDebris, makeDotBurst, makeHeartCloud, makeDotEnemy } from './units.js?v=ceff5e94';
+import { LOOKS } from './looks.js?v=ceff5e94';
+import { makeCellIndex } from './cellindex.js?v=ceff5e94';
+import { CREATURE_TINTS, ENEMY_SPEC, INTROS } from './enemyspec.js?v=ceff5e94';
+import { PICKUPS } from './pickups.js?v=ceff5e94'; import { hushRotor } from './fx/rotor-voice.js?v=ceff5e94';
+import { rankFor, rankLabel, badgeSVG } from './ranks.js?v=ceff5e94';
+import { beamStep, isBeamStep } from './beamranks.js?v=ceff5e94';
+import { marchToTerrain, roundEnd, marchAlongArc, arcOf } from './domain/round-path.js?v=ceff5e94';
+import { impactOf } from './sentryfx.js?v=ceff5e94'; // the package's muzzle recipe is the one master setting
+import { makeSeekerMesh, aimSeeker } from './shotfx.js?v=ceff5e94';
 import { SHIELD_TUNE, SHIELD_KNOBS, makeShield, charge as chargeShield,
   deploy as deployShield, tickShield, stepShieldFrame, restockShield, towerOffline,
-  makeArrayStation, refillArray } from './shield.js?v=829a36dd'; import { SHIELD_ARRAY } from './content/shield-array.js?v=829a36dd'; import { makePadRing, glowPadRing, shieldPanel } from './fx/shield-array.js?v=829a36dd'; import { createRamReadout } from './fx/ram-readout.js?v=829a36dd';
-import { deepLink, wireDeepLink } from './deeplink.js?v=829a36dd';
-import { parseLabQuery } from './lab.js?v=829a36dd';
-import { bakeGalaxyCube } from './galaxybake.js?v=829a36dd';
-import { SKY_PRESET } from './galaxyseed.js?v=829a36dd';
-import { makeScore } from './score.js?v=829a36dd';
-import { TOWERS, TOWER_BY_KEY, MAX_TIER, upgradeCost, effectiveStats as baseEffectiveStats, shotInterval, unlockedTowerKeys, starterTower, ROSTER } from './towers.js?v=829a36dd';
-import { makeEconomy, sellRefund } from './economy.js?v=829a36dd';
-import { pickTier } from './perftier.js?v=829a36dd';
-import { applyWeatheredMaterial } from './fx/weathered-material.js?v=829a36dd'; import { sentryBookFull } from './domain/sentry-cap.js?v=829a36dd'; import { setTierPlate } from './fx/tier-plate.js?v=829a36dd';
-import { STICK, stickVector, knobOffset } from './stick.js?v=829a36dd';
-import { makeBloom } from './postfx.js?v=829a36dd';
-import { TANK_FEEL, makeTankFeel, stepTankFeel, landTankFeel, fireTankFeel, applyTankFeel, applyTankHealth } from './tankfeel.js?v=829a36dd';
-import { FEEL } from './feelstore.js?v=829a36dd';
+  makeArrayStation, refillArray } from './shield.js?v=ceff5e94'; import { SHIELD_ARRAY } from './content/shield-array.js?v=ceff5e94'; import { makePadRing, glowPadRing, shieldPanel } from './fx/shield-array.js?v=ceff5e94'; import { createRamReadout } from './fx/ram-readout.js?v=ceff5e94';
+import { deepLink, wireDeepLink } from './deeplink.js?v=ceff5e94';
+import { parseLabQuery } from './lab.js?v=ceff5e94';
+import { bakeGalaxyCube } from './galaxybake.js?v=ceff5e94';
+import { SKY_PRESET } from './galaxyseed.js?v=ceff5e94';
+import { makeScore } from './score.js?v=ceff5e94';
+import { TOWERS, TOWER_BY_KEY, MAX_TIER, upgradeCost, effectiveStats as baseEffectiveStats, shotInterval, unlockedTowerKeys, starterTower, ROSTER } from './towers.js?v=ceff5e94';
+import { makeEconomy, sellRefund } from './economy.js?v=ceff5e94';
+import { pickTier } from './perftier.js?v=ceff5e94';
+import { applyWeatheredMaterial } from './fx/weathered-material.js?v=ceff5e94'; import { sentryBookFull } from './domain/sentry-cap.js?v=ceff5e94'; import { setTierPlate } from './fx/tier-plate.js?v=ceff5e94';
+import { STICK, stickVector, knobOffset } from './stick.js?v=ceff5e94';
+import { makeBloom } from './postfx.js?v=ceff5e94';
+import { TANK_FEEL, makeTankFeel, stepTankFeel, landTankFeel, fireTankFeel, applyTankFeel, applyTankHealth } from './tankfeel.js?v=ceff5e94';
+import { FEEL } from './feelstore.js?v=ceff5e94';
 import { makeStrike, makeStrikeParams, grantStrikes, stepStrike,
-  stepFall, fallProgress } from './strike.js?v=829a36dd'; import { makeGunship, onStation, phaseLeft, selectGun, startStation } from './domain/gunship.js?v=829a36dd'; import { GUNSHIP_GUNS, GUNSHIP_ORBIT } from './content/gunship.js?v=829a36dd'; import { createGunshipBriefing } from './fx/gunship-briefing.js?v=829a36dd'; import { createFoundryFx } from './fx/foundry-fx.js?v=829a36dd'; import { createExplosions } from './fx/explosions.js?v=829a36dd';
-import { createRadarScope } from './fx/radar-scope.js?v=829a36dd'; import { createTowerAim } from './fx/tower-aim.js?v=829a36dd'; import { buildVarsModal } from './fx/vars-modal.js?v=829a36dd'; import { startVictoryPull } from './fx/victory-pull.js?v=829a36dd'; import { createShowcaseHooks } from './fx/showcase-hooks.js?v=829a36dd'; import { createGunshipRig } from './fx/gunship-rig.js?v=829a36dd';
-import { makeA6, arc as a6Arc } from './heptapod.js?v=829a36dd';
-import { DEFAULT_TOWER_LOOK, buildTowerLook, preloadLook, lookReady } from './towerlooks.js?v=829a36dd';
-import { makeAudio } from './audio.js?v=829a36dd'; import { isaoSay } from './fx/isao-voice.js?v=829a36dd'; import { createCrowdGate } from './fx/crowd-gate.js?v=829a36dd'; import { shedSquad, squadDamage } from './fx/squads.js?v=829a36dd';
+  stepFall, fallProgress } from './strike.js?v=ceff5e94'; import { makeGunship, onStation, phaseLeft, selectGun, startStation } from './domain/gunship.js?v=ceff5e94'; import { GUNSHIP_GUNS, GUNSHIP_ORBIT } from './content/gunship.js?v=ceff5e94'; import { createGunshipBriefing } from './fx/gunship-briefing.js?v=ceff5e94'; import { createFoundryFx } from './fx/foundry-fx.js?v=ceff5e94'; import { createExplosions } from './fx/explosions.js?v=ceff5e94';
+import { createRadarScope } from './fx/radar-scope.js?v=ceff5e94'; import { createTowerAim } from './fx/tower-aim.js?v=ceff5e94'; import { buildVarsModal } from './fx/vars-modal.js?v=ceff5e94'; import { startVictoryPull } from './fx/victory-pull.js?v=ceff5e94'; import { createShowcaseHooks } from './fx/showcase-hooks.js?v=ceff5e94'; import { createGunshipRig } from './fx/gunship-rig.js?v=ceff5e94';
+import { makeA6, arc as a6Arc } from './heptapod.js?v=ceff5e94';
+import { DEFAULT_TOWER_LOOK, buildTowerLook, preloadLook, lookReady } from './towerlooks.js?v=ceff5e94';
+import { makeAudio } from './audio.js?v=ceff5e94'; import { isaoSay } from './fx/isao-voice.js?v=ceff5e94'; import { createCrowdGate } from './fx/crowd-gate.js?v=ceff5e94'; import { shedSquad, squadDamage } from './fx/squads.js?v=ceff5e94';
 
 export function initTdTab(root) {
   const flags = readGameFlags();   // THE URL FLAGS, read once (src/platform/game-flags.js)

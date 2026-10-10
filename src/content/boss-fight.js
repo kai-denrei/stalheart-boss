@@ -25,13 +25,17 @@ export const BOSS_FIGHT = freeze({
     speed: 14, flee: 32,   // his cruise round the creature, and the straight back-off when an arm closes (m/s); the flee 32 (24 before wave B, 2026-10-09) so he outruns the creature's base pace
     panic: 12,             // a floor contact, or a body node under `panicHeight`, this close makes him flee
     panicHeight: 6,        // metres: a body node below this is an arm near the ground for his panic
+    panicExit: 2,          // metres: the panic ends only once every low arm is this far beyond `panic` (hysteresis: it no longer flickers at the ring)
+    panicDwell: 0.25,      // seconds: and once it has lasted this long
+    panicAccel: 50,        // m/s2: the most his velocity changes by in a second fleeing an arm or a ring, or escaping from under the creature (owner, 2026-10-10: the shake when close; finite, so no zigzag); other hops take `accel`
+    climbAccel: 35,        // m/s2: a hop's climb and descent ease their vertical speed (at most `hopClimb`) by this much a second
     turn: 3,               // his heading eases at this many radians a second
     altitude: 17.75,       // metres above the surface: src/fx/isao-worker.js ISAO_ALT 3.4 is in wall-heights (td-tab wallHeight 0.03), so 0.102 world units, plus half a cell (cellSide 0.08 / 2) = 0.142; a 10 m cell is 0.08, so 125 m a world unit
     caught: 3, caughtFor: 0.5,   // a floor contact within this many metres of his ground point for this long takes him
     // the erratic flight (2026-10-09-boss-bait-arena-and-feel-design.md, item 3): `erratic` 0..1 scales every swing below, 0 is the smooth flight above
     erratic: 1,            // default on in bait mode
     speedMin: 8, speedMax: 26,   // bursts and brakes: his speed target is drawn from this band (at erratic 1; the cruise `speed` is the centre of the scale)
-    accel: 30,             // m/s2: the most his speed changes by (the panic dash at `flee` is exempt)
+    accel: 30,             // m/s2: the most his velocity changes by in a second cruising (a burst, a brake, a turn: every change of the wanted point) and hopping; fleeing takes `panicAccel`
     surgeMin: 0.5, surgeMax: 1.5,   // seconds: a new speed target this often
     jink: 40 * Math.PI / 180,       // radians: his course is turned off the wanted point by up to this much, eased at `turn`
     jinkMin: 0.6, jinkMax: 2,       // seconds: a new jink target this often
@@ -110,14 +114,17 @@ export const BOSS_FIGHT = freeze({
   // fifty Reeds in the seat it ran the wave's clock at 0.053 and 0.068 against 0.048 and 0.044 with 13 and 27 off-screen, every one crawling, and at ten none or two are off-screen, 2026-10-09)
   // THE SECOND PASS (owner, 2026-10-10: "Have the Reed and the boss come out of a tremor in the center ... start with 120 HZ when there are more than 10 Reeds, and
   // switch back to 240HZ when there are fewer ... a low-poly dead Reed Carcass that stays and decays"). `emerge`: each Reed comes up at the arena's centre (`jitter` m
-  // off it), `gap` s after the one before; a tremor (the seat's camera shaken, dust, the quake's rumble) `lead` s, then it rises out of the ground
+  // off it), `gap` s after the one before, out of the game's own sinkhole (owner, 2026-10-10: "the initial Tremor is not just the ground shaking, it is our sinkhole
+  // animation from the game mode"; src/game-breaches.js, opened at the centre `sinkhole.reeds` cells wide for the Reeds and `sinkhole.boss` for the boss, the first
+  // turn once it has opened by the game's own rule, `breaches.ready`; the Reeds' sealed with the game's rubble once every one is up), `lead` s, then it rises out of the ground
   // over `rise` s (drawn from `depth` times its height below), walks out to `fan` m from the centre for at most `fanFor` s and hunts; Isao's planner keeps `keep` m off
   // the centre while any Reed is still to come up (`clear` while the boss rises). `coarse`: the Reeds' solver steps at 1 / `hz` s while more than `above` stand (`on`, the
   // panel's switch), the kit's 1/240 s otherwise; the boss always at the kit's. `carcass`: laid down, a dead Reed's tet cage surface (flat shaded) darkens by `dark`,
   // flattens to `flat` of its height and sinks `sink` of it over `decay` s, its thermal warmth gone by `cold` of the decay; then it goes; at most `max` lie, the oldest
   // going first
-  wave: { count: 10, reedHealth: 20, size: 15, corpse: 2, clear: 45, budget: 10, lod: false,
+  wave: { count: 20, reedHealth: 20, size: 15, corpse: 2, clear: 45, budget: 10, lod: false,
     emerge: { gap: 0.6, lead: 0.35, rise: 1.5, depth: 1.15, jitter: 4, fan: 20, fanFor: 2.5, keep: 25 },
+    sinkhole: { reeds: 1, boss: 2 },   // the game's sinkhole's scale in cells (the game opens every breach one cell wide: a 10 m hole); the boss, 40 m across, comes out of one twice that
     coarse: { on: true, above: 10, hz: 120 },
     carcass: { decay: 60, max: 30, dark: 0.75, flat: 0.4, sink: 0.35, cold: 0.6 } },
   bounds: { radius: 120, baitMargin: 10, creatureMargin: 15 },   // the arena disc round the origin: Isao's wanted point stays radius - baitMargin in, the creature's target radius - creatureMargin, the body's nodes are pushed back inside radius

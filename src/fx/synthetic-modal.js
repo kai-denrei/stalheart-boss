@@ -2,12 +2,12 @@
 // seven CRT neural-net visualisations, vendored as pure render functions)
 // as a modal over the game, with his lines above the panels. Rendering runs
 // only while the modal is open; CONTINUE or Escape closes it.
-import { applyScanlines, staticNoise } from '../../vendor/synthetic-learningx58/crt.js?v=829a36dd';
-import nbbXor from '../../vendor/synthetic-learningx58/nbb-xor.js?v=829a36dd';
-import twoSeq from '../../vendor/synthetic-learningx58/two-sequence.js?v=829a36dd';
-import emSeg from '../../vendor/synthetic-learningx58/em-segmentation.js?v=829a36dd';
-import linTfm from '../../vendor/synthetic-learningx58/linear-transformers.js?v=829a36dd';
-import { isaoSpeak } from './isao-voice.js?v=829a36dd';
+import { applyScanlines, staticNoise } from '../../vendor/synthetic-learningx58/crt.js?v=ceff5e94';
+import nbbXor from '../../vendor/synthetic-learningx58/nbb-xor.js?v=ceff5e94';
+import twoSeq from '../../vendor/synthetic-learningx58/two-sequence.js?v=ceff5e94';
+import emSeg from '../../vendor/synthetic-learningx58/em-segmentation.js?v=ceff5e94';
+import linTfm from '../../vendor/synthetic-learningx58/linear-transformers.js?v=ceff5e94';
+import { isaoSpeak } from './isao-voice.js?v=ceff5e94';
 // four of the seven (owner's pick): the oscilloscope pair, the Hinton diagram, the fast-weight pairs and the segmentation stack.
 // The other three stay in the vendored library for the workshop; a modal reads better at four panels twice the size.
 const PANELS = [twoSeq, nbbXor, linTfm, emSeg];

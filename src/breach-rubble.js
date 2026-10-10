@@ -1,4 +1,4 @@
-import * as THREE from '../vendor/three.module.js?v=829a36dd';
+import * as THREE from '../vendor/three.module.js?v=ceff5e94';
 
 // All sealed holes share one draw call. Matrices change only while a cap is settling.
 // THE ROCKS PILE UP (owner, 2026-09-14): a new cap does not appear whole. Each rock drops in from above the hole and

@@ -1,8 +1,8 @@
 // The docs over the current page: FunMap, roadmap, devlog and practices, fetched from the files they already are, so
 // a `npm run log -- render` or an edit to docs/FUNMAP.md is the only way this ever changes. The page underneath keeps
 // running. Esc or the close button hides it. Replaces the workshop's notes tab.
-import { NAV_DOCS } from '../content/nav.js?v=829a36dd';
-import { markdown } from '../core/markdown.js?v=829a36dd';
+import { NAV_DOCS } from '../content/nav.js?v=ceff5e94';
+import { markdown } from '../core/markdown.js?v=ceff5e94';
 
 let overlay = null;
 

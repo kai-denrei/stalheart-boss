@@ -1,5 +1,5 @@
-import { ParticleSystem } from './ParticleSystem.js?v=829a36dd';
-import { settings } from '../config/settings.js?v=829a36dd';
+import { ParticleSystem } from './ParticleSystem.js?v=ceff5e94';
+import { settings } from '../config/settings.js?v=ceff5e94';
 
 /**
  * Owns every particle system in the app.

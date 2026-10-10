@@ -1,6 +1,6 @@
 // THE NEXT SEAT, HIGHLIGHTED (owner, 2026-10-02: "switch from Rotor to Quiver should zoom out of the Rotor, highlight the Quiver, and obviously
 // enter its POV"). A bright ring pulsing round the mount the hand-over is going to, for the length of the hand-over shot.
-import * as THREE from '../../vendor/three.module.js?v=829a36dd';
+import * as THREE from '../../vendor/three.module.js?v=ceff5e94';
 
 // at: the mount's perch (scene units), up: its normal, size: a cell; returns dispose()
 export function highlightSeat(scene, at, up, size, color = 0x6fe6ff) {

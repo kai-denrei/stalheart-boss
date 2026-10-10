@@ -2,8 +2,8 @@
 // (src/fx/shield-array.js): a ring of dots on the ground at the island's centre, breathing while the armory stands, pulsing while the
 // hull sits on it and the rack is short. Shells come one at a time at BASE_PERKS.armory.shellsPerSecond; until now they came only
 // from triads on the ground. Presentation and the pad's own clock; the controller's rack is the host's to add to.
-import { makePadRing, glowPadRing } from './shield-array.js?v=829a36dd';
-import { metresToArc } from '../core/stage-units.js?v=829a36dd';
+import { makePadRing, glowPadRing } from './shield-array.js?v=ceff5e94';
+import { metresToArc } from '../core/stage-units.js?v=ceff5e94';
 
 const arcBetween = (a, b) => { const l = Math.hypot(a[0], a[1], a[2]) * Math.hypot(b[0], b[1], b[2]) || 1; return Math.acos(Math.max(-1, Math.min(1, (a[0] * b[0] + a[1] * b[1] + a[2] * b[2]) / l))); };
 

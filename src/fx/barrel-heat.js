@@ -1,7 +1,7 @@
 // Paints a sentry's barrels with its heat. The Rotor's barrels are the
 // 'Edge' meshes under its ROTOR pivot; their materials are cloned once per
 // model so one hot mount never tints another.
-import { heatGlow } from '../core/heat.js?v=829a36dd';
+import { heatGlow } from '../core/heat.js?v=ceff5e94';
 export function paintBarrelHeat(obj, heat) {
   const mats = obj.userData.heatMats ??= (() => { const out = []; obj.getObjectByName('ROTOR')?.traverse((o) => { if (o.isMesh && o.material && (o.material.name === 'Edge' || /barrel/i.test(o.name))) { o.material = o.material.clone(); out.push(o.material); } }); return out; })();
   if (!mats.length) return;

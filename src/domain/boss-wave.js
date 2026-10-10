@@ -15,7 +15,7 @@
 // Reed's carcass by its age (darkened, flattened, sunk and cooled over `carcass.decay` s, then gone); `keepOut` a point pushed out of a disc (Isao's planner
 // kept off the centre while something emerges there).
 
-import { splashDamage } from './gunship.js?v=829a36dd';
+import { splashDamage } from './gunship.js?v=ceff5e94';
 
 const dist = (a, b) => Math.hypot(a[0] - b[0], a[1] - b[1]);
 const nearestTo = (contacts, at) => { let d = Infinity; for (const p of contacts ?? []) d = Math.min(d, dist(p, at)); return d; };

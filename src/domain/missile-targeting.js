@@ -1,4 +1,4 @@
-import { makeLock, stepLock } from './lockon.js?v=829a36dd';
+import { makeLock, stepLock } from './lockon.js?v=ceff5e94';
 
 export const missileGroundDistance = (from, target) => Math.hypot(target[0] - from[0], target[2] - from[2]);
 // Acos/arc conversions can land a few ulps beyond an inclusive endpoint.

@@ -1,6 +1,6 @@
 // Ported from lab-creatures src/monster/gait.ts (kai-denrei, f2a4f89, export of 2026-10-08; derived from Jelly Baby by scottstts; GPL-3.0, see ./LICENSE), types stripped; the solver, the gait, the pursuit and the feeding are unchanged.
-import { Vector3 } from '../../../vendor/three.module.js?v=829a36dd';
-import { DEFAULT_MOTION } from './motion-settings.js?v=829a36dd';
+import { Vector3 } from '../../../vendor/three.module.js?v=ceff5e94';
+import { DEFAULT_MOTION } from './motion-settings.js?v=ceff5e94';
 
 const smooth=(v)=>{v=Math.max(0,Math.min(1,v));return v*v*(3-2*v);};
 

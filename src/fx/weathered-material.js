@@ -12,8 +12,8 @@
 // is a per-name TINT multiplying the albedo map, which is what a
 // material's colour is once a map is bound. Five bakes for five rungs would
 // be five seconds and sixty megabytes for a distinction a multiplier makes.
-import * as THREE from '../../vendor/three.module.js?v=829a36dd';
-import { bakeWeatheredMetal } from '../weathered.js?v=829a36dd';
+import * as THREE from '../../vendor/three.module.js?v=ceff5e94';
+import { bakeWeatheredMetal } from '../weathered.js?v=ceff5e94';
 
 // Which preset each named surface wears, and how bright a rung it is. The
 // tints are the RING_REPAINT ladder's ratios (armour 0xc2c8ce down to

@@ -1,5 +1,5 @@
-import { exportRecords, importRecords } from './storage.js?v=829a36dd';
-import { downloadJSON } from './diagnostics.js?v=829a36dd';
+import { exportRecords, importRecords } from './storage.js?v=ceff5e94';
+import { downloadJSON } from './diagnostics.js?v=ceff5e94';
 const status = document.getElementById('settings-status');
 const act = fn => { try { fn(); } catch (e) { status.textContent = e.message; } };
 document.getElementById('export-records').onclick = () => act(() => downloadJSON(exportRecords(), 'stalheart-records.json'));

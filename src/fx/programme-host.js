@@ -17,14 +17,14 @@
 // neighbours (danger, from Isao's moments; hullHost, the first hull's host, src/fx/hull-issue.js createHullHost, one per story),
 // what it rebinds as getters (story, sectorRun, waveActive, dungeon, tdFullTags, storyBase, pilotMode, briefQ, graph, cellSide,
 // enemies, t, storyViews) and the lets the members write as setters (setBerths).
-import { BLOCKED } from '../dungeon.js?v=829a36dd';
-import { BASE_REPAIR } from '../content/base-programme.js?v=829a36dd';
-import { due as programmeDue, begin as programmeBegin, finish as programmeFinish, hasPerk as programmeHas, perks as programmePerks } from '../domain/build-programme.js?v=829a36dd';
-import { createArcLaunch } from './arc-launch.js?v=829a36dd';
+import { BLOCKED } from '../dungeon.js?v=ceff5e94';
+import { BASE_REPAIR } from '../content/base-programme.js?v=ceff5e94';
+import { due as programmeDue, begin as programmeBegin, finish as programmeFinish, hasPerk as programmeHas, perks as programmePerks } from '../domain/build-programme.js?v=ceff5e94';
+import { createArcLaunch } from './arc-launch.js?v=ceff5e94';
 const LAUNCH_SHOT = 22;   // seconds of the first launch's cinematic: the charge, the release, the petals unfolding
-import { isaoSpeak } from './isao-voice.js?v=829a36dd';
-import * as THREE from '../../vendor/three.module.js?v=829a36dd';
-import { nextRepair, shotHoles, rimHoles } from '../domain/repair-orders.js?v=829a36dd';
+import { isaoSpeak } from './isao-voice.js?v=ceff5e94';
+import * as THREE from '../../vendor/three.module.js?v=ceff5e94';
+import { nextRepair, shotHoles, rimHoles } from '../domain/repair-orders.js?v=ceff5e94';
 
 export function createProgrammeHost(c) {
   const { orders, breachQueue, breachedCells, gunshipRig, showBrief, spawnIsao, updateHud, rebuildAfterBreach, recomputePortalDist, adoptBays } = c;

@@ -2,10 +2,10 @@
 // Wireframe for all units"). The Units lab casts its machines through the game's own builders; the satellites and the gunship have no
 // builder, only a GLB the briefings and the showcase turn as a wireframe (src/content/showcase.js). This loads such a GLB once and hands
 // out clones, and turns any bench object into the briefings' pale cyan wireframe and back. No DOM; the lab owns the buttons.
-import * as THREE from '../../vendor/three.module.js?v=829a36dd';
-import { GLTFLoader } from '../../vendor/GLTFLoader.js?v=829a36dd';
-import { MeshoptDecoder } from '../../vendor/meshopt_decoder.module.js?v=829a36dd';
-import { cloneSkinned } from './skinned-clone.js?v=829a36dd';
+import * as THREE from '../../vendor/three.module.js?v=ceff5e94';
+import { GLTFLoader } from '../../vendor/GLTFLoader.js?v=ceff5e94';
+import { MeshoptDecoder } from '../../vendor/meshopt_decoder.module.js?v=ceff5e94';
+import { cloneSkinned } from './skinned-clone.js?v=ceff5e94';
 
 const WIRE = 0xbfe6ea;
 const loaded = new Map();   // url -> Promise<THREE.Group>

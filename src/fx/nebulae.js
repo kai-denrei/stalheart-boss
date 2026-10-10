@@ -5,7 +5,7 @@
 // zoom, camera and moment). Sixty-four steps of three-dimensional noise a pixel is not a thing to run every frame under the game, so each
 // is rendered ONCE (src/fx/accretion.js renderShaderStill) and hung in the game's sky as an additive plane (skyGlowPlane): black adds
 // nothing, the picture fades out in a circle inside its square, and the pages' own stars are left out (the sky has its own).
-import { renderShaderStill, stillTexture } from './accretion.js?v=829a36dd';
+import { renderShaderStill, stillTexture } from './accretion.js?v=ceff5e94';
 
 // each page's saved scene-settings, verbatim: colours, the look's knobs, the camera [yaw, pitch] and the moment (T = 20 + elapsed)
 export const NEBULAE = Object.freeze({

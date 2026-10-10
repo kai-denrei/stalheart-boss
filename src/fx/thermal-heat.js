@@ -3,8 +3,8 @@
 // foundry, the assembly line and Isao further (yellow-white), the rest part way (orange). Turning it off restores each
 // material's own colour and glow. Materials are shared between clones and LOD tiers, so the originals are kept per
 // material; parts that load while thermal is on are picked up by a slow re-apply.
-import * as THREE from '../../vendor/three.module.js?v=829a36dd';
-import { createFlir } from './flir-pass.js?v=829a36dd';
+import * as THREE from '../../vendor/three.module.js?v=ceff5e94';
+import { createFlir } from './flir-pass.js?v=ceff5e94';
 
 export const HEAT = Object.freeze({ warm: 0.55, hot: 1 });
 const WHITE = new THREE.Color(1, 1, 1);

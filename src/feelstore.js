@@ -1,4 +1,4 @@
-import { storage as localStorage } from './storage.js?v=829a36dd';
+import { storage as localStorage } from './storage.js?v=ceff5e94';
 // feelstore.js — the one live set of tank-feel values, shared by the game's
 // GUI folder and the unit viewer's tuning modal.
 //
@@ -11,7 +11,7 @@ import { storage as localStorage } from './storage.js?v=829a36dd';
 // localStorage is not available there. The schema and the maths live in the
 // pure module; only the persistence lives here.
 
-import { TANK_FEEL_KNOBS, makeFeelParams, clampFeelParams } from './tankfeel.js?v=829a36dd';
+import { TANK_FEEL_KNOBS, makeFeelParams, clampFeelParams } from './tankfeel.js?v=ceff5e94';
 
 const KEY = 'ssg.tankfeel.v1';    // versioned: a schema change must not inherit
 export const FEEL = makeFeelParams();

@@ -2,10 +2,10 @@
 // One change from the kit: the solver reads this.phys ?? PHYS (the creature sets body.phys to its own copy) so a lab can change gravity or iterations without touching the module constant.
 // SI-unit neo-Hookean XPBD, derived from refs/jelly-webgpu.html.
 // Coupled elastic projection removes the reference split's artificial rest stress.
-import { BufferAttribute, DynamicDrawUsage, Vector3 } from '../../../vendor/three.module.js?v=829a36dd';
-import { createSoftBodyKernel } from './soft-body-kernel.js?v=829a36dd';
-import { deformSurface } from './deform-surface.js?v=829a36dd';
-import { PHYS, clamp } from './constants.js?v=829a36dd';
+import { BufferAttribute, DynamicDrawUsage, Vector3 } from '../../../vendor/three.module.js?v=ceff5e94';
+import { createSoftBodyKernel } from './soft-body-kernel.js?v=ceff5e94';
+import { deformSurface } from './deform-surface.js?v=ceff5e94';
+import { PHYS, clamp } from './constants.js?v=ceff5e94';
 
 export function determinant(a,b,c,d,e,f,g,h,i) {
   return a*(e*i-f*h)-b*(d*i-f*g)+c*(d*h-e*g);

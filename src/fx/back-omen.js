@@ -5,7 +5,7 @@
 //   play(omen)    a tremor contact left on the radar at the mouth's bearing (it stays until the mouth falls, when the red BACK DOOR
 //                 diamond takes its place), a quake heard from the mouth, grit and dust shaken off the rock, and Isao's two lines
 //   scramble(k)   the k-th ring of the scramble: the first also carries Isao's ask and the callout; every one rings the back sockets
-import { BACK_SCRAMBLE } from '../content/sectors.js?v=829a36dd';
+import { BACK_SCRAMBLE } from '../content/sectors.js?v=ceff5e94';
 
 export function createBackOmen({ mouth, hud, sfx, explode, brief, camDist, centers, callout = () => {}, ring = () => {}, sockets = () => [], gap = 0.22 }) {
   const cells = [...(mouth?.cells ?? []), ...(mouth?.flank ?? [])], puffs = [];   // puffs: { at, ci } still to come, on this module's own game clock

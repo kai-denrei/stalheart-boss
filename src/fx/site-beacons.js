@@ -3,7 +3,7 @@
 // distress pulse now and then (owner, 2026-10-02, seventh notes: "should not be constant… a light pulse once in a while. Emanating from
 // the rocket, not the ground"): a flare at the rocket's own top, a ring of light running out from it and a short streak upward, every
 // `period` seconds, the sites out of step with each other. Gone once its site is visited.
-import * as THREE from '../../vendor/three.module.js?v=829a36dd';
+import * as THREE from '../../vendor/three.module.js?v=ceff5e94';
 
 const UP = new THREE.Vector3(0, 1, 0), box = new THREE.Box3(), v = new THREE.Vector3();
 

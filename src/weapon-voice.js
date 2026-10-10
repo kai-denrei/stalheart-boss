@@ -1,5 +1,5 @@
-import { firingFor } from './content/firing-defaults.js?v=829a36dd';
-import { makeCueGate } from './core/cue-gate.js?v=829a36dd';
+import { firingFor } from './content/firing-defaults.js?v=ceff5e94';
+import { makeCueGate } from './core/cue-gate.js?v=ceff5e94';
 // One engagement owns its spool edges and sustained voice. Hosts own activation.
 export function createWeaponVoice(audio,enabled=()=>true,onCue=()=>{},now=()=>performance.now()/1000){
   let key=null,active=false,loop=null;const gate=makeCueGate();

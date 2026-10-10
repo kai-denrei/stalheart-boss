@@ -6,8 +6,8 @@
 // before the player's first click, tap or key, and the CTA is that gesture. Isao says WELCOME! and "Let's settle a new planet
 // together!" as soon as the sound can start (at once, or on the first click or key that is not the CTA), and "Ad Astra Per Aspera"
 // on START; the landing waits for that line (`opened` turns true as it ends), and the voice is freed for the mission line after it.
-import { isaoSay, isaoFree } from './isao-voice.js?v=829a36dd';
-import { createWireframeStage } from './wireframe-stage.js?v=829a36dd';
+import { isaoSay, isaoFree } from './isao-voice.js?v=ceff5e94';
+import { createWireframeStage } from './wireframe-stage.js?v=ceff5e94';
 
 // the keywords' wireframes: the unit, its model, one line
 const UNITS = {

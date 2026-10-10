@@ -6,8 +6,8 @@
 // built in orbit, which is the fiction). The beat drives the named nodes of the standing launcher structure and a clone of the
 // satellite parented under it, so the launcher's own heading and offset carry the launch. The host ticks it on the game clock and is
 // told once when it is complete (SOL-88 online: src/fx/laser-arsenal.js setAuto).
-import * as THREE from '../../vendor/three.module.js?v=829a36dd';
-import { loadModelFixture, cloneFixture } from './model-fixture.js?v=829a36dd';
+import * as THREE from '../../vendor/three.module.js?v=ceff5e94';
+import { loadModelFixture, cloneFixture } from './model-fixture.js?v=ceff5e94';
 
 export const LAUNCH = Object.freeze({ duration: 30, radius: 40, sweep: 1.05, start: 8, seconds: 0.4, climb: 6, satellite: 'assets/models/astro/arc01_satellite_d0_lod1.glb' });
 const RELEASE = LAUNCH.start + LAUNCH.seconds;

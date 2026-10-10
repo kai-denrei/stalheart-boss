@@ -1,10 +1,10 @@
 // Ported from lab-creatures src/monster/prey.ts (kai-denrei, f2a4f89, export of 2026-10-08; derived from Jelly Baby by scottstts; GPL-3.0, see ./LICENSE), types stripped; the solver, the gait, the pursuit and the feeding are unchanged.
 // Rewritten for WebGL: r160 has no MeshPhysicalNodeMaterial, so the TSL colorNode mix(red, attribute('skinColor'), coverage) and clearcoatNode coverage*.65 become CPU writes of material.color (lerped towards the mean tissue colour of the prey geometry) and material.clearcoat in update(); createPrey takes the look for the red and the emissive.
 // This is the file's mesh half (wrappedGeometry, createPrey); the logic half is prey-shapes.js, re-exported here.
-import * as THREE from '../../../vendor/three.module.js?v=829a36dd';
-import { tissueColors } from './skin.js?v=829a36dd';
-import { preyGeometry } from './prey-shapes.js?v=829a36dd';
-export { PREY_SHAPES, preyGeometry, preyImprint, preyClearance } from './prey-shapes.js?v=829a36dd';
+import * as THREE from '../../../vendor/three.module.js?v=ceff5e94';
+import { tissueColors } from './skin.js?v=ceff5e94';
+import { preyGeometry } from './prey-shapes.js?v=ceff5e94';
+export { PREY_SHAPES, preyGeometry, preyImprint, preyClearance } from './prey-shapes.js?v=ceff5e94';
 
 function wrappedGeometry(shape){
   const geometry=preyGeometry(shape);

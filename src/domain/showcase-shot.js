@@ -10,7 +10,7 @@
 // Pure arithmetic on purpose: no THREE, no camera, no world. td-tab hands it the hull's position and heading and gets
 // an eye, a look point and an up back; the frame loop's own lerp toward camGoal (0.14 a frame) IS the short smoothing,
 // and every placement of the hull re-snaps it, so nothing here keeps state.
-import { add3, sub3, scale3, dot3, norm3, len3, cross3 } from '../vec3.js?v=829a36dd';
+import { add3, sub3, scale3, dot3, norm3, len3, cross3 } from '../vec3.js?v=ceff5e94';
 
 // the heading, flattened onto the sphere's tangent plane at the hull and normalised; any tangent will do if the hull
 // has no heading yet (the first frame of a placement)
