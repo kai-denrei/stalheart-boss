@@ -4,8 +4,8 @@
 // creature's update, it steps the schedule with the fear's running flight (./fear.js `step`) and writes the blend of the BASE (`base()`, the panel's
 // motion knobs, which stay the owner's) with the lunge and the flight into the kit's settings, within the kit's panel ranges. A due lunge waits for the
 // kit's pursuit to be in its pull, where the chase speed moves the body. Off (the tank mode), it writes nothing; turned off it puts the base back once.
-import { makeTemperament, stepTemperament, liveMotion, TEMPERAMENT_KEYS } from '../../domain/boss-temperament.js?v=cc48435a';
-import { MOTION_CONTROLS } from '../../fx/nih-dairia/motion-settings.js?v=cc48435a';
+import { makeTemperament, stepTemperament, liveMotion, TEMPERAMENT_KEYS } from '../../domain/boss-temperament.js?v=e6be0715';
+import { MOTION_CONTROLS } from '../../fx/nih-dairia/motion-settings.js?v=e6be0715';
 
 const LIMITS = Object.fromEntries(MOTION_CONTROLS.map((c) => [c.key, [c.min, c.max]]));
 

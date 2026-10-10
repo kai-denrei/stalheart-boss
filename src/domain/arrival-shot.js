@@ -4,8 +4,8 @@
 // short tune; the camera over it is a rail (src/core/rail.js); Isao's way out is his own: hidden in the hull until the door opens,
 // straight up the well and over the rim through the rise, then an arc out to `to` (the host's point at his hover height) over the
 // hold. `cut` is the end of that flight: the cut to his face (src/fx/arrival.js). Tune: src/content/story-defaults.js STORY_ARRIVAL.
-import { makeLandingSequence } from './landing-sequence.js?v=cc48435a';
-import { compileRail, smooth } from '../core/rail.js?v=cc48435a';
+import { makeLandingSequence } from './landing-sequence.js?v=e6be0715';
+import { compileRail, smooth } from '../core/rail.js?v=e6be0715';
 
 export function makeArrivalShot({ landing, rail, isao }) {
   const seq = makeLandingSequence(landing);

@@ -7,22 +7,22 @@
 // Composition only: the rules are src/domain/sectors.js, sector-stats.js and gate-integrity.js with the numbers in
 // src/content/sectors.js. The controller hands in hooks (spawning, sealing, paying, briefing, pausing, polling) and calls
 // the returned object at its real sites; nothing here imports the controller.
-import { SQUADS, SECTOR_STAMPEDE, SECTORS, SECTOR_HOLD, SECTOR_DOOR, BACK_DOOR_SECTOR, BOTH_WALLS_SECTOR, SECTOR_GENERATOR, SECTOR_PLACEMENT, SECTOR_FORFEIT, SECTOR_STATS, SECTOR_STAMPS, SECTOR_RECORDS, SECTOR_TIMING, SECTOR_GATE, BELT_OF, BREACH_CLOSERS, BACK_OMENS, BACK_SCRAMBLE, SIDE_BREACH, CANYON, SECTOR_CANYON_AGAIN } from '../content/sectors.js?v=cc48435a';
-import { omenDue } from '../domain/back-omens.js?v=cc48435a';
-import { GUNSHIP_GUN_ORDER } from '../content/gunship.js?v=cc48435a';
-import { snapshot as programmeSnapshot } from '../domain/build-programme.js?v=cc48435a';
-import { firstSectorDue, pulseFits, sectorDef, backDoorNext, makeSector, releaseWave, nextWaveIndex, closeBreach, spendBreach, isSecure, forfeitOf, waveYield, pickBreachCells } from '../domain/sectors.js?v=cc48435a';
-import { makeSectorStats, record, report as sectorReport, mergeBests, campaignTotals } from '../domain/sector-stats.js?v=cc48435a';
-import { makeGateIntegrity, pressGate, mendGate, gateShare } from '../domain/gate-integrity.js?v=cc48435a';
-import { computeWavePlan, ENEMY_SPEC } from '../enemyspec.js?v=cc48435a';
-import { waveCount, waveGap } from '../domain/wave-spread.js?v=cc48435a';
-import { isStampede, stampedeWave } from '../domain/stampede.js?v=cc48435a';
-import { packSquads } from '../domain/squads.js?v=cc48435a';
-import { STORY_CALM } from '../content/story-defaults.js?v=cc48435a';
-import { POINT_SCALE, waveScore } from '../score.js?v=cc48435a';
-import { waveClearBonus } from '../domain/economy.js?v=cc48435a';
-import { createSectorDebrief } from './sector-debrief.js?v=cc48435a';
-import { isaoSpeak } from './isao-voice.js?v=cc48435a';
+import { SQUADS, SECTOR_STAMPEDE, SECTORS, SECTOR_HOLD, SECTOR_DOOR, BACK_DOOR_SECTOR, BOTH_WALLS_SECTOR, SECTOR_GENERATOR, SECTOR_PLACEMENT, SECTOR_FORFEIT, SECTOR_STATS, SECTOR_STAMPS, SECTOR_RECORDS, SECTOR_TIMING, SECTOR_GATE, BELT_OF, BREACH_CLOSERS, BACK_OMENS, BACK_SCRAMBLE, SIDE_BREACH, CANYON, SECTOR_CANYON_AGAIN } from '../content/sectors.js?v=e6be0715';
+import { omenDue } from '../domain/back-omens.js?v=e6be0715';
+import { GUNSHIP_GUN_ORDER } from '../content/gunship.js?v=e6be0715';
+import { snapshot as programmeSnapshot } from '../domain/build-programme.js?v=e6be0715';
+import { firstSectorDue, pulseFits, sectorDef, backDoorNext, makeSector, releaseWave, nextWaveIndex, closeBreach, spendBreach, isSecure, forfeitOf, waveYield, pickBreachCells } from '../domain/sectors.js?v=e6be0715';
+import { makeSectorStats, record, report as sectorReport, mergeBests, campaignTotals } from '../domain/sector-stats.js?v=e6be0715';
+import { makeGateIntegrity, pressGate, mendGate, gateShare } from '../domain/gate-integrity.js?v=e6be0715';
+import { computeWavePlan, ENEMY_SPEC } from '../enemyspec.js?v=e6be0715';
+import { waveCount, waveGap } from '../domain/wave-spread.js?v=e6be0715';
+import { isStampede, stampedeWave } from '../domain/stampede.js?v=e6be0715';
+import { packSquads } from '../domain/squads.js?v=e6be0715';
+import { STORY_CALM } from '../content/story-defaults.js?v=e6be0715';
+import { POINT_SCALE, waveScore } from '../score.js?v=e6be0715';
+import { waveClearBonus } from '../domain/economy.js?v=e6be0715';
+import { createSectorDebrief } from './sector-debrief.js?v=e6be0715';
+import { isaoSpeak } from './isao-voice.js?v=e6be0715';
 
 export const SECTOR_BESTS_KEY = 'td.story.sector-bests';
 const LETTERS = 'ABCDEFGHIJ';

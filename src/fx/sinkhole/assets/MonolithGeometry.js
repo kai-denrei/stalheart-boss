@@ -1,6 +1,6 @@
-import { BufferGeometry, Float32BufferAttribute } from '../../../../vendor/three.module.js?v=cc48435a';
-import { createAsteroidGeometry } from './ProceduralGeometry.js?v=cc48435a';
-import { hash11, lerp } from '../utils/math.js?v=cc48435a';
+import { BufferGeometry, Float32BufferAttribute } from '../../../../vendor/three.module.js?v=e6be0715';
+import { createAsteroidGeometry } from './ProceduralGeometry.js?v=e6be0715';
+import { hash11, lerp } from '../utils/math.js?v=e6be0715';
 
 /**
  * The monolith — layer 1 of the Brutalist Earth Blast breakdown.

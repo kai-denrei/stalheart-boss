@@ -5,10 +5,10 @@
 // The views strip's SOL-82 button is caught here, before the strip's own handler: it opens the seat while a pass is
 // overhead (the first time behind SOL-82's briefing, the game paused under it, as the gunship's seat does), and any
 // other strip button leaves the seat first and then does what it says.
-import { createLaserArsenal } from './laser-arsenal.js?v=cc48435a';
-import { createLaserSeat } from './laser-seat.js?v=cc48435a';
-import { createSol82Briefing } from './sol82-briefing.js?v=cc48435a';
-import { LASER_GAME, LASER_STRUCTURES } from '../content/orbital-laser.js?v=cc48435a';
+import { createLaserArsenal } from './laser-arsenal.js?v=e6be0715';
+import { createLaserSeat } from './laser-seat.js?v=e6be0715';
+import { createSol82Briefing } from './sol82-briefing.js?v=e6be0715';
+import { LASER_GAME, LASER_STRUCTURES } from '../content/orbital-laser.js?v=e6be0715';
 
 // host: everything createLaserArsenal takes, plus views() (the story strip or null), canvas() (the game canvas),
 // mobile, paused(value?) (sets the game's pause when given, returns what it was), enter() and leave() (the game's

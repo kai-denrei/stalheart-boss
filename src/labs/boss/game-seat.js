@@ -50,21 +50,21 @@
 //
 // KEYS: the seat swallows every key but H in the capture phase. Esc is its `leave` (the lab goes back to the tank), P its `pause`; the
 // lab's R is a capture listener registered before any seat (boss-tab.js), so it runs first and the game's sentry-pilot.js is unchanged.
-import * as THREE from '../../../vendor/three.module.js?v=cc48435a';
-import { EffectComposer } from '../../../vendor/EffectComposer.js?v=cc48435a';
-import { RenderPass } from '../../../vendor/RenderPass.js?v=cc48435a';
-import { OutputPass } from '../../../vendor/OutputPass.js?v=cc48435a';
-import { createSentryPilot } from '../../sentry-pilot.js?v=cc48435a';
-import { makeCellIndex } from '../../cellindex.js?v=cc48435a';
-import { createStoryMonitor } from '../../fx/story-monitor.js?v=cc48435a';
-import { createThermalHeat } from '../../fx/thermal-heat.js?v=cc48435a';
-import { createGunshipOptic } from '../../fx/gunship-optic.js?v=cc48435a';
-import { createGunshipDrop } from '../../fx/gunship-drop.js?v=cc48435a';
-import { createWarnRing } from '../../fx/warn-ring.js?v=cc48435a';
-import { createExplosions } from '../../fx/explosions.js?v=cc48435a';
-import { makeGunship, stepGunship, onStation, phaseLeft, passProgress, mountGunship, dismountGunship, selectGun, stepGun, aimOnSphere, splashDamage, dangerReport, fireRound, stepRounds, paintHeavy, launchHeavy, nudgeHeavy, stepHeavy, heavyState } from '../../domain/gunship.js?v=cc48435a';
-import { GUNSHIP_GUNS, GUNSHIP_GUN_ORDER, GUNSHIP_NUKE, GUNSHIP_ORBIT, GUNSHIP_PLATFORM } from '../../content/gunship.js?v=cc48435a';
-import { orbitAt } from '../../domain/boss-orbit.js?v=cc48435a';
+import * as THREE from '../../../vendor/three.module.js?v=e6be0715';
+import { EffectComposer } from '../../../vendor/EffectComposer.js?v=e6be0715';
+import { RenderPass } from '../../../vendor/RenderPass.js?v=e6be0715';
+import { OutputPass } from '../../../vendor/OutputPass.js?v=e6be0715';
+import { createSentryPilot } from '../../sentry-pilot.js?v=e6be0715';
+import { makeCellIndex } from '../../cellindex.js?v=e6be0715';
+import { createStoryMonitor } from '../../fx/story-monitor.js?v=e6be0715';
+import { createThermalHeat } from '../../fx/thermal-heat.js?v=e6be0715';
+import { createGunshipOptic } from '../../fx/gunship-optic.js?v=e6be0715';
+import { createGunshipDrop } from '../../fx/gunship-drop.js?v=e6be0715';
+import { createWarnRing } from '../../fx/warn-ring.js?v=e6be0715';
+import { createExplosions } from '../../fx/explosions.js?v=e6be0715';
+import { makeGunship, stepGunship, onStation, phaseLeft, passProgress, mountGunship, dismountGunship, selectGun, stepGun, aimOnSphere, splashDamage, dangerReport, fireRound, stepRounds, paintHeavy, launchHeavy, nudgeHeavy, stepHeavy, heavyState } from '../../domain/gunship.js?v=e6be0715';
+import { GUNSHIP_GUNS, GUNSHIP_GUN_ORDER, GUNSHIP_NUKE, GUNSHIP_ORBIT, GUNSHIP_PLATFORM } from '../../content/gunship.js?v=e6be0715';
+import { orbitAt } from '../../domain/boss-orbit.js?v=e6be0715';
 
 const GAME_LENS = { near: 0.004, far: 50 };   // td-tab.js's camera, in the game's units
 const RELOAD = 6;                // the lab's MK-9 reload, seconds (the knob's default; the game's is 20)

@@ -1,5 +1,5 @@
 // Ported from lab-creatures src/physics/cage-model.ts (kai-denrei, f2a4f89, export of 2026-10-08; derived from Jelly Baby by scottstts; GPL-3.0, see ./LICENSE), types stripped; the solver, the gait, the pursuit and the feeding are unchanged.
-import { BufferAttribute, BufferGeometry, DynamicDrawUsage } from '../../../vendor/three.module.js?v=cc48435a';
+import { BufferAttribute, BufferGeometry, DynamicDrawUsage } from '../../../vendor/three.module.js?v=e6be0715';
 
 export function parseCage(buffer,manifest) {
   const f32=(name)=>new Float32Array(buffer,manifest.layout[name].offset,manifest.layout[name].length);

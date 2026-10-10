@@ -1,6 +1,6 @@
 // Medium: 40 mm Bofors area burst. Flash, a fire cluster that cools into a
 // rising smoke head, a radial dust skirt, sparks and a ground shock ring.
-import { assemble, mulberry32, range, direction, prewarm } from './common.js?v=cc48435a';
+import { assemble, mulberry32, range, direction, prewarm } from './common.js?v=e6be0715';
 
 export { prewarm };
 

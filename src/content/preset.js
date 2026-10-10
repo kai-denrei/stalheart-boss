@@ -1,10 +1,10 @@
-import { BREACH_DEFAULTS, BREACH_KNOBS } from './breach-defaults.js?v=cc48435a';
-import { RETIRED_HOWITZER } from './retired-howitzer.js?v=cc48435a';
-import { MISSILE_DEFAULTS } from './missile-defaults.js?v=cc48435a';
+import { BREACH_DEFAULTS, BREACH_KNOBS } from './breach-defaults.js?v=e6be0715';
+import { RETIRED_HOWITZER } from './retired-howitzer.js?v=e6be0715';
+import { MISSILE_DEFAULTS } from './missile-defaults.js?v=e6be0715';
 // Portable authoring contract. No renderer, browser, storage or executable data.
-import { SENTRY_FX as WEAPONS } from './weapon-defaults.js?v=cc48435a';
-import { SOUNDS } from './audio-defaults.js?v=cc48435a';
-import { IMPACT_KNOBS, IMPACT_FAMILIES, IMPACT_RECIPES } from './impact-schema.js?v=cc48435a';
+import { SENTRY_FX as WEAPONS } from './weapon-defaults.js?v=e6be0715';
+import { SOUNDS } from './audio-defaults.js?v=e6be0715';
+import { IMPACT_KNOBS, IMPACT_FAMILIES, IMPACT_RECIPES } from './impact-schema.js?v=e6be0715';
 export const PRESET_BASE = 'stalheart-fx-8';
 // the sound keys version 8 added (the Rotor's own firing from its optic, the gunship's 40 mm): a version 7 package gains them at the baseline
 const V8_SOUNDS = ['rotor_pov_fire', 'gunship_bofors_fire', 'gunship_rotary_fire'];

@@ -5,9 +5,9 @@
 //
 // Player mode is heading-up around the tank; heart mode (M) is pole-down over the whole planet. Contacts carry the phosphor:
 // full the instant the beam passes, decaying behind it, never dark.
-import * as THREE from '../../vendor/three.module.js?v=cc48435a';
-import { norm3 } from '../vec3.js?v=cc48435a';
-import { radarBasis, radarProject, radarBearing, sweepAngle, radarPhosphor, proximitySectors, SENSOR_LEVELS, sensorColor } from '../radar.js?v=cc48435a';
+import * as THREE from '../../vendor/three.module.js?v=e6be0715';
+import { norm3 } from '../vec3.js?v=e6be0715';
+import { radarBasis, radarProject, radarBearing, sweepAngle, radarPhosphor, proximitySectors, SENSOR_LEVELS, sensorColor } from '../radar.js?v=e6be0715';
 
 export function createRadarScope(host) {
   const { ctx, player, camera, towers, enemies, spawnPoints, strike, poleFrame } = host;

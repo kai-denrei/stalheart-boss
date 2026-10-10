@@ -3,11 +3,11 @@
 // `c` hands in the controller: its fixed objects and functions as values (breachQueue, breachedCells, rebuildAfterBreach,
 // recomputePortalDist, breachWallCell, laserStation) and what it rebinds as getters (story, dungeon, graph, cellSide, tdFullTags,
 // storyBase).
-import { BLOCKED, PATH } from '../dungeon.js?v=cc48435a';
-import { hasPerk as programmeHas } from '../domain/build-programme.js?v=cc48435a';
-import { sideBreachCandidates } from '../domain/side-breach.js?v=cc48435a';
-import { planCanyon } from '../domain/canyon.js?v=cc48435a';
-import { SIDE_BREACH, CANYON } from '../content/sectors.js?v=cc48435a';
+import { BLOCKED, PATH } from '../dungeon.js?v=e6be0715';
+import { hasPerk as programmeHas } from '../domain/build-programme.js?v=e6be0715';
+import { sideBreachCandidates } from '../domain/side-breach.js?v=e6be0715';
+import { planCanyon } from '../domain/canyon.js?v=e6be0715';
+import { SIDE_BREACH, CANYON } from '../content/sectors.js?v=e6be0715';
 
 export function createCanyonRun(c) {
   const { breachQueue, breachedCells, rebuildAfterBreach, recomputePortalDist } = c;

@@ -1,17 +1,17 @@
-import { CONTENT } from './content/runtime.js?v=cc48435a';
-import { clone } from './content/preset.js?v=cc48435a';
-import { mountPresetPanel } from './labs/preset-panel.js?v=cc48435a';
-import { BREACH_ENEMY_TYPES } from './breach-enemies.js?v=cc48435a';
+import { CONTENT } from './content/runtime.js?v=e6be0715';
+import { clone } from './content/preset.js?v=e6be0715';
+import { mountPresetPanel } from './labs/preset-panel.js?v=e6be0715';
+import { BREACH_ENEMY_TYPES } from './breach-enemies.js?v=e6be0715';
 // portal-tab.js — THE BREACH LAB (labs.html#portal). The ground breach every
 // wave opens in the game: the shared sinkhole effect on a small planet or a
 // flat reference, with the breach subject's working copy, review and apply.
 // The portal-ring and wormhole benches that shared this tab retired with the
 // portal gates (2026-09-14); the route keeps its name so existing links land.
-import * as THREE from '../vendor/three.module.js?v=cc48435a';
-import { OrbitControls } from '../vendor/OrbitControls.js?v=cc48435a';
-import GUI from '../vendor/lil-gui.esm.js?v=cc48435a';
-import { makeBloom } from './postfx.js?v=cc48435a';
-import { deepLink, wireDeepLink } from './deeplink.js?v=cc48435a';
+import * as THREE from '../vendor/three.module.js?v=e6be0715';
+import { OrbitControls } from '../vendor/OrbitControls.js?v=e6be0715';
+import GUI from '../vendor/lil-gui.esm.js?v=e6be0715';
+import { makeBloom } from './postfx.js?v=e6be0715';
+import { deepLink, wireDeepLink } from './deeplink.js?v=e6be0715';
 
 export function initPortalTab(root) {
   let active = false;
@@ -59,7 +59,7 @@ export function initPortalTab(root) {
   }
   async function ready() {
     if (sinkhole) return sinkhole;
-    sinkholeLoading ||= import('./sinkhole.js?v=cc48435a').then((m) => m.createSinkhole(scene, camera));
+    sinkholeLoading ||= import('./sinkhole.js?v=e6be0715').then((m) => m.createSinkhole(scene, camera));
     try { sinkhole = await sinkholeLoading; } catch (error) { flashNote('Sinkhole failed: ' + error.message); return null; }
     sinkhole.group.visible = true;   // the effect updates only while its group is shown
     Object.assign(sinkhole.tune, breachDraft.breach); syncBreachControls(); frameBreach('planet');

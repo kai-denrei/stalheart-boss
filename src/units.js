@@ -1,4 +1,4 @@
-import { makeOrdnanceShell } from './shell.js?v=cc48435a';
+import { makeOrdnanceShell } from './shell.js?v=e6be0715';
 // units.js — the unit roster. Two construction kinds:
 //
 //   cloud — Braille dot-clouds (creatures.js): ~500–700 points, deformed in
@@ -19,19 +19,19 @@ import { makeOrdnanceShell } from './shell.js?v=cc48435a';
 // userData: { kind, lift (fraction of world size to hover above the floor),
 // tick(t) (idle animation) }.
 
-import * as THREE from '../vendor/three.module.js?v=cc48435a';
-import { makeDotMaterial } from './fx/dot-material.js?v=cc48435a';
-import { makeMork, MORK_UNIT } from './mork.js?v=cc48435a';
-import { DEFAULT_TANK } from './content/tank.js?v=cc48435a';
-export { preloadMork } from './mork.js?v=cc48435a';
-import { makeJelly } from './jelly.js?v=cc48435a';
-import { EMOTION_IDS, emotion, phosphorFor } from './emotions.js?v=cc48435a';
-import { printPhase, printOffset, printOn } from './printpath.js?v=cc48435a';
-import { ISAO_MODEL, ISAO_FACE_CLIPS, ISAO_IDLE_CLIPS } from './content/isao-faces.js?v=cc48435a';
+import * as THREE from '../vendor/three.module.js?v=e6be0715';
+import { makeDotMaterial } from './fx/dot-material.js?v=e6be0715';
+import { makeMork, MORK_UNIT } from './mork.js?v=e6be0715';
+import { DEFAULT_TANK } from './content/tank.js?v=e6be0715';
+export { preloadMork } from './mork.js?v=e6be0715';
+import { makeJelly } from './jelly.js?v=e6be0715';
+import { EMOTION_IDS, emotion, phosphorFor } from './emotions.js?v=e6be0715';
+import { printPhase, printOffset, printOn } from './printpath.js?v=e6be0715';
+import { ISAO_MODEL, ISAO_FACE_CLIPS, ISAO_IDLE_CLIPS } from './content/isao-faces.js?v=e6be0715';
 import { loadGlb, loadGlbWithClips, mergeByMaterial, fitModel, tintModel, makeShellRack,
-  addEdgeOutlines, makeHeatSleeve } from './glbmodels.js?v=cc48435a';
-import { CREATURES, thinCloud, spherePts, bulletPts, missilePts, heartPts, torusPts, cloudFormPoints, enemyDotPts } from './creatures.js?v=cc48435a';
-import { ENEMY_SPEC } from './enemyspec.js?v=cc48435a';
+  addEdgeOutlines, makeHeatSleeve } from './glbmodels.js?v=e6be0715';
+import { CREATURES, thinCloud, spherePts, bulletPts, missilePts, heartPts, torusPts, cloudFormPoints, enemyDotPts } from './creatures.js?v=e6be0715';
+import { ENEMY_SPEC } from './enemyspec.js?v=e6be0715';
 
 function normalizeToUnit(group) {
   group.updateMatrixWorld(true);
@@ -1495,7 +1495,7 @@ export function makeIsaoDrone(tint = 0xbfe6ff) {
 //
 // CLONING A RIGGED MODEL is src/fx/skinned-clone.js: the story base's landmarks
 // clone cached glTFs too, and a shared skeleton there draws a sheet across the sky.
-export { cloneSkinned } from './fx/skinned-clone.js?v=cc48435a';
+export { cloneSkinned } from './fx/skinned-clone.js?v=e6be0715';
 
 // --- pickups, as SOLIDS ---------------------------------------------------
 // Half-dotted clouds are the ENEMY language in this game. Pickups were

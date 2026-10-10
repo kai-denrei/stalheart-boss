@@ -12,8 +12,8 @@
 // What it draws is the build's own rules: black-mode tops that border a hallway glow as the frontier, zonal looks tint
 // skirts and lines per cell, and a line takes the tint of the lowest-numbered cell that emitted it. Per-cell colour
 // jitter is a hash of (seed, cell) rather than a running sequence, so a patched board is byte for byte a fresh one.
-import * as THREE from '../../vendor/three.module.js?v=cc48435a';
-import { BLOCKED } from '../dungeon.js?v=cc48435a';
+import * as THREE from '../../vendor/three.module.js?v=e6be0715';
+import { BLOCKED } from '../dungeon.js?v=e6be0715';
 
 /* quads -> the lattice's edges, each cell's four edges and each corner's edges: topology never changes on a board */
 const topologyCache = new WeakMap();

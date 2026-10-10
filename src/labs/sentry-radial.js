@@ -1,4 +1,4 @@
-import { SENTRIES } from '../content/sentries.js?v=cc48435a';
+import { SENTRIES } from '../content/sentries.js?v=e6be0715';
 
 export function mountSentryRadial({ select, current, onOpen = () => {}, onClose = () => {} }) {
   const dialog = document.createElement('dialog');

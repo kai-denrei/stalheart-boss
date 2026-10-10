@@ -6,8 +6,8 @@
 // It owns presentation ONLY. The clock that decides when the blast lands is src/domain/gunship.js (heavyState/stepHeavy), so the
 // round in the frame and the damage on the ground cannot drift apart: both run on the gun's `travel`. Callbacks hand the host the
 // two moments worth hearing — the release and the ignition.
-import { createMissilePool, launchDrop, advanceDrop } from '../missiles.js?v=cc48435a';
-import { GUNSHIP_NUKE } from '../content/gunship.js?v=cc48435a';
+import { createMissilePool, launchDrop, advanceDrop } from '../missiles.js?v=e6be0715';
+import { GUNSHIP_NUKE } from '../content/gunship.js?v=e6be0715';
 
 export function createGunshipDrop(scene, { cellSide, metresPerCell = 10, onIgnite = null, onRelease = null } = {}) {
   const metre = cellSide / metresPerCell;   // one metre in scene units: the fall is real metres in real seconds

@@ -3,7 +3,7 @@
 // callout texts and named events the game raises (briefs are read from isaobriefs.js), and the voice's timing. test/voice-hooks.mjs
 // checks every callout here is a text the game itself can show, so the Workshop's voice tab can say honestly what is wired.
 
-import { ISAO_TRIGGERS } from './isao-voice.js?v=cc48435a';
+import { ISAO_TRIGGERS } from './isao-voice.js?v=e6be0715';
 
 // trigger -> extra aliases: brief ids, callout texts (matched on their start) or event names
 export const VOICE_HOOKS = Object.freeze({

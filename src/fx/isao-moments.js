@@ -2,8 +2,8 @@
 // in the quiet, said from the story's tick, and the two readings of how busy the player is that the beats, the debrief and the
 // cinematics consult (danger, engaged), with hopsToHeart (walking hops from the heart, -1 unknown; for the sector's strays).
 // `c` hands in the controller: laserStation as a value, and story, dungeon, t, enemies, pilot, playerPos and cellSide as getters.
-import { STORY_CALM } from '../content/story-defaults.js?v=cc48435a';
-import { isaoSpeak } from './isao-voice.js?v=cc48435a';
+import { STORY_CALM } from '../content/story-defaults.js?v=e6be0715';
+import { isaoSpeak } from './isao-voice.js?v=e6be0715';
 
 export function createIsaoMoments(c) {
   // ISAO ON THE HEART'S THREAT, AND IN THE QUIET (owner, 2026-10-07, labs 117 then 118: "when enemies are getting closer to the Stålheart";

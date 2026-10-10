@@ -1,13 +1,13 @@
 // The SH02 arrival in the story lab: rocket, clips, plume, dust, scorch and
 // Isao, driven by one timeline state from domain/landing-sequence.js.
-import * as THREE from '../../vendor/three.module.js?v=cc48435a';
-import { GLTFLoader } from '../../vendor/GLTFLoader.js?v=cc48435a';
-import { MeshoptDecoder } from '../../vendor/meshopt_decoder.module.js?v=cc48435a';
-import { createLaunchPlume } from '../fx/launch-plume.js?v=cc48435a';
-import { makeScorch, makeEmbers, IMPACT_TUNE } from '../impactfx.js?v=cc48435a';
-import { makeIsaoDrone, preloadFabricator } from '../units.js?v=cc48435a';
-import { PLUME_CLUSTER, STORY_SCALE, SH02_WELL } from '../content/story-defaults.js?v=cc48435a';
-import { basisAt } from '../fx/story-base.js?v=cc48435a';
+import * as THREE from '../../vendor/three.module.js?v=e6be0715';
+import { GLTFLoader } from '../../vendor/GLTFLoader.js?v=e6be0715';
+import { MeshoptDecoder } from '../../vendor/meshopt_decoder.module.js?v=e6be0715';
+import { createLaunchPlume } from '../fx/launch-plume.js?v=e6be0715';
+import { makeScorch, makeEmbers, IMPACT_TUNE } from '../impactfx.js?v=e6be0715';
+import { makeIsaoDrone, preloadFabricator } from '../units.js?v=e6be0715';
+import { PLUME_CLUSTER, STORY_SCALE, SH02_WELL } from '../content/story-defaults.js?v=e6be0715';
+import { basisAt } from '../fx/story-base.js?v=e6be0715';
 
 const ROCKET_URL = 'assets/models/story/sh_rocket.glb';
 // engine bells, cargo well floor and door rim above the touchdown plane, authored metres (shared with the game's arrival)

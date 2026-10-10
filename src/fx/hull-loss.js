@@ -12,10 +12,10 @@
 // PLAYER_MAX, destroyPlayer, syncCombo, showToast, setView, startShot, deployFramePoseFor, deployStart), what it rebinds as
 // getters (tankRank, playerHP, playerMesh, buildMode, tankLostDeploys) and setters for the lets a loss writes (setRamCombo,
 // setRamComboT, setTankLostDeploys, setPlayerDown). The controller calls loseTank from playerHit while a hull is left.
-import { rankLabel } from '../ranks.js?v=cc48435a';
-import { berthIndexFor } from '../domain/berths.js?v=cc48435a';
-import { isaoSpeak } from './isao-voice.js?v=cc48435a';
-import { landTankFeel, applyTankHealth } from '../tankfeel.js?v=cc48435a';
+import { rankLabel } from '../ranks.js?v=e6be0715';
+import { berthIndexFor } from '../domain/berths.js?v=e6be0715';
+import { isaoSpeak } from './isao-voice.js?v=e6be0715';
+import { landTankFeel, applyTankHealth } from '../tankfeel.js?v=e6be0715';
 
 const DOWN_DASH = 1.0;   // seconds of camera, wreck -> camp
 

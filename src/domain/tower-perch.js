@@ -5,8 +5,8 @@
 //
 // Pure: the controller's perchOf (src/td-tab.js) hands in the board (graph, dungeon, mesh) and the story's socketToward map; the
 // muzzle, the lines of sight, the build burst and the take-control shot all start from this point.
-import { add3, sub3, scale3, dot3, dist3, norm3 } from '../vec3.js?v=cc48435a';
-import { BLOCKED } from '../dungeon.js?v=cc48435a';
+import { add3, sub3, scale3, dot3, dist3, norm3 } from '../vec3.js?v=e6be0715';
+import { BLOCKED } from '../dungeon.js?v=e6be0715';
 
 export function towerPerch(tower, graph, dungeon, mesh, socketToward) {
   const ci = tower.ci, c = graph.centers[ci];

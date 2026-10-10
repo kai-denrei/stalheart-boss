@@ -5,7 +5,7 @@
 //
 // Pure. Positions are [x, y, z] metres on a sphere CENTRED ON THE ORIGIN: the caller converts from whatever frame it
 // renders in. The clock, the footprint test and the destruction all belong to the caller; this module owns the state.
-import { norm3, len3, dot3, cross3, scale3 } from '../vec3.js?v=cc48435a';
+import { norm3, len3, dot3, cross3, scale3 } from '../vec3.js?v=e6be0715';
 
 export function makeLaser(orbit, beam) {
   return {

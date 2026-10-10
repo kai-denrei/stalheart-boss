@@ -7,8 +7,8 @@
 // strongest as the sun crosses the horizon and gone `duskBand` of elevation either side), and the sky shows what is happening: a sun
 // disc with a halo where the light comes from and a pale moon opposite, both far out and depth-tested, so the planet's own horizon
 // hides them and the player sees the sun go down behind the rock. Added to the light's parent; restore() takes them out.
-import * as THREE from '../../vendor/three.module.js?v=cc48435a';
-import { sunAngle, sunDirection, daylightOf } from '../core/daylight.js?v=cc48435a';
+import * as THREE from '../../vendor/three.module.js?v=e6be0715';
+import { sunAngle, sunDirection, daylightOf } from '../core/daylight.js?v=e6be0715';
 // `dial`: an element the HUD's day dial goes in (owner, 2026-10-03: "a small day/night cycle moving animation in the main hud ... a circle
 // getting increasingly darker and brighter"): a disc lit by the daylight, warm at the golden hour, a tick going round its rim with the day
 export function createDaylight({ hemi, sun, bg, day, tune, phase = 0, dial = null }) {

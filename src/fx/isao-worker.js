@@ -5,18 +5,18 @@
 // commitTower, disposeObj, effectiveStats, flashShopNote, keys, params, placeError, placeTowerObj, scene, sfx, showBrief,
 // showRangeRing, tmpObj, tmpQ, towers, updateHud), what it rebinds or declares later as getters (cellSide, dungeon, eco, graph, run,
 // sectorRun, story, storyApi, t, throttle) and the two drones as getters with setters (isao/setIsao, assistant/setAssistant).
-import { BASE_BUILDER } from '../content/base-programme.js?v=cc48435a';
-import { unlockedTowers } from '../domain/expeditions.js?v=cc48435a';
-import { STORY_EXPEDITIONS } from '../content/story-defaults.js?v=cc48435a';
-import { makeSiteRing as siteRing, disposeSiteRing } from './site-ring.js?v=cc48435a';
-import { printGhost, skinIn } from './tower-print.js?v=cc48435a';
-import * as THREE from '../../vendor/three.module.js?v=cc48435a';
-import { printPhase, printOffset, printOn, patternSecsFor } from '../printpath.js?v=cc48435a';
-import { sub3, add3, scale3, dot3, cross3, norm3, len3, dist3, tangentBasis } from '../vec3.js?v=cc48435a';
-import { lookIsao } from './isao-look.js?v=cc48435a';
-import { preloadFabricator, makeIsaoDrone } from '../units.js?v=cc48435a';
-import { TOWER_BY_KEY, upgradeCost } from '../towers.js?v=cc48435a';
-import { buildTowerLook } from '../towerlooks.js?v=cc48435a';
+import { BASE_BUILDER } from '../content/base-programme.js?v=e6be0715';
+import { unlockedTowers } from '../domain/expeditions.js?v=e6be0715';
+import { STORY_EXPEDITIONS } from '../content/story-defaults.js?v=e6be0715';
+import { makeSiteRing as siteRing, disposeSiteRing } from './site-ring.js?v=e6be0715';
+import { printGhost, skinIn } from './tower-print.js?v=e6be0715';
+import * as THREE from '../../vendor/three.module.js?v=e6be0715';
+import { printPhase, printOffset, printOn, patternSecsFor } from '../printpath.js?v=e6be0715';
+import { sub3, add3, scale3, dot3, cross3, norm3, len3, dist3, tangentBasis } from '../vec3.js?v=e6be0715';
+import { lookIsao } from './isao-look.js?v=e6be0715';
+import { preloadFabricator, makeIsaoDrone } from '../units.js?v=e6be0715';
+import { TOWER_BY_KEY, upgradeCost } from '../towers.js?v=e6be0715';
+import { buildTowerLook } from '../towerlooks.js?v=e6be0715';
 
 export function createIsaoWorker(host) {
   // --- ISAO: the industrial construction drone. Nothing the player builds is built by the player: an order is placed, he flies to the

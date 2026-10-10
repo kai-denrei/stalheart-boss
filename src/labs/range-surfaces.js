@@ -1,4 +1,4 @@
-import * as THREE from '../../vendor/three.module.js?v=cc48435a';
+import * as THREE from '../../vendor/three.module.js?v=e6be0715';
 export const RANGE_SURFACES = {
   wall: { color: 0x54504a, roughness: 0.95, metalness: 0, spark: 0xffb066, debris: 0x6b655c, scorch: 0x14100c },
   armour: { color: 0x6e777e, roughness: 0.45, metalness: 0.85, spark: 0xffd08a, debris: 0x8a8f94, scorch: 0x0e0b09 },

@@ -2,12 +2,12 @@
 // island slabs with a shader-drawn 4 m grid, kit walls and gate, and the
 // landmark models on their islands. Consumes a base plan and a placer that
 // maps frame metres onto whichever sphere the host renders.
-import * as THREE from '../../vendor/three.module.js?v=cc48435a';
-import { rasterFootprint } from '../domain/footprint.js?v=cc48435a';
-import { GLTFLoader } from '../../vendor/GLTFLoader.js?v=cc48435a';
-import { MeshoptDecoder } from '../../vendor/meshopt_decoder.module.js?v=cc48435a';
-import { batchStaticAsset } from './asset-batching.js?v=cc48435a';
-import { cloneSkinned } from './skinned-clone.js?v=cc48435a';
+import * as THREE from '../../vendor/three.module.js?v=e6be0715';
+import { rasterFootprint } from '../domain/footprint.js?v=e6be0715';
+import { GLTFLoader } from '../../vendor/GLTFLoader.js?v=e6be0715';
+import { MeshoptDecoder } from '../../vendor/meshopt_decoder.module.js?v=e6be0715';
+import { batchStaticAsset } from './asset-batching.js?v=e6be0715';
+import { cloneSkinned } from './skinned-clone.js?v=e6be0715';
 
 const loader = new GLTFLoader().setMeshoptDecoder(MeshoptDecoder);
 const cache = new Map();

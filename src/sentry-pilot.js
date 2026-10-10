@@ -1,10 +1,10 @@
 // Game-owned input/optic adapter. Combat, map and wave ownership stay in TD.
-import * as THREE from '../vendor/three.module.js?v=cc48435a';
-import { createGunshipHud, planetCoords } from './fx/gunship-hud.js?v=cc48435a';
-import { headingTurn } from './domain/gunship-track.js?v=cc48435a';
-import { framingWeight, frameRound, ROUND_FRAME } from './core/round-framing.js?v=cc48435a';
-import { RELEASE_EVENTS, releasesHeld, releaseHeld } from './core/held-input.js?v=cc48435a';
-import { seatHint } from './fx/seat-hint.js?v=cc48435a';
+import * as THREE from '../vendor/three.module.js?v=e6be0715';
+import { createGunshipHud, planetCoords } from './fx/gunship-hud.js?v=e6be0715';
+import { headingTurn } from './domain/gunship-track.js?v=e6be0715';
+import { framingWeight, frameRound, ROUND_FRAME } from './core/round-framing.js?v=e6be0715';
+import { RELEASE_EVENTS, releasesHeld, releaseHeld } from './core/held-input.js?v=e6be0715';
+import { seatHint } from './fx/seat-hint.js?v=e6be0715';
 export function createSentryPilot(root, host) {
   const state = { tower:null, held:false, yaw:0, pitch:-.2, zoom:1, target:null, shots:0, view:'pov' };   // view: pov (over the barrels) | third (behind the turret)
   const panel=document.createElement('section'); panel.id='sentry-pilot';

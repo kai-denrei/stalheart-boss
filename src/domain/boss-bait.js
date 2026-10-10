@@ -73,8 +73,8 @@
 //
 // Imports only the domain: ./gunship.js's falloff (`splashDamage`) and the fight's `lineOf`.
 
-import { splashDamage } from './gunship.js?v=cc48435a';
-import { lineOf } from './boss-fight.js?v=cc48435a';
+import { splashDamage } from './gunship.js?v=e6be0715';
+import { lineOf } from './boss-fight.js?v=e6be0715';
 
 const AHEAD = 0.5;         // seconds of travel round the circle the wanted point leads him by
 const PULL = 3;            // metres of radial pull per metre the keep distance is out

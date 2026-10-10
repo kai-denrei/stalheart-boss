@@ -8,7 +8,7 @@
 import {
   PALETTE, mulberry32, hash01, lerp, clamp,
   clearBg, drawBezel, drawHeader, label, fmtStep,
-} from './crt.js?v=cc48435a';
+} from './crt.js?v=e6be0715';
 
 const PERIOD_MS = 11500;
 const N_PAIRS = 8;

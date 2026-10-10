@@ -1,8 +1,8 @@
 // THE SECTORS (docs/superpowers/specs/2026-09-15-v1-session-design.md, section 2). A sector opens two breaches at once,
 // each with its own programme of `waves` waves sized by the computeWavePlan ladder at the sector's `threat`. First
 // numbers, tuning later. Pure data: the rules live in src/domain/sectors.js and src/domain/sector-stats.js.
-import { SENTRY_ORDER } from './sentries.js?v=cc48435a';
-import { GUNSHIP_GUN_ORDER } from './gunship.js?v=cc48435a';
+import { SENTRY_ORDER } from './sentries.js?v=e6be0715';
+import { GUNSHIP_GUN_ORDER } from './gunship.js?v=e6be0715';
 
 const freeze = (o) => { for (const v of Object.values(o)) if (v && typeof v === 'object' && !Object.isFrozen(v)) freeze(v); return Object.freeze(o); };
 

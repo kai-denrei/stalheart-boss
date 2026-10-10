@@ -2,9 +2,9 @@
 // tools). A target is { page, hash, params } to navigate, { url } for a story jump, { doc } for the docs overlay or
 // { tool } for a tool. A new playtest section is one entry here. Tuning pages are read from the variables modal at
 // runtime, so they are not listed.
-import { STAGES } from './base-layout.js?v=cc48435a';
-import { SKIP_TUTORIAL_URL } from '../core/story-route.js?v=cc48435a';
-import { SECTOR_DOOR } from './sectors.js?v=cc48435a';
+import { STAGES } from './base-layout.js?v=e6be0715';
+import { SKIP_TUTORIAL_URL } from '../core/story-route.js?v=e6be0715';
+import { SECTOR_DOOR } from './sectors.js?v=e6be0715';
 
 export const NAV_MODES = Object.freeze(['playtest', 'dev']);
 

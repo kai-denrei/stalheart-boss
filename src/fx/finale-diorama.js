@@ -5,8 +5,8 @@
 //
 // c: the programme host's bag (story, startShot, cellSide, hull, isao, spawnIsao, scene). Returns false, and does nothing, when there is
 // nothing to stage (no boards printed, no camera shots).
-import * as THREE from '../../vendor/three.module.js?v=cc48435a';
-import { cloneFixture } from './model-fixture.js?v=cc48435a';
+import * as THREE from '../../vendor/three.module.js?v=e6be0715';
+import { cloneFixture } from './model-fixture.js?v=e6be0715';
 
 export const DIORAMA_SECONDS = 8;
 

@@ -4,7 +4,7 @@
 //
 // Pure arithmetic, like src/domain/story-shots.js: every function returns an eye, a look point and an up. Moved out of the game
 // controller unchanged.
-import { add3, sub3, scale3, dot3, len3, dist3, norm3, cross3 } from '../vec3.js?v=cc48435a';
+import { add3, sub3, scale3, dot3, len3, dist3, norm3, cross3 } from '../vec3.js?v=e6be0715';
 
 // riding the munition down: straight along the target cell's normal,
 // altitude easing on a smoothstep — slow at first, fast near impact,

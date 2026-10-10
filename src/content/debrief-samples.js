@@ -3,7 +3,7 @@
 // test/sector-debrief-samples.mjs catches drift between the contract, these samples and the card. The integrator may
 // swap them for the stats accumulator's own fixtures. Invented numbers, internally consistent: the kill sources, the
 // tower kinds, the belts and the tempo bins each add up to the sector's kill total.
-import { campaignTotals } from '../core/debrief-format.js?v=cc48435a';
+import { campaignTotals } from '../core/debrief-format.js?v=e6be0715';
 
 /** kills per 5 s bin: a quiet floor plus a hump per wave, integers that add up to `total` exactly */
 function tempo(seconds, total, waves) {

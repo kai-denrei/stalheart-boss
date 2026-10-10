@@ -3,9 +3,9 @@
 // counts, the fly-over's one hop in three); its numbers are BOSS_FIGHT.chatter. This file names each line's recorded trigger and its words, and says the
 // director's pick through the game's Isao voice (src/fx/isao-voice.js, the take whose words match) or, unrecorded, as a caption on the stage. The triggers
 // are the bait mode's (./bait.js): it asks (`want`) and ticks the director once a frame (`tick`).
-import { makeChatter, carryChatter, want, nextLine, hold, endLines } from '../../domain/boss-chatter.js?v=cc48435a';
-import { ISAO_TRIGGERS } from '../../content/isao-voice.js?v=cc48435a';
-import { isaoSay } from '../../fx/isao-voice.js?v=cc48435a';
+import { makeChatter, carryChatter, want, nextLine, hold, endLines } from '../../domain/boss-chatter.js?v=e6be0715';
+import { ISAO_TRIGGERS } from '../../content/isao-voice.js?v=e6be0715';
+import { isaoSay } from '../../fx/isao-voice.js?v=e6be0715';
 
 const CAPTION_SECONDS = 2, HOLD_PAD = 0.3;   // HOLD_PAD: a breath after a recording
 // the director's keys -> the recorded trigger and the words of each take (the caption when a take is not recorded)

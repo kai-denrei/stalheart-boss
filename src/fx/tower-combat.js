@@ -5,30 +5,30 @@
 // `host` hands in the controller: its fixed objects and functions as values, what it rebinds or declares later as getters
 // (cellIndex, cellSide, dungeon, graph, heartHP, missilePool, pilot, pilotMode, pilotPost, pilotPosts, rs, story, wave, storyMode)
 // and the lets this writes as getters with setters (brass, isao) or a setter alone (watchTower).
-import { pilotMultipliers } from '../domain/automation.js?v=cc48435a';
-import { makeOrdnanceShell } from '../shell.js?v=cc48435a';
-import { METRES_PER_CELL, metresToArc } from '../core/stage-units.js?v=cc48435a';
-import { stepMissileLock, missileCanFire } from '../domain/missile-targeting.js?v=cc48435a';
-import * as THREE from '../../vendor/three.module.js?v=cc48435a';
-import { BLOCKED } from '../dungeon.js?v=cc48435a';
-import { SENTRY_HEAT } from '../content/sentry-heat.js?v=cc48435a';
-import { coolHeat } from '../core/heat.js?v=cc48435a';
-import { paintBarrelHeat } from './barrel-heat.js?v=cc48435a';
-import { createBrass } from './brass.js?v=cc48435a';
-import { sub3, add3, scale3, dot3, cross3, norm3, len3, dist3 } from '../vec3.js?v=cc48435a';
-import { makeDotBurst } from '../units.js?v=cc48435a';
-import { rotorVoice, hushRotor } from './rotor-voice.js?v=cc48435a';
-import { projectToArc } from '../arc.js?v=cc48435a';
-import { roundEnd, flyStraight } from '../domain/round-path.js?v=cc48435a';
-import { shotOf, muzzleOf, tuneFor, resolveImpactColors } from '../sentryfx.js?v=cc48435a';
-import { makeImpactBurst, orientImpact } from '../impactfx.js?v=cc48435a';
-import { makeTracerMesh, makeLightningMesh } from '../shotfx.js?v=cc48435a';
-import { towerOffline } from '../shield.js?v=cc48435a';
-import { pickTarget, shotInterval, towerSound } from '../towers.js?v=cc48435a';
-import { A6_TUNE, magFor, stepA6 } from '../heptapod.js?v=cc48435a';
-import { SENTRY_TUNE } from '../sentry.js?v=cc48435a';
-import { makeLock } from '../lockon.js?v=cc48435a';
-import { bodyAt } from './lance-follow.js?v=cc48435a';
+import { pilotMultipliers } from '../domain/automation.js?v=e6be0715';
+import { makeOrdnanceShell } from '../shell.js?v=e6be0715';
+import { METRES_PER_CELL, metresToArc } from '../core/stage-units.js?v=e6be0715';
+import { stepMissileLock, missileCanFire } from '../domain/missile-targeting.js?v=e6be0715';
+import * as THREE from '../../vendor/three.module.js?v=e6be0715';
+import { BLOCKED } from '../dungeon.js?v=e6be0715';
+import { SENTRY_HEAT } from '../content/sentry-heat.js?v=e6be0715';
+import { coolHeat } from '../core/heat.js?v=e6be0715';
+import { paintBarrelHeat } from './barrel-heat.js?v=e6be0715';
+import { createBrass } from './brass.js?v=e6be0715';
+import { sub3, add3, scale3, dot3, cross3, norm3, len3, dist3 } from '../vec3.js?v=e6be0715';
+import { makeDotBurst } from '../units.js?v=e6be0715';
+import { rotorVoice, hushRotor } from './rotor-voice.js?v=e6be0715';
+import { projectToArc } from '../arc.js?v=e6be0715';
+import { roundEnd, flyStraight } from '../domain/round-path.js?v=e6be0715';
+import { shotOf, muzzleOf, tuneFor, resolveImpactColors } from '../sentryfx.js?v=e6be0715';
+import { makeImpactBurst, orientImpact } from '../impactfx.js?v=e6be0715';
+import { makeTracerMesh, makeLightningMesh } from '../shotfx.js?v=e6be0715';
+import { towerOffline } from '../shield.js?v=e6be0715';
+import { pickTarget, shotInterval, towerSound } from '../towers.js?v=e6be0715';
+import { A6_TUNE, magFor, stepA6 } from '../heptapod.js?v=e6be0715';
+import { SENTRY_TUNE } from '../sentry.js?v=e6be0715';
+import { makeLock } from '../lockon.js?v=e6be0715';
+import { bodyAt } from './lance-follow.js?v=e6be0715';
 
 export function createTowerCombat(host) {
   // ONE A6, ONE FRAME. The module owns the decisions; this owns the world.

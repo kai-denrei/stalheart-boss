@@ -1,4 +1,4 @@
-import { DEFAULT_TANK } from './content/tank.js?v=cc48435a';
+import { DEFAULT_TANK } from './content/tank.js?v=e6be0715';
 // metal-tab.js — THE METAL LAB. The weathered material (src/weathered.js,
 // src/fx/weathered-material.js) on the game's own big casts — the MÖRK, the
 // container, Isao, the Terraformer, the portal ring — large, under the
@@ -11,20 +11,20 @@ import { DEFAULT_TANK } from './content/tank.js?v=cc48435a';
 // the same bakeWeatheredMetal and applyWeatheredMaterial the cinematics
 // call, on the same casts units.js makes, and changes nothing the game
 // draws until a preset is pasted into weathered.js.
-import * as THREE from '../vendor/three.module.js?v=cc48435a';
-import { OrbitControls } from '../vendor/OrbitControls.js?v=cc48435a';
-import GUI from '../vendor/lil-gui.esm.js?v=cc48435a';
-import { makeBloom } from './postfx.js?v=cc48435a';
-import { bakeGalaxyCube } from './galaxybake.js?v=cc48435a';
-import { SKY_PRESET } from './galaxyseed.js?v=cc48435a';
-import { LOOKS } from './looks.js?v=cc48435a';
-import { WEATHER_PRESETS, weatherStats, bakeWeatheredMetal } from './weathered.js?v=cc48435a';
-import { WEATHER_BY_NAME, applyWeatheredMaterial, makeWeatheredTextures, withSurfaceAliases } from './fx/weathered-material.js?v=cc48435a';
+import * as THREE from '../vendor/three.module.js?v=e6be0715';
+import { OrbitControls } from '../vendor/OrbitControls.js?v=e6be0715';
+import GUI from '../vendor/lil-gui.esm.js?v=e6be0715';
+import { makeBloom } from './postfx.js?v=e6be0715';
+import { bakeGalaxyCube } from './galaxybake.js?v=e6be0715';
+import { SKY_PRESET } from './galaxyseed.js?v=e6be0715';
+import { LOOKS } from './looks.js?v=e6be0715';
+import { WEATHER_PRESETS, weatherStats, bakeWeatheredMetal } from './weathered.js?v=e6be0715';
+import { WEATHER_BY_NAME, applyWeatheredMaterial, makeWeatheredTextures, withSurfaceAliases } from './fx/weathered-material.js?v=e6be0715';
 import { buildCreature, preloadMork, preloadContainer, makeContainerFixture,
-  preloadFabricator, makeIsaoDrone } from './units.js?v=cc48435a';
-import { preloadMorkTier, makeMorkTier } from './mork.js?v=cc48435a';
-import { loadGlb } from './glbmodels.js?v=cc48435a';
-import { deepLink, wireDeepLink } from './deeplink.js?v=cc48435a';
+  preloadFabricator, makeIsaoDrone } from './units.js?v=e6be0715';
+import { preloadMorkTier, makeMorkTier } from './mork.js?v=e6be0715';
+import { loadGlb } from './glbmodels.js?v=e6be0715';
+import { deepLink, wireDeepLink } from './deeplink.js?v=e6be0715';
 
 // the container bays the base draws now (the A6 kit), as the lab's own copy:
 // the scene is cloned with private materials, so dressing it here cannot

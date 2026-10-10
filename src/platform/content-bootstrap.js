@@ -1,6 +1,6 @@
-import { CONTENT, selectContent } from '../content/runtime.js?v=cc48435a';
-import { createPresetRepository } from './preset-repository.js?v=cc48435a';
-import { record } from '../diagnostics.js?v=cc48435a';
+import { CONTENT, selectContent } from '../content/runtime.js?v=e6be0715';
+import { createPresetRepository } from './preset-repository.js?v=e6be0715';
+import { record } from '../diagnostics.js?v=e6be0715';
 export function bootstrapContent(search=location.search) {
   const preview = new URLSearchParams(search).get('preset') === 'draft';
   let chosen=CONTENT;

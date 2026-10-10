@@ -4,11 +4,11 @@
 // with blank leading zeros, animated transitions and celebrate(), driven through the asset's own runtime. The player stands on the
 // seven-segment beacon, Isao on the split-flap (his 0 -> 1 clatters). The player's board carries the pilot's rank badge (src/ranks.js) on
 // a flag beside it in the tier's colour; a celebration also throws bursts of dots from the board's SOCKET_FX.
-import * as THREE from '../../vendor/three.module.js?v=cc48435a';
-import { badgeSVG, rankLabel, rankToTierLevel } from '../ranks.js?v=cc48435a';
-import { makeDotBurst } from '../units.js?v=cc48435a';
-import { loadModelFixture, cloneFixture } from './model-fixture.js?v=cc48435a';
-import { attachRivalryDisplay } from '../../assets/models/scoreboards/runtime.js?v=cc48435a';
+import * as THREE from '../../vendor/three.module.js?v=e6be0715';
+import { badgeSVG, rankLabel, rankToTierLevel } from '../ranks.js?v=e6be0715';
+import { makeDotBurst } from '../units.js?v=e6be0715';
+import { loadModelFixture, cloneFixture } from './model-fixture.js?v=e6be0715';
+import { attachRivalryDisplay } from '../../assets/models/scoreboards/runtime.js?v=e6be0715';
 
 const TIER = ['#b08d57', '#c9ccd1', '#e8c04c'];
 const DIR = 'assets/models/scoreboards/';

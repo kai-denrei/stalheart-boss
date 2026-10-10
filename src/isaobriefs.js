@@ -17,7 +17,7 @@
 // is a fact and then a plan: "Oh no! They destroyed my RADAR!" (angry)...
 // "Oh well. Rebuild." Two short lines at most; the second line is always what
 // he does next. Curiosity over dread, resources over blame.
-import { SECTORS, SECTOR_HOLD, BACK_DOOR_SECTOR, BOTH_WALLS_SECTOR, SECTOR_GENERATOR, SECTOR_CANYON_AGAIN } from './content/sectors.js?v=cc48435a';
+import { SECTORS, SECTOR_HOLD, BACK_DOOR_SECTOR, BOTH_WALLS_SECTOR, SECTOR_GENERATOR, SECTOR_CANYON_AGAIN } from './content/sectors.js?v=e6be0715';
 
 export const BRIEFS = {
   // --- THE STORY -----------------------------------------------------------

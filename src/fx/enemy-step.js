@@ -3,26 +3,26 @@
 // enemy's frame (walk, scare, shove, ram, the heart) and a creature's death. The lists (enemies, spawnPoints, spawnQueue) stay the
 // controller's and come in as values; the wave clock's lets (wave, waveActive, waveAge, waveIn, waveCharge, warnBeat, interClock)
 // and the ram combo's are written through setters.
-import { waveGap } from '../domain/wave-spread.js?v=cc48435a';
-import { emergence } from '../domain/breach-waves.js?v=cc48435a';
-import { stampScare, scarePace, isScared, towardScare, awayExits } from '../domain/impact-scare.js?v=cc48435a';
-import { SCARE_FREEZE_S } from '../content/explosions.js?v=cc48435a';
-import { STORY_EXPEDITIONS } from '../content/story-defaults.js?v=cc48435a';
-import { sinkholeGroundHeight } from '../core/sinkhole-shape.js?v=cc48435a';
-import { CONTENT } from '../content/runtime.js?v=cc48435a';
-import { record } from '../diagnostics.js?v=cc48435a';
-import { guardExits } from '../domain/guard-aggro.js?v=cc48435a';
-import * as THREE from '../../vendor/three.module.js?v=cc48435a';
-import { BLOCKED } from '../dungeon.js?v=cc48435a';
-import { sub3, add3, scale3, dot3, norm3, dist3, tangentBasis } from '../vec3.js?v=cc48435a';
-import { makeDebris, makeDotBurst, makeDotEnemy } from '../units.js?v=cc48435a';
-import { CREATURE_TINTS, ENEMY_SPEC, INTROS, computeWavePlan, accentFor } from '../enemyspec.js?v=cc48435a';
-import { waveReset as shieldWaveReset, shoveVec, shoveMag } from '../shield.js?v=cc48435a';
-import { TOWER_ORDER } from '../towers.js?v=cc48435a';
-import { showContact } from './contact-card.js?v=cc48435a';
-import { grantStrikes } from '../strike.js?v=cc48435a';
-import { makeDotSquad } from './squads.js?v=cc48435a';
-import { DEATH_KEYS } from '../audiomanifest.js?v=cc48435a';
+import { waveGap } from '../domain/wave-spread.js?v=e6be0715';
+import { emergence } from '../domain/breach-waves.js?v=e6be0715';
+import { stampScare, scarePace, isScared, towardScare, awayExits } from '../domain/impact-scare.js?v=e6be0715';
+import { SCARE_FREEZE_S } from '../content/explosions.js?v=e6be0715';
+import { STORY_EXPEDITIONS } from '../content/story-defaults.js?v=e6be0715';
+import { sinkholeGroundHeight } from '../core/sinkhole-shape.js?v=e6be0715';
+import { CONTENT } from '../content/runtime.js?v=e6be0715';
+import { record } from '../diagnostics.js?v=e6be0715';
+import { guardExits } from '../domain/guard-aggro.js?v=e6be0715';
+import * as THREE from '../../vendor/three.module.js?v=e6be0715';
+import { BLOCKED } from '../dungeon.js?v=e6be0715';
+import { sub3, add3, scale3, dot3, norm3, dist3, tangentBasis } from '../vec3.js?v=e6be0715';
+import { makeDebris, makeDotBurst, makeDotEnemy } from '../units.js?v=e6be0715';
+import { CREATURE_TINTS, ENEMY_SPEC, INTROS, computeWavePlan, accentFor } from '../enemyspec.js?v=e6be0715';
+import { waveReset as shieldWaveReset, shoveVec, shoveMag } from '../shield.js?v=e6be0715';
+import { TOWER_ORDER } from '../towers.js?v=e6be0715';
+import { showContact } from './contact-card.js?v=e6be0715';
+import { grantStrikes } from '../strike.js?v=e6be0715';
+import { makeDotSquad } from './squads.js?v=e6be0715';
+import { DEATH_KEYS } from '../audiomanifest.js?v=e6be0715';
 
 export function createEnemyStep(host) {
   // --- enemies: easy AI, they only wander ----------------------------------

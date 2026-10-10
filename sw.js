@@ -1,5 +1,5 @@
 // Runtime caching only. New versions wait; another app's caches are never touched.
-const CB_TOKEN = 'cc48435a';
+const CB_TOKEN = 'e6be0715';
 const PREFIX = `stalheart:${new URL(self.registration.scope).pathname}:`;
 const CACHE = `${PREFIX}${CB_TOKEN}`;
 self.addEventListener('activate', event => event.waitUntil((async () => {

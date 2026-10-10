@@ -1,6 +1,6 @@
 // Where the current URL is in the navigation shell, and where an entry goes. Pure: the caller passes the page path,
 // the hash without '#', and the search string.
-import { isStoryRoute } from './story-route.js?v=cc48435a';
+import { isStoryRoute } from './story-route.js?v=e6be0715';
 
 // the switches that belong to a mode; leaving a mode drops them, harness switches (sw, acceptance, dev, fps) ride along
 export const MODE_SWITCHES = Object.freeze(['story', 'stage', 'world', 'heart', 'threat', 'land', 'cine', 'skip', 'gunship', 'brief', 'enemies', 'doc', 'phase']);

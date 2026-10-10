@@ -1,7 +1,7 @@
 // THE SEAT HINT, ONCE (2026-09-19-phone-seats-say-less, built 2026-10-01): on a phone a seat's footer of controls shows the first time
 // a seat is taken in this browser and for `seconds`, then never again (the thumb has learned it; H brings the controls page back).
 // On desktop the footer stays. `footer`: the panel's footer element; marks it `hint-seen` for styles.css.
-import { storage } from '../storage.js?v=cc48435a';
+import { storage } from '../storage.js?v=e6be0715';
 
 const SEEN = 'seat-hint-seen';
 

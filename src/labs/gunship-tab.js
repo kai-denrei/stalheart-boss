@@ -9,30 +9,30 @@
 //
 // The same world as the laser lab is written again here rather than shared: pulling one world module out of both labs
 // is the follow-up once both have had a browser round.
-import * as THREE from '../../vendor/three.module.js?v=cc48435a';
-import GUI from '../../vendor/lil-gui.esm.js?v=cc48435a';
-import { LOOKS } from '../looks.js?v=cc48435a';
-import { STORY_RECIPE, STORY_CLEARING } from '../content/story-defaults.js?v=cc48435a';
-import { buildStoryPlanet } from '../domain/story-planet.js?v=cc48435a';
-import { planetBake } from '../platform/planet-bake.js?v=cc48435a';
-import { createStoryPlanetSurface } from './story-planet-mesh.js?v=cc48435a';
-import { createInsetHud } from '../fx/laser-inset-hud.js?v=cc48435a';
-import { planBase } from '../domain/base-plan.js?v=cc48435a';
-import { ISLANDS, STRUCTURES, KIT, STAGES } from '../content/base-layout.js?v=cc48435a';
-import { createStoryBase } from '../fx/story-base.js?v=cc48435a';
-import { createExplosions } from '../fx/explosions.js?v=cc48435a';
-import { EXPLOSION_SCARE, SCARE_FREEZE_S } from '../content/explosions.js?v=cc48435a';
-import { applyScare, stampScare, isScared, scarePace } from '../domain/impact-scare.js?v=cc48435a';
-import { makeDotEnemy, makeDotBurst } from '../units.js?v=cc48435a';
-import { makeAudio } from '../audio.js?v=cc48435a';
-import { GUNSHIP_ORBIT, GUNSHIP_PLATFORM, GUNSHIP_GUNS, GUNSHIP_GUN_ORDER } from '../content/gunship.js?v=cc48435a';
+import * as THREE from '../../vendor/three.module.js?v=e6be0715';
+import GUI from '../../vendor/lil-gui.esm.js?v=e6be0715';
+import { LOOKS } from '../looks.js?v=e6be0715';
+import { STORY_RECIPE, STORY_CLEARING } from '../content/story-defaults.js?v=e6be0715';
+import { buildStoryPlanet } from '../domain/story-planet.js?v=e6be0715';
+import { planetBake } from '../platform/planet-bake.js?v=e6be0715';
+import { createStoryPlanetSurface } from './story-planet-mesh.js?v=e6be0715';
+import { createInsetHud } from '../fx/laser-inset-hud.js?v=e6be0715';
+import { planBase } from '../domain/base-plan.js?v=e6be0715';
+import { ISLANDS, STRUCTURES, KIT, STAGES } from '../content/base-layout.js?v=e6be0715';
+import { createStoryBase } from '../fx/story-base.js?v=e6be0715';
+import { createExplosions } from '../fx/explosions.js?v=e6be0715';
+import { EXPLOSION_SCARE, SCARE_FREEZE_S } from '../content/explosions.js?v=e6be0715';
+import { applyScare, stampScare, isScared, scarePace } from '../domain/impact-scare.js?v=e6be0715';
+import { makeDotEnemy, makeDotBurst } from '../units.js?v=e6be0715';
+import { makeAudio } from '../audio.js?v=e6be0715';
+import { GUNSHIP_ORBIT, GUNSHIP_PLATFORM, GUNSHIP_GUNS, GUNSHIP_GUN_ORDER } from '../content/gunship.js?v=e6be0715';
 import {
   makeGunship, stepGunship, mountGunship, selectGun, stepGun, fireRound, stepRounds,
   paintHeavy, launchHeavy, stepHeavy, heavyState, splashDamage,
-} from '../domain/gunship.js?v=cc48435a';
-import { deepLink, wireDeepLink } from '../deeplink.js?v=cc48435a';
-import { norm3 } from '../vec3.js?v=cc48435a';
-import { BLOCKED, PATH, bfsDist } from '../dungeon.js?v=cc48435a';
+} from '../domain/gunship.js?v=e6be0715';
+import { deepLink, wireDeepLink } from '../deeplink.js?v=e6be0715';
+import { norm3 } from '../vec3.js?v=e6be0715';
+import { BLOCKED, PATH, bfsDist } from '../dungeon.js?v=e6be0715';
 
 const STAGE = 6;
 const BODY_SPEED = 2.2, BODY_GAP = 3.4, TRENCH_WIDTH = 4, TRENCH_DEPTH = 1.5;

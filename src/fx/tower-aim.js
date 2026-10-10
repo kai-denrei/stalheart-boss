@@ -20,13 +20,13 @@
 // and the numbers come from SENTRY_TUNE so the lab and the board cannot
 // drift apart. (The range's own degree-based rules are src/sentry.js; this
 // is the board's radian twin over live nodes, kept bit-for-bit as it was.)
-import * as THREE from '../../vendor/three.module.js?v=cc48435a';
-import { bodyAt } from './lance-follow.js?v=cc48435a';
-import { makeLock } from '../domain/lockon.js?v=cc48435a';
-import { stepMissileLock } from '../domain/missile-targeting.js?v=cc48435a';
-import { pickTarget } from '../towers.js?v=cc48435a';
-import { SENTRY_TUNE } from '../sentry.js?v=cc48435a';
-import { MISSILE_LAUNCH_ELEVATION } from '../content/missile-defaults.js?v=cc48435a';
+import * as THREE from '../../vendor/three.module.js?v=e6be0715';
+import { bodyAt } from './lance-follow.js?v=e6be0715';
+import { makeLock } from '../domain/lockon.js?v=e6be0715';
+import { stepMissileLock } from '../domain/missile-targeting.js?v=e6be0715';
+import { pickTarget } from '../towers.js?v=e6be0715';
+import { SENTRY_TUNE } from '../sentry.js?v=e6be0715';
+import { MISSILE_LAUNCH_ELEVATION } from '../content/missile-defaults.js?v=e6be0715';
 
 const RAD = Math.PI / 180;
 const TRACK_EVERY = 0.15;   // seconds between retargets; the ease covers it
