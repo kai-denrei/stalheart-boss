@@ -7,8 +7,8 @@
 // wound CCW as seen from outside (outward normals) — a consistent global
 // orientation the 2D version had to normalize into existence.
 
-import { Vector3 } from '../vendor/three.module.js?v=9d95390b';
-import { ConvexHull } from '../vendor/ConvexHull.js?v=9d95390b';
+import { Vector3 } from '../vendor/three.module.js?v=829a36dd';
+import { ConvexHull } from '../vendor/ConvexHull.js?v=829a36dd';
 
 // points: Array<[x,y,z]> on the sphere -> Array<[i0,i1,i2]> triangles,
 // CCW viewed from outside.

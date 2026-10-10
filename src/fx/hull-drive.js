@@ -7,14 +7,14 @@
 // pedestalBlocked, player, runContext, spawnOneOrb, steerEase, steeringActive, updateHud, wallCushion), what it rebinds or declares later
 // as getters (cellIndex, towerCells, cellSide, cruise, dungeon, gotoField, graph, kick, playerDown, portalDist, speedBonus, storyBase, stuck,
 // throttle, whim) and the lets this writes as setters (setAutoMode) and getters with setters (respawnClock, steerHold).
-import { TANK_DRIVE, TANK_STEER, TANK_WALL, TANK_KICK, HULL_STUCK } from '../content/tank.js?v=9d95390b';
-import { stepDriveRamp, scrubDriveRamp } from '../domain/drive-ramp.js?v=9d95390b';
-import { stepSteerEase } from '../domain/steer-ease.js?v=9d95390b';
-import { stepStuck, unstick } from '../domain/hull-stuck.js?v=9d95390b';
-import { startKick, stepKick, kicking, planKick, glideHeading } from '../domain/hover-kick.js?v=9d95390b';
-import * as THREE from '../../vendor/three.module.js?v=9d95390b';
-import { BLOCKED } from '../dungeon.js?v=9d95390b';
-import { sub3, add3, scale3, dot3, cross3, norm3, len3, dist3, tangentDir } from '../vec3.js?v=9d95390b';
+import { TANK_DRIVE, TANK_STEER, TANK_WALL, TANK_KICK, HULL_STUCK } from '../content/tank.js?v=829a36dd';
+import { stepDriveRamp, scrubDriveRamp } from '../domain/drive-ramp.js?v=829a36dd';
+import { stepSteerEase } from '../domain/steer-ease.js?v=829a36dd';
+import { stepStuck, unstick } from '../domain/hull-stuck.js?v=829a36dd';
+import { startKick, stepKick, kicking, planKick, glideHeading } from '../domain/hover-kick.js?v=829a36dd';
+import * as THREE from '../../vendor/three.module.js?v=829a36dd';
+import { BLOCKED } from '../dungeon.js?v=829a36dd';
+import { sub3, add3, scale3, dot3, cross3, norm3, len3, dist3, tangentDir } from '../vec3.js?v=829a36dd';
 
 export function createHullDrive(host) {
   // --- movement over the cell graph ---------------------------------------

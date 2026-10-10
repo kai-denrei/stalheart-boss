@@ -4,10 +4,10 @@
 // orbit and the fuel state, the three guns and the gunner's role. Pure
 // presentation: the host pauses the game, opens it, and takes the seat when
 // it closes.
-import * as THREE from '../../vendor/three.module.js?v=9d95390b';
-import { GLTFLoader } from '../../vendor/GLTFLoader.js?v=9d95390b';
-import { MeshoptDecoder } from '../../vendor/meshopt_decoder.module.js?v=9d95390b';
-import { GUNSHIP_GUNS, GUNSHIP_ORBIT } from '../content/gunship.js?v=9d95390b';
+import * as THREE from '../../vendor/three.module.js?v=829a36dd';
+import { GLTFLoader } from '../../vendor/GLTFLoader.js?v=829a36dd';
+import { MeshoptDecoder } from '../../vendor/meshopt_decoder.module.js?v=829a36dd';
+import { GUNSHIP_GUNS, GUNSHIP_ORBIT } from '../content/gunship.js?v=829a36dd';
 
 const KORP_URL = 'assets/models/korp/korp_d0_lod1.glb';
 const SEEN_KEY = 'stalheart:v1:gunship-briefing';

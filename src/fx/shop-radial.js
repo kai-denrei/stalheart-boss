@@ -7,11 +7,11 @@
 // `host` hands in the controller: its fixed objects and functions as values (root, container, shopEl, strike, towerByCell,
 // orderByCell, orders, towers, automated, closeShop, placeError, effectiveStats, showRangeRing), what it rebinds as getters
 // (eco, isao, shopMute, story, wave, shopPos) and the two lets opening the menu writes as setters (setShopCi, setShopPos).
-import { TOWERS, TOWER_BY_KEY, upgradeCost, unlockedTowerKeys, towerUnlockWave } from '../towers.js?v=9d95390b';
-import { sellRefund } from '../domain/economy.js?v=9d95390b';
-import { unlockedTowers } from '../domain/expeditions.js?v=9d95390b';
-import { STORY_EXPEDITIONS } from '../content/story-defaults.js?v=9d95390b';
-import { STORY_SENTRIES } from '../content/sentries.js?v=9d95390b';
+import { TOWERS, TOWER_BY_KEY, upgradeCost, unlockedTowerKeys, towerUnlockWave } from '../towers.js?v=829a36dd';
+import { sellRefund } from '../domain/economy.js?v=829a36dd';
+import { unlockedTowers } from '../domain/expeditions.js?v=829a36dd';
+import { STORY_EXPEDITIONS } from '../content/story-defaults.js?v=829a36dd';
+import { STORY_SENTRIES } from '../content/sentries.js?v=829a36dd';
 
 // RADIAL menu, HokorobiTawaa-style: options ring the tapped cell.
 // R follows HK's sizing (max(66, min(104, 0.3·viewport-min))); the

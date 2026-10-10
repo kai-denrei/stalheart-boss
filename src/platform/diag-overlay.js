@@ -5,8 +5,8 @@
 // keys, tankSight, sightLine, setView, snapCamera, deployProgress) and call-throughs for the shot functions declared after this
 // is built (endShot, shotId); what it rebinds or declares later as getters (playerMesh, playerDown, buildMode, shots, deploy, paused,
 // cellSide, unitScale, camBiasNdc, toastEl, msgEl, throttle, cruise, autoMode, gotoCi, stick, t).
-import * as THREE from '../../vendor/three.module.js?v=9d95390b';
-import { viewEdge, viewportLine } from '../domain/view-edge.js?v=9d95390b';
+import * as THREE from '../../vendor/three.module.js?v=829a36dd';
+import { viewEdge, viewportLine } from '../domain/view-edge.js?v=829a36dd';
 
 export function createDiagOverlay(root, host) {
   const vwFrustum = new THREE.Frustum(), vwMat = new THREE.Matrix4(), vwPt = new THREE.Vector3();

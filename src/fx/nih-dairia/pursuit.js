@@ -1,6 +1,6 @@
 // Ported from lab-creatures src/monster/pursuit.ts (kai-denrei, f2a4f89 with the pursuit fix of b3cfb52, export of 2026-10-08; derived from Jelly Baby by scottstts; GPL-3.0, see ./LICENSE), types stripped; the solver, the gait, the pursuit and the feeding are unchanged.
-import { Vector3 } from '../../../vendor/three.module.js?v=9d95390b';
-import { DEFAULT_MOTION } from './motion-settings.js?v=9d95390b';
+import { Vector3 } from '../../../vendor/three.module.js?v=829a36dd';
+import { DEFAULT_MOTION } from './motion-settings.js?v=829a36dd';
 
 const clamp=(v)=>Math.max(0,Math.min(1,v));
 const smooth=(v)=>{v=clamp(v);return v*v*(3-2*v);};

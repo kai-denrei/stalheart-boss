@@ -19,9 +19,9 @@
 // They BUILD and return; they never add to a scene or push onto a list. The
 // caller owns the lifetime, which is the one thing the two really do differ
 // about.
-import * as THREE from '../vendor/three.module.js?v=9d95390b';
-import { createBeam } from './beamfx.js?v=9d95390b';
-import { BOARD_PRESET, BEAM_PEAK } from './beamdraw.js?v=9d95390b';
+import * as THREE from '../vendor/three.module.js?v=829a36dd';
+import { createBeam } from './beamfx.js?v=829a36dd';
+import { BOARD_PRESET, BEAM_PEAK } from './beamdraw.js?v=829a36dd';
 
 // --- the looks the board already settled on -------------------------------
 // Repeated from nowhere: these WERE td-tab's private constants, and moving

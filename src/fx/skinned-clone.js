@@ -19,7 +19,7 @@
 // sibling repos' node_modules and all of them ship three r180 against this
 // project's r160. "An addon from the sibling's node_modules" is already a
 // recorded dead end in .deban, from the Line2 trio.
-import * as THREE from '../../vendor/three.module.js?v=9d95390b';
+import * as THREE from '../../vendor/three.module.js?v=829a36dd';
 
 export function cloneSkinned(source) {
   const clone = source.clone(true);

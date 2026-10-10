@@ -1,13 +1,13 @@
 // The game's explosions: the pinned lab modules (src/fx/explosions/) stood on the planet, scaled from their
 // metres to scene units, capped per size and reaped. A module that fails to load or compile turns the adapter
 // off and callers keep their dot bursts.
-import * as THREE from '../../vendor/three.module.js?v=9d95390b';
-import { METRES_PER_CELL } from '../core/stage-units.js?v=9d95390b';
-import { EXPLOSION_USES, EXPLOSION_PALETTE, EXPLOSION_CAPS } from '../content/explosions.js?v=9d95390b';
-import * as rotaryPop from './explosions/rotary-pop.js?v=9d95390b';
-import * as boforsBurst from './explosions/bofors-burst.js?v=9d95390b';
-import * as howitzerBlast from './explosions/howitzer-blast.js?v=9d95390b';
-import * as orbitalStrike from './explosions/orbital-strike.js?v=9d95390b';
+import * as THREE from '../../vendor/three.module.js?v=829a36dd';
+import { METRES_PER_CELL } from '../core/stage-units.js?v=829a36dd';
+import { EXPLOSION_USES, EXPLOSION_PALETTE, EXPLOSION_CAPS } from '../content/explosions.js?v=829a36dd';
+import * as rotaryPop from './explosions/rotary-pop.js?v=829a36dd';
+import * as boforsBurst from './explosions/bofors-burst.js?v=829a36dd';
+import * as howitzerBlast from './explosions/howitzer-blast.js?v=829a36dd';
+import * as orbitalStrike from './explosions/orbital-strike.js?v=829a36dd';
 
 const MODULES = { 'rotary-pop': rotaryPop, 'bofors-burst': boforsBurst, 'howitzer-blast': howitzerBlast, 'orbital-strike': orbitalStrike };
 const Y = new THREE.Vector3(0, 1, 0);

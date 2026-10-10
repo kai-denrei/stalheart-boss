@@ -2,7 +2,7 @@
 // drive the lab by, moved out of boss-tab.js (bait-mode spec, Task 0) so the bait and the seat have room to grow beside it. The lab's
 // own state reaches it through getters (a creature reload, a size change, a re-anchor or a new fight is seen at once); the two it
 // assigns, the scripted input and the pinTo hold, through setters. The methods are the lab's own, moved verbatim.
-import { readout as fightReadout } from '../../domain/boss-fight.js?v=9d95390b';
+import { readout as fightReadout } from '../../domain/boss-fight.js?v=829a36dd';
 
 export function createLabHandle({
   getCreature, getScale, getT, getFight, getGameCam, getReanchors, setScripted, setPin,
@@ -35,7 +35,13 @@ export function createLabHandle({
     // after a wave), reeds: [{ id, hp, dead, hits, body, centre (local), contacts, lod }], hunted (the Reed nearest Isao), solver (ms this frame), steps, timeScale (the
     // wave's clock under the budget), lod (off-screen now), cost (ms a step), meanSolver, meanScale }); reeds(n) sets the count and restarts the round (reeds() reads it);
     // killReeds() is the acceptance's cheat: every Reed standing dies now (the number)
-    wave: () => wave.state(), reeds, killReeds: () => wave.killAll(),
+    // the second pass (2026-10-10): thinReeds(n) kills the Reeds up down to n standing (the newest first: the step's switch watched), waveTrace(on) starts (true) or
+    // stops (false) the per-frame step trace ([{ clock, t, hz, alive, speed (the fastest live node, m/s) }]) and waveTrace() reads it
+    wave: () => wave.state(), reeds, killReeds: () => wave.killAll(), thinReeds: (n) => wave.thin(n), waveTrace: (on) => wave.trace(on),
+    // coarse(on, above) the 120 Hz switch (the panel's) and the count it needs exceeded (the measurement's), carcassDecay(s) the carcasses' decay seconds (the
+    // acceptance shortens it to watch one go); each returns the value
+    coarse: (on, above) => { const C = fightTune.wave.coarse; if (on !== undefined) C.on = !!on; if (above !== undefined) C.above = above; return C.on; },
+    carcassDecay: (s) => { if (s !== undefined) fightTune.wave.carcass.decay = s; return fightTune.wave.carcass.decay; },
     gunFear: () => fear.guns(),
     // the game's gunship seat (bait mode, ./game-seat.js): aim([x, z]) turns the optic onto a local ground point (until the mouse moves it),
     // gun(key) picks 'rotary' | 'bofors' | 'nuke' (the MK-9; 'heavy' and 1-3 too) through the seat's own gun buttons and returns the gun,
@@ -102,6 +108,8 @@ export function createLabHandle({
     // screenshot of the hunt; false outside the free orbit
     chase: () => chase(),
     // the bound's radius: bounds(r) sets the lab's copy (the ring, the clamps and the backstop follow at once), bounds() reads it. Acceptance only
+    // the MK-9 zones for Isao's autopilot on or off (content `bait.nukeAvoid`): off, the acceptance's MK-9s led onto him hit him. Acceptance only
+    avoidNukes: (on) => { if (on !== undefined) fightTune.bait.nukeAvoid = !!on; return fightTune.bait.nukeAvoid; },
     bounds: (r) => { if (r !== undefined) fightTune.bounds.radius = r; return fightTune.bounds.radius; },
     // the measurement's hold: the creature's target on the shape's centre for `seconds` of lab clock with the routing off, the tank
     // parked behind it (the far side from the creature, outside the shape plus 6 m) and held still; null for an unknown id

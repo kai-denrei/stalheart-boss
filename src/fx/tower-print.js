@@ -5,8 +5,8 @@
 // print. When the print ends the real sentry's skin rises the same way over `skin` seconds while the wireframe fades; then the ghost goes
 // and the sentry's own materials come back. Needs renderer.localClippingEnabled. Every material here is a clone: a look's materials are
 // shared by every sentry of its kind.
-import * as THREE from '../../vendor/three.module.js?v=9d95390b';
-import { isaoSpeak } from './isao-voice.js?v=9d95390b';
+import * as THREE from '../../vendor/three.module.js?v=829a36dd';
+import { isaoSpeak } from './isao-voice.js?v=829a36dd';
 
 const box = new THREE.Box3(), up = new THREE.Vector3(), lo = new THREE.Vector3(), hi = new THREE.Vector3();
 

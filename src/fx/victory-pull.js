@@ -14,9 +14,9 @@
 //
 // SKIPPABLE, like every other shot here. A player who has seen it four
 // times should not be held, and the skip path already exists and is tested.
-import * as THREE from '../../vendor/three.module.js?v=9d95390b';
-import { pullOutPath } from '../domain/victory-pull.js?v=9d95390b';
-import { VICTORY_PULL } from '../content/victory-pull.js?v=9d95390b';
+import * as THREE from '../../vendor/three.module.js?v=829a36dd';
+import { pullOutPath } from '../domain/victory-pull.js?v=829a36dd';
+import { VICTORY_PULL } from '../content/victory-pull.js?v=829a36dd';
 
 export function startVictoryPull({ camera, tmpCam, startShot, setView, debrief }, pull = VICTORY_PULL) {
   // where the camera IS, so the move starts from the player's own view

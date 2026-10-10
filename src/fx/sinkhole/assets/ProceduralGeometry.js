@@ -7,8 +7,8 @@ import {
   InstancedBufferAttribute,
   Sphere,
   Vector3
-} from '../../../../vendor/three.module.js?v=9d95390b';
-import { clamp, hash11, smoothstep } from '../utils/math.js?v=9d95390b';
+} from '../../../../vendor/three.module.js?v=829a36dd';
+import { clamp, hash11, smoothstep } from '../utils/math.js?v=829a36dd';
 
 /**
  * CPU-side procedural geometry.

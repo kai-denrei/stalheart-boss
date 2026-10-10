@@ -1,6 +1,6 @@
 // Composition selects one immutable content snapshot before game/lab startup.
-import shipped from './shipped.js?v=9d95390b';
-import { baselinePreset, parsePreset, validatePreset, clone, deepFreeze, resolveSounds } from './preset.js?v=9d95390b';
+import shipped from './shipped.js?v=829a36dd';
+import { baselinePreset, parsePreset, validatePreset, clone, deepFreeze, resolveSounds } from './preset.js?v=829a36dd';
 export const SHIPPED = deepFreeze(parsePreset(JSON.stringify(shipped || baselinePreset())));
 export let CONTENT = SHIPPED;
 export let SENTRY_FX = CONTENT.weapons;

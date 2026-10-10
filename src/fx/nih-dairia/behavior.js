@@ -1,13 +1,13 @@
 // Ported from lab-creatures src/monster/behavior.ts (kai-denrei, f2a4f89, export of 2026-10-08; derived from Jelly Baby by scottstts; GPL-3.0, see ./LICENSE), types stripped; the solver, the gait, the pursuit and the feeding are unchanged.
-import { Vector3 } from '../../../vendor/three.module.js?v=9d95390b';
-import { PreyCradle } from './cradle.js?v=9d95390b';
-import { GroundTraction } from './traction.js?v=9d95390b';
-import { LimbSeparation } from './limb-separation.js?v=9d95390b';
-import { SpiderGait } from './gait.js?v=9d95390b';
-import { TentaclePursuit } from './pursuit.js?v=9d95390b';
-import { DEFAULT_MOTION } from './motion-settings.js?v=9d95390b';
-import { preyImprint } from './prey-shapes.js?v=9d95390b';
-import { FeedingCycle } from './feeding.js?v=9d95390b';
+import { Vector3 } from '../../../vendor/three.module.js?v=829a36dd';
+import { PreyCradle } from './cradle.js?v=829a36dd';
+import { GroundTraction } from './traction.js?v=829a36dd';
+import { LimbSeparation } from './limb-separation.js?v=829a36dd';
+import { SpiderGait } from './gait.js?v=829a36dd';
+import { TentaclePursuit } from './pursuit.js?v=829a36dd';
+import { DEFAULT_MOTION } from './motion-settings.js?v=829a36dd';
+import { preyImprint } from './prey-shapes.js?v=829a36dd';
+import { FeedingCycle } from './feeding.js?v=829a36dd';
 
 /** World-space stimulus and force output stay separate from rendering and UI.
  * A future Stalheart adapter can supply targets and a local surface frame here. */

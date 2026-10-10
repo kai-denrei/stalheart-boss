@@ -3,11 +3,11 @@
 // full width, 1280 or a 400 px phone column to judge the stacking. Sound arms on the first press in the lab (the ticks
 // are a quiet oscillator here, the stamps the game's tower_upgrade cue). ?sample=, ?width=, ?sound=0 and ?still=1 are
 // deep links; ?acceptance=1 exposes window.__stalheartDebriefTest for scripts/browser-test.mjs --debrief.
-import { createSectorDebrief } from '../fx/sector-debrief.js?v=9d95390b';
-import { DEBRIEF_SAMPLES, DEBRIEF_SAMPLE_ISAO } from '../content/debrief-samples.js?v=9d95390b';
-import { makeAudio } from '../audio.js?v=9d95390b';
-import { CONTENT } from '../content/runtime.js?v=9d95390b';
-import { resolveSounds } from '../content/preset.js?v=9d95390b';
+import { createSectorDebrief } from '../fx/sector-debrief.js?v=829a36dd';
+import { DEBRIEF_SAMPLES, DEBRIEF_SAMPLE_ISAO } from '../content/debrief-samples.js?v=829a36dd';
+import { makeAudio } from '../audio.js?v=829a36dd';
+import { CONTENT } from '../content/runtime.js?v=829a36dd';
+import { resolveSounds } from '../content/preset.js?v=829a36dd';
 
 const SAMPLES = [['secure', 'SECURE'], ['flawless', 'FLAWLESS'], ['lost', 'LOST'], ['campaign', 'CAMPAIGN']];
 const WIDTHS = [['full', 'FULL'], ['1280', '1280'], ['400', '400 PX']];

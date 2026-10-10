@@ -1,20 +1,20 @@
-import { makeOrdnanceShell } from './shell.js?v=9d95390b';
-import { createWeaponVoice } from './weapon-voice.js?v=9d95390b';
-import { firingFor } from './content/firing-defaults.js?v=9d95390b';
-import { TOWER_BY_KEY, effectiveStats } from './towers.js?v=9d95390b';
-import { mountSentryEffects, EFFECT_HELP } from './labs/sentry-effects.js?v=9d95390b';
-import { RANGE_SURFACES, makeRangeSurface, surfaceNormal } from './labs/range-surfaces.js?v=9d95390b';
-import { makeImpactBurst, orientImpact } from './impactfx.js?v=9d95390b';
-import { tuneFor, resolveImpactColors } from './sentryfx.js?v=9d95390b';
-import { pickMissileTarget, missileGroundDistance, missileLimits as scaledMissileLimits, stepMissileLock, missileCanFire } from './domain/missile-targeting.js?v=9d95390b';
-import { mountControlHelp } from './labs/control-help.js?v=9d95390b';
-import { SENTRY_HELP } from './labs/sentry-help.js?v=9d95390b';
-import { CONTENT } from './content/runtime.js?v=9d95390b';
-import { clone } from './content/preset.js?v=9d95390b';
-import { MISSILE_LAUNCH_ELEVATION } from './content/missile-defaults.js?v=9d95390b';
-import { createMissilePool, launchDart, advanceDart } from './missiles.js?v=9d95390b';
-import { mountPresetPanel } from './labs/preset-panel.js?v=9d95390b';
-import { mountSentryRadial } from './labs/sentry-radial.js?v=9d95390b';
+import { makeOrdnanceShell } from './shell.js?v=829a36dd';
+import { createWeaponVoice } from './weapon-voice.js?v=829a36dd';
+import { firingFor } from './content/firing-defaults.js?v=829a36dd';
+import { TOWER_BY_KEY, effectiveStats } from './towers.js?v=829a36dd';
+import { mountSentryEffects, EFFECT_HELP } from './labs/sentry-effects.js?v=829a36dd';
+import { RANGE_SURFACES, makeRangeSurface, surfaceNormal } from './labs/range-surfaces.js?v=829a36dd';
+import { makeImpactBurst, orientImpact } from './impactfx.js?v=829a36dd';
+import { tuneFor, resolveImpactColors } from './sentryfx.js?v=829a36dd';
+import { pickMissileTarget, missileGroundDistance, missileLimits as scaledMissileLimits, stepMissileLock, missileCanFire } from './domain/missile-targeting.js?v=829a36dd';
+import { mountControlHelp } from './labs/control-help.js?v=829a36dd';
+import { SENTRY_HELP } from './labs/sentry-help.js?v=829a36dd';
+import { CONTENT } from './content/runtime.js?v=829a36dd';
+import { clone } from './content/preset.js?v=829a36dd';
+import { MISSILE_LAUNCH_ELEVATION } from './content/missile-defaults.js?v=829a36dd';
+import { createMissilePool, launchDart, advanceDart } from './missiles.js?v=829a36dd';
+import { mountPresetPanel } from './labs/preset-panel.js?v=829a36dd';
+import { mountSentryRadial } from './labs/sentry-radial.js?v=829a36dd';
 // sentry-tab.js — THE SENTRY RANGE. Eight numbered Sentry families from the
 // Sentry Workshop (https://jelaludo.github.io/SentryTowers_A6/) on a range
 // where units pop up, and the turret has to find them, turn to them, and
@@ -38,31 +38,31 @@ import { mountSentryRadial } from './labs/sentry-radial.js?v=9d95390b';
 //   along the yaw/elev the sim asked for — those two differ during a slew,
 //   and a bullet that leaves along the INTENT rather than the barrel is a
 //   bullet that visibly misses its own gun.
-import * as THREE from '../vendor/three.module.js?v=9d95390b';
-import { OrbitControls } from '../vendor/OrbitControls.js?v=9d95390b';
-import { GLTFLoader } from '../vendor/GLTFLoader.js?v=9d95390b';
-import { MeshoptDecoder } from '../vendor/meshopt_decoder.module.js?v=9d95390b';
-import GUI from '../vendor/lil-gui.esm.js?v=9d95390b';
-import { makeBloom } from './postfx.js?v=9d95390b';
-import { makeBeamShot } from './shotfx.js?v=9d95390b';
-import { bakeGalaxyCube } from './galaxybake.js?v=9d95390b';
-import { SKY_PRESET } from './galaxyseed.js?v=9d95390b';
-import { LOOKS } from './looks.js?v=9d95390b';
-import { makeDotEnemy, makeBulletCloud, makeDotBurst } from './units.js?v=9d95390b';
-import { CREATURE_TINTS, accentFor } from './enemyspec.js?v=9d95390b';
-import { mulberry32 } from './rng.js?v=9d95390b';
-import { deepLink, wireDeepLink } from './deeplink.js?v=9d95390b';
+import * as THREE from '../vendor/three.module.js?v=829a36dd';
+import { OrbitControls } from '../vendor/OrbitControls.js?v=829a36dd';
+import { GLTFLoader } from '../vendor/GLTFLoader.js?v=829a36dd';
+import { MeshoptDecoder } from '../vendor/meshopt_decoder.module.js?v=829a36dd';
+import GUI from '../vendor/lil-gui.esm.js?v=829a36dd';
+import { makeBloom } from './postfx.js?v=829a36dd';
+import { makeBeamShot } from './shotfx.js?v=829a36dd';
+import { bakeGalaxyCube } from './galaxybake.js?v=829a36dd';
+import { SKY_PRESET } from './galaxyseed.js?v=829a36dd';
+import { LOOKS } from './looks.js?v=829a36dd';
+import { makeDotEnemy, makeBulletCloud, makeDotBurst } from './units.js?v=829a36dd';
+import { CREATURE_TINTS, accentFor } from './enemyspec.js?v=829a36dd';
+import { mulberry32 } from './rng.js?v=829a36dd';
+import { deepLink, wireDeepLink } from './deeplink.js?v=829a36dd';
 import {
   SENTRY_TUNE, SENTRY_FAMILIES, SENTRY_TIERS, familyById, sentryUrl,
   makeSentry, makeRange, stepRange, pickTarget, track, slew, stepGun, lobAngle,
   canFire, fire, hitTarget, landedOn, aimAt, inEnvelope, aimError,
   placeBattery, relTo, stepWaves, stepWalkers, deadZone, leadPoint,
-} from './sentry.js?v=9d95390b';
-import { weaponKind } from './sentryfx.js?v=9d95390b';
-import { makeAudio } from './audio.js?v=9d95390b';
+} from './sentry.js?v=829a36dd';
+import { weaponKind } from './sentryfx.js?v=829a36dd';
+import { makeAudio } from './audio.js?v=829a36dd';
 import {
   makeLock,
-} from './lockon.js?v=9d95390b';
+} from './lockon.js?v=829a36dd';
 
 // the pop-up units, from the game's own roster — this is a range for OUR
 // units, not a new bestiary

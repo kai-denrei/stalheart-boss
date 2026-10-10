@@ -1,9 +1,9 @@
 // Fetches the baked story planet once per page and hands it to whoever builds
 // the world. A missing or stale bake is null: the planet is then built live.
 // The fallback is recorded (2026-09-25): it costs the page seconds of live generation, and it used to happen without a trace.
-import { decodePlanetBake } from '../core/planet-bake.js?v=9d95390b';
-import { STORY_RECIPE } from '../content/story-defaults.js?v=9d95390b';
-import { record } from '../diagnostics.js?v=9d95390b';
+import { decodePlanetBake } from '../core/planet-bake.js?v=829a36dd';
+import { STORY_RECIPE } from '../content/story-defaults.js?v=829a36dd';
+import { record } from '../diagnostics.js?v=829a36dd';
 export const PLANET_BAKE_URL = 'assets/story/planet.bin';
 let bake = null, pending = null;
 export function loadPlanetBake(url = PLANET_BAKE_URL) {

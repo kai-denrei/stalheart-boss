@@ -1,4 +1,4 @@
-import { missileFrame, sampleMissile } from './missile-flight.js?v=9d95390b';
+import { missileFrame, sampleMissile } from './missile-flight.js?v=829a36dd';
 
 const dot = (a,b) => a.reduce((s,v,i)=>s+v*b[i],0);
 const unit = a => {const n=Math.hypot(...a)||1;return a.map(v=>v/n);};

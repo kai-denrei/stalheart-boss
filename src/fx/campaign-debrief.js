@@ -3,9 +3,9 @@
 // verdict with its orders. The story shows none of it (its sectors have their own debrief); the acceptance runs and the
 // wave simulator still do. Presentation only: the host hands in its message and sitrep elements, a live snapshot of the run
 // (`ctx`), the icon renderer, and the two run-level blocks it still owns (coins, achievements).
-import { CREATURE_TINTS, ENEMY_SPEC, accentFor } from '../enemyspec.js?v=9d95390b';
-import { SINK, debriefAffordable } from '../campaign.js?v=9d95390b';
-import { rankLabel } from '../ranks.js?v=9d95390b';
+import { CREATURE_TINTS, ENEMY_SPEC, accentFor } from '../enemyspec.js?v=829a36dd';
+import { SINK, debriefAffordable } from '../campaign.js?v=829a36dd';
+import { rankLabel } from '../ranks.js?v=829a36dd';
 
 const SPARK = '▁▂▃▄▅▆▇█';
 export function sparkline(bins) {

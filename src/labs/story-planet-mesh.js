@@ -1,7 +1,7 @@
 // Lattice geometry for the story planet: open floors, raised rock, the
 // luminous cell edges and the clearing's mouths. Metres, pole at the origin.
-import * as THREE from '../../vendor/three.module.js?v=9d95390b';
-import { BLOCKED } from '../dungeon.js?v=9d95390b';
+import * as THREE from '../../vendor/three.module.js?v=829a36dd';
+import { BLOCKED } from '../dungeon.js?v=829a36dd';
 
 export function buildStoryPlanetMesh(planet, look, { wallMetres = 4 } = {}) {
   const { mesh, dungeon, graph, radius, clearing } = planet;

@@ -14,7 +14,7 @@
 // and degrees/s (yaw), and `cellSide` converts. Velocity is kept in cells/s as a tangent vector at the ground point.
 //
 // Pure: no Three.js, no DOM, no content import. Tunables come in as `tune` (src/content/gunship.js GUNSHIP_TRACK).
-import { norm3, dot3, cross3, len3 } from '../vec3.js?v=9d95390b';
+import { norm3, dot3, cross3, len3 } from '../vec3.js?v=829a36dd';
 
 const clamp1 = (x) => Math.max(-1, Math.min(1, x));
 /* the arc between two directions, in radians (the vectors need not be unit); atan2 keeps it exact near zero */

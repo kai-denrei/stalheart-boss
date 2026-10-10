@@ -50,21 +50,21 @@
 //
 // KEYS: the seat swallows every key but H in the capture phase. Esc is its `leave` (the lab goes back to the tank), P its `pause`; the
 // lab's R is a capture listener registered before any seat (boss-tab.js), so it runs first and the game's sentry-pilot.js is unchanged.
-import * as THREE from '../../../vendor/three.module.js?v=9d95390b';
-import { EffectComposer } from '../../../vendor/EffectComposer.js?v=9d95390b';
-import { RenderPass } from '../../../vendor/RenderPass.js?v=9d95390b';
-import { OutputPass } from '../../../vendor/OutputPass.js?v=9d95390b';
-import { createSentryPilot } from '../../sentry-pilot.js?v=9d95390b';
-import { makeCellIndex } from '../../cellindex.js?v=9d95390b';
-import { createStoryMonitor } from '../../fx/story-monitor.js?v=9d95390b';
-import { createThermalHeat } from '../../fx/thermal-heat.js?v=9d95390b';
-import { createGunshipOptic } from '../../fx/gunship-optic.js?v=9d95390b';
-import { createGunshipDrop } from '../../fx/gunship-drop.js?v=9d95390b';
-import { createWarnRing } from '../../fx/warn-ring.js?v=9d95390b';
-import { createExplosions } from '../../fx/explosions.js?v=9d95390b';
-import { makeGunship, stepGunship, onStation, phaseLeft, passProgress, mountGunship, dismountGunship, selectGun, stepGun, aimOnSphere, splashDamage, dangerReport, fireRound, stepRounds, paintHeavy, launchHeavy, nudgeHeavy, stepHeavy, heavyState } from '../../domain/gunship.js?v=9d95390b';
-import { GUNSHIP_GUNS, GUNSHIP_GUN_ORDER, GUNSHIP_NUKE, GUNSHIP_ORBIT, GUNSHIP_PLATFORM } from '../../content/gunship.js?v=9d95390b';
-import { orbitAt } from '../../domain/boss-orbit.js?v=9d95390b';
+import * as THREE from '../../../vendor/three.module.js?v=829a36dd';
+import { EffectComposer } from '../../../vendor/EffectComposer.js?v=829a36dd';
+import { RenderPass } from '../../../vendor/RenderPass.js?v=829a36dd';
+import { OutputPass } from '../../../vendor/OutputPass.js?v=829a36dd';
+import { createSentryPilot } from '../../sentry-pilot.js?v=829a36dd';
+import { makeCellIndex } from '../../cellindex.js?v=829a36dd';
+import { createStoryMonitor } from '../../fx/story-monitor.js?v=829a36dd';
+import { createThermalHeat } from '../../fx/thermal-heat.js?v=829a36dd';
+import { createGunshipOptic } from '../../fx/gunship-optic.js?v=829a36dd';
+import { createGunshipDrop } from '../../fx/gunship-drop.js?v=829a36dd';
+import { createWarnRing } from '../../fx/warn-ring.js?v=829a36dd';
+import { createExplosions } from '../../fx/explosions.js?v=829a36dd';
+import { makeGunship, stepGunship, onStation, phaseLeft, passProgress, mountGunship, dismountGunship, selectGun, stepGun, aimOnSphere, splashDamage, dangerReport, fireRound, stepRounds, paintHeavy, launchHeavy, nudgeHeavy, stepHeavy, heavyState } from '../../domain/gunship.js?v=829a36dd';
+import { GUNSHIP_GUNS, GUNSHIP_GUN_ORDER, GUNSHIP_NUKE, GUNSHIP_ORBIT, GUNSHIP_PLATFORM } from '../../content/gunship.js?v=829a36dd';
+import { orbitAt } from '../../domain/boss-orbit.js?v=829a36dd';
 
 const GAME_LENS = { near: 0.004, far: 50 };   // td-tab.js's camera, in the game's units
 const RELOAD = 6;                // the lab's MK-9 reload, seconds (the knob's default; the game's is 20)
@@ -73,6 +73,7 @@ const WALL_LIFT = 0.4 * 0.7;     // the range ring's lift in cells: td-tab's wal
 const KEY = { rotary: 'rotary', bofors: 'bofors', nuke: 'heavy', heavy: 'heavy' };   // the lab's names to the game's
 const NAME = { rotary: 'rotary', bofors: 'bofors', heavy: 'nuke' };
 const ISAO_CAM = { fov: 70, label: 'ISAO · CAM' };   // the monitor on Isao: a drone camera's wide lens (the game's optic is 3-30 degrees)
+const SHAKE = { share: 0.025, decay: 1.4 };   // the tremor's shake: its largest turn a share of the lens's field (0.6 degrees at the 23 degree optic), the trauma lost a second
 
 // the game's post chain, small: the scene into a target, the OutputPass to display space, and the passes added after it (the FLIR) last,
 // as src/postfx.js makeBloom's finalComposer runs them (its MSAA on the scene's buffer, none on the other); off, the scene goes straight
@@ -128,6 +129,10 @@ export function createGameSeat({ stage, renderer, scene, sphere, camera, audio, 
   let m0 = 0;     // the mounts so far (the harness checks the seat is never left and re-entered)
   let index = null, indexOf = null, heavyPress = 0, aimFocus = false, stream = null, streamAt = -Infinity, clearPx = -1;
   const fired = { at: -Infinity, forty: -Infinity };   // the lab's clock at the player's last round of any gun, and of the 40 mm (Isao's lines)
+  // THE TREMOR'S SHAKE (owner, 2026-10-10: the Reeds and the boss "come out of a tremor in the center"): `shake(amount)` adds to a trauma (at most 1) that decays at
+  // SHAKE.decay a second; while it lasts the main view is turned by a small jitter, its size a share of the lens's field (so the zoomed optic shakes as much on screen as
+  // the wide one) times the trauma squared, for the frame's render only: the pilot's own pose and aim are never touched, the monitor is drawn unshaken
+  const quake = { trauma: 0, time: 0, peak: 0, count: 0, saved: new THREE.Quaternion(), q: new THREE.Quaternion(), e: new THREE.Euler() };
 
   const norm = (p) => { const l = Math.hypot(p[0], p[1], p[2]) || 1; return [p[0] / l, p[1] / l, p[2] / l]; };
   const live = () => fight().phase === 'fight' && gate().fight !== false;
@@ -296,6 +301,18 @@ export function createGameSeat({ stage, renderer, scene, sphere, camera, audio, 
     m.boom.prewarm({ compile: (s, c) => renderer.compile(s, c, scene), getRenderTarget: () => renderer.getRenderTarget(), setRenderTarget: (t) => renderer.setRenderTarget(t) }, camera);
   }
 
+  function shakeView(dt) {
+    quake.time += dt;
+    if (quake.trauma <= 0) return false;
+    const a = SHAKE.share * camera.fov * Math.PI / 180 * quake.trauma * quake.trauma, t = quake.time;
+    const yaw = a * (0.6 * Math.sin(t * 37.1) + 0.4 * Math.sin(t * 61.7 + 1.3)), pitch = a * (0.6 * Math.sin(t * 43.3 + 2.1) + 0.4 * Math.sin(t * 71.9 + 0.7));
+    quake.saved.copy(camera.quaternion);
+    camera.quaternion.multiply(quake.q.setFromEuler(quake.e.set(pitch, yaw, 0))); camera.updateMatrixWorld();
+    quake.peak = Math.max(quake.peak, Math.hypot(yaw, pitch) * 180 / Math.PI);
+    quake.trauma = Math.max(0, quake.trauma - dt * SHAKE.decay);
+    return true;
+  }
+
   function unmount() {
     const s = m.saved;
     m.pilot.dispose(); m.thermal.dispose(); m.monitor.dispose(); rangeRing(-1);
@@ -336,7 +353,9 @@ export function createGameSeat({ stage, renderer, scene, sphere, camera, audio, 
       if (!m) return false;
       const px = Math.round(clear());
       if (px !== clearPx) { clearPx = px; stage.style.setProperty('--seat-clear', `${px}px`); }
+      const shook = shakeView(dt);
       m.post.render(dt);
+      if (shook) { camera.quaternion.copy(quake.saved); camera.updateMatrixWorld(); }
       const v = m.pilot.gunship && camIsao ? isaoCam() : null, own = v ? { from: toGame(v.from), pos: toGame(v.pos), lift: 0, ...ISAO_CAM } : null, a = performance.now();
       m.monitor.render(renderer, scene, own ? null : m.pilot.gunship ? m.drop.mesh() : null, m.c, dt, own ?? (m.pilot.gunship ? m.pilot.gunshipOptic() : null));
       const k = feed.cost[own ? 'isao' : 'game']; k[0] += performance.now() - a; k[1]++; feed.last = v;
@@ -351,16 +370,21 @@ export function createGameSeat({ stage, renderer, scene, sphere, camera, audio, 
       m.optic.fade(1e6); rangeRing(-1); heavyPress = 0; stream = null; m.pilot.state.held = false;
       aimFocus = true;
     },
+    // the tremor's shake: `amount` (0..1) more trauma; the thermal's state (the lab's carcasses cool in it)
+    shake(amount) { quake.trauma = Math.min(1, quake.trauma + amount); quake.count++; },
+    thermal: () => !!m?.thermal.flir,
     // the monitor's view: monitorCam(true) Isao's camera, monitorCam(false) the game's GROUND TRUTH; returns the choice
     monitorCam(on) { if (on !== undefined) camIsao = !!on; return camIsao; },
     // the trigger let go (the fight switched off, the mode changed)
     release() { heavyPress = 0; if (m) m.pilot.state.held = false; },
     // the player's fire for Isao's lines (./bait.js): the gun ('rotary' | 'bofors' | 'nuke'), the reticle (local metres; with the MK-9 only, else null), the lab's
-    // clock at the last round of any gun and of the 40 mm; null while the seat is not mounted
+    // clock at the last round of any gun and of the 40 mm, the MK-9 in flight as danger zones (`nukes`: [{ at, radius, until }], the cell it will fall on); null while the seat is not mounted
     gunner() {
       if (!m) return null;
-      const gun = NAME[m.gs.gun], o = gun === 'nuke' ? m.pilot.gunshipOptic() : null;
-      return { gun, reticle: o ? atLocal(o.pos) : null, shotAt: fired.at, fortyAt: fired.forty };
+      const gun = NAME[m.gs.gun], o = gun === 'nuke' ? m.pilot.gunshipOptic() : null, h = heavyState(m.gs, guns), T = tune();
+      // the MK-9 in flight, release to landing, as a danger zone for Isao's autopilot (src/domain/boss-bait.js): its cell now, the ring, the lab's clock at the landing
+      const nukes = h.phase === 'released' || h.phase === 'ignited' ? [{ at: atLocal(m.G.centers[h.ci]), radius: T.nuke.radius, until: now() + h.left }] : [];
+      return { gun, reticle: o ? atLocal(o.pos) : null, shotAt: fired.at, fortyAt: fired.forty, nukes };
     },
     // seconds until the next MK-9 can be released: its fall and reload while one is out
     mk9In() { if (!m) return 0; const h = heavyState(m.gs, guns); return h.phase === 'released' || h.phase === 'ignited' ? h.left + guns.heavy.reload : h.phase === 'reloading' ? h.left : 0; },
@@ -387,7 +411,9 @@ export function createGameSeat({ stage, renderer, scene, sphere, camera, audio, 
         // the monitor: its label, Isao's camera chosen (`isao`) and drawn last frame (`from`, `pos` sphere metres; null when the game's view was), and the ms its
         // render took (summed) and the frames, by view
         monitor: { head: stage.querySelector('#story-monitor .head')?.textContent ?? null, isao: camIsao, from: feed.last?.from ?? null, pos: feed.last?.pos ?? null,
-          fov: feed.last ? ISAO_CAM.fov : null, cost: { isao: [...feed.cost.isao], game: [...feed.cost.game] } } };
+          fov: feed.last ? ISAO_CAM.fov : null, cost: { isao: [...feed.cost.isao], game: [...feed.cost.game] } },
+        // the tremor's shake: the trauma now, the shakes asked for and the largest turn drawn (degrees)
+        shake: { trauma: quake.trauma, count: quake.count, peak: quake.peak } };
     },
     dispose() { if (m) unmount(); },
   };

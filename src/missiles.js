@@ -1,6 +1,6 @@
-import { missileFrame, sampleMissile, dropFrame, sampleDrop } from './domain/missile-flight.js?v=9d95390b';
-import { sphereMissileFrame, sampleSphereMissile } from './domain/sphere-missile-flight.js?v=9d95390b';
-export { createMissilePool } from './missile-presentation.js?v=9d95390b';
+import { missileFrame, sampleMissile, dropFrame, sampleDrop } from './domain/missile-flight.js?v=829a36dd';
+import { sphereMissileFrame, sampleSphereMissile } from './domain/sphere-missile-flight.js?v=829a36dd';
+export { createMissilePool } from './missile-presentation.js?v=829a36dd';
 
 // All viewers share the asset, timing, profile, ignition and launch snapshot.
 // Consumers own targeting/damage and release on arrival or scene reset.

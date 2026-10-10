@@ -15,10 +15,10 @@
 // THE BLACK HOLE NOT FAR (owner, 2026-10-06: "the feeling that an amazing TON 618-like black hole is not far"): the accretion disk of
 // src/fx/accretion.js, rendered once and hung as a billboard behind the planet on the camera's line, HOLE.across units wide at HOLE.at,
 // so it fills a third of the frame as the camera pulls back; the spiral galaxy moved off to its side.
-import * as THREE from '../../vendor/three.module.js?v=9d95390b';
-import { loadModelFixture, cloneFixture } from './model-fixture.js?v=9d95390b';
-import { isaoSay } from './isao-voice.js?v=9d95390b';
-import { renderAccretion, accretionSprite, accretionShadow, faceShadow } from './accretion.js?v=9d95390b';
+import * as THREE from '../../vendor/three.module.js?v=829a36dd';
+import { loadModelFixture, cloneFixture } from './model-fixture.js?v=829a36dd';
+import { isaoSay } from './isao-voice.js?v=829a36dd';
+import { renderAccretion, accretionSprite, accretionShadow, faceShadow } from './accretion.js?v=829a36dd';
 
 export const SECONDS = 26;
 const FROM = 50, TO = 100, PLANET_RADIUS = 195, MIRROR_COUNT = 48, CENTER = [0, -PLANET_RADIUS, 0];

@@ -9,8 +9,8 @@
 //
 // None of this needs the model. It is graph maths over cells, so it runs
 // synchronously with the board and the model merely decorates the answer.
-import { dot3, tangentDir, dist3, norm3 } from '../vec3.js?v=9d95390b';
-import { BLOCKED } from '../dungeon.js?v=9d95390b';
+import { dot3, tangentDir, dist3, norm3 } from '../vec3.js?v=829a36dd';
+import { BLOCKED } from '../dungeon.js?v=829a36dd';
 
 const tangentDirTo = (graph, from, to) =>
   tangentDir(graph.normals[from], graph.centers[from], graph.centers[to]);

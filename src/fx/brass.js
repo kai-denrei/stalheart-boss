@@ -3,9 +3,9 @@
 // a position, a velocity and a spin; gravity is toward the planet's centre,
 // a case stops on the rock roof it landed on and fades out. Nothing here is
 // a bullet: the rounds are tracers, the brass is what falls out of the gun.
-import * as THREE from '../../vendor/three.module.js?v=9d95390b';
-import { GLTFLoader } from '../../vendor/GLTFLoader.js?v=9d95390b';
-import { MeshoptDecoder } from '../../vendor/meshopt_decoder.module.js?v=9d95390b';
+import * as THREE from '../../vendor/three.module.js?v=829a36dd';
+import { GLTFLoader } from '../../vendor/GLTFLoader.js?v=829a36dd';
+import { MeshoptDecoder } from '../../vendor/meshopt_decoder.module.js?v=829a36dd';
 export const BRASS_CASE = 'assets/models/ammunition/rotor_light_case_game.glb';
 export function createBrass(scene, { metres, capacity = 48, life = 3.2, sizeMul = 2.5, gravity = 9.8, url = BRASS_CASE } = {}) {
   const cases = [], mat4 = new THREE.Matrix4(), q = new THREE.Quaternion(), pos = new THREE.Vector3(), up = new THREE.Vector3(), tmp = new THREE.Vector3(), axis = new THREE.Vector3();

@@ -1,21 +1,21 @@
 // Story lab: the 753 m story planet, its polar clearing and terraces, the
 // tiled pad and the SH02 arrival. Metres; pole at the origin.
-import * as THREE from '../../vendor/three.module.js?v=9d95390b';
-import { OrbitControls } from '../../vendor/OrbitControls.js?v=9d95390b';
-import { LOOKS } from '../looks.js?v=9d95390b';
-import { STORY_RECIPE, STORY_CLEARING, LANDING_DEFAULTS, STORY_SOUNDS, STORY_DAY } from '../content/story-defaults.js?v=9d95390b';
-import { createDaylight } from '../fx/daylight.js?v=9d95390b';
-import { SOUNDS } from '../audiomanifest.js?v=9d95390b';
-import { makeAudio } from '../audio.js?v=9d95390b';
-import { buildStoryPlanet } from '../domain/story-planet.js?v=9d95390b';
-import { planetBake } from '../platform/planet-bake.js?v=9d95390b';
-import { makeLandingSequence } from '../domain/landing-sequence.js?v=9d95390b';
-import { compileRail } from '../core/rail.js?v=9d95390b';
-import { buildStoryPlanetMesh, buildMouthMarker } from './story-planet-mesh.js?v=9d95390b';
-import { createStoryLanding } from './story-landing.js?v=9d95390b';
-import { planBase } from '../domain/base-plan.js?v=9d95390b';
-import { ISLANDS, STRUCTURES, KIT, STAGES, withLandmarkTiers, landmarkTierMode } from '../content/base-layout.js?v=9d95390b';
-import { createStoryBase } from '../fx/story-base.js?v=9d95390b';
+import * as THREE from '../../vendor/three.module.js?v=829a36dd';
+import { OrbitControls } from '../../vendor/OrbitControls.js?v=829a36dd';
+import { LOOKS } from '../looks.js?v=829a36dd';
+import { STORY_RECIPE, STORY_CLEARING, LANDING_DEFAULTS, STORY_SOUNDS, STORY_DAY } from '../content/story-defaults.js?v=829a36dd';
+import { createDaylight } from '../fx/daylight.js?v=829a36dd';
+import { SOUNDS } from '../audiomanifest.js?v=829a36dd';
+import { makeAudio } from '../audio.js?v=829a36dd';
+import { buildStoryPlanet } from '../domain/story-planet.js?v=829a36dd';
+import { planetBake } from '../platform/planet-bake.js?v=829a36dd';
+import { makeLandingSequence } from '../domain/landing-sequence.js?v=829a36dd';
+import { compileRail } from '../core/rail.js?v=829a36dd';
+import { buildStoryPlanetMesh, buildMouthMarker } from './story-planet-mesh.js?v=829a36dd';
+import { createStoryLanding } from './story-landing.js?v=829a36dd';
+import { planBase } from '../domain/base-plan.js?v=829a36dd';
+import { ISLANDS, STRUCTURES, KIT, STAGES, withLandmarkTiers, landmarkTierMode } from '../content/base-layout.js?v=829a36dd';
+import { createStoryBase } from '../fx/story-base.js?v=829a36dd';
 
 // camera rail in pad metres: orbit, descent chase, touchdown, the door, Isao
 const RAIL = [

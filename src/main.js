@@ -1,14 +1,14 @@
 // A document owns one renderer/session. Navigating modes releases its whole lifetime.
-import './url.js?v=9d95390b';
-import './roster.js?v=9d95390b';
-import { bootstrapContent } from './platform/content-bootstrap.js?v=9d95390b';
-import { registerServiceWorker } from './pwa.js?v=9d95390b';
-import { storage as localStorage } from './storage.js?v=9d95390b';
-import { installDiagnostics, record } from './diagnostics.js?v=9d95390b';
-import { isStoryRoute } from './core/story-route.js?v=9d95390b';
-import { mountShellNav } from './fx/shell-nav.js?v=9d95390b';
-import { loadPlanetBake } from './platform/planet-bake.js?v=9d95390b';
-import { applyFontPack, DEFAULT_FONT, DEFAULT_SHOUT_FONT, loadTypeFeel } from './fonts.js?v=9d95390b';
+import './url.js?v=829a36dd';
+import './roster.js?v=829a36dd';
+import { bootstrapContent } from './platform/content-bootstrap.js?v=829a36dd';
+import { registerServiceWorker } from './pwa.js?v=829a36dd';
+import { storage as localStorage } from './storage.js?v=829a36dd';
+import { installDiagnostics, record } from './diagnostics.js?v=829a36dd';
+import { isStoryRoute } from './core/story-route.js?v=829a36dd';
+import { mountShellNav } from './fx/shell-nav.js?v=829a36dd';
+import { loadPlanetBake } from './platform/planet-bake.js?v=829a36dd';
+import { applyFontPack, DEFAULT_FONT, DEFAULT_SHOUT_FONT, loadTypeFeel } from './fonts.js?v=829a36dd';
 
 installDiagnostics();
 const q = new URLSearchParams(location.search);
@@ -24,22 +24,22 @@ if (q.get('sw') !== '0') {
 }
 const workshop = document.body.dataset.workshop === 'true';
 const routes = {
-  audio: () => import('./labs/audio-tab.js?v=9d95390b').then(m => m.initAudioTab),
-  td: () => import('./td-tab.js?v=9d95390b').then(m => m.initTdTab),
-  record: () => import('./recordtab.js?v=9d95390b').then(m => m.initRecordTab),
-  units: () => import('./units-tab.js?v=9d95390b').then(m => m.initUnitsTab),
-  swarm: () => import('./labs/swarm-tab.js?v=9d95390b').then(m => m.initSwarmTab),
-  boss: () => import('./labs/boss-tab.js?v=9d95390b').then(m => m.initBossTab),
-  beam: () => import('./beam-tab.js?v=9d95390b').then(m => m.initBeamTab),
-  metal: () => import('./metal-tab.js?v=9d95390b').then(m => m.initMetalTab),
-  story: () => import('./labs/story-tab.js?v=9d95390b').then(m => m.initStoryTab),
-  sentry: () => import('./sentry-tab.js?v=9d95390b').then(m => m.initSentryTab),
-  portal: () => import('./portal-tab.js?v=9d95390b').then(m => m.initPortalTab),
-  sim: () => import('./sim-tab.js?v=9d95390b').then(m => m.initSimTab),
-  laser: () => import('./labs/laser-tab.js?v=9d95390b').then(m => m.initLaserTab),
-  gunship: () => import('./labs/gunship-tab.js?v=9d95390b').then(m => m.initGunshipTab),
-  debrief: () => import('./labs/debrief-tab.js?v=9d95390b').then(m => m.initDebriefTab),
-  voice: () => import('./labs/voice-tab.js?v=9d95390b').then(m => m.initVoiceTab),
+  audio: () => import('./labs/audio-tab.js?v=829a36dd').then(m => m.initAudioTab),
+  td: () => import('./td-tab.js?v=829a36dd').then(m => m.initTdTab),
+  record: () => import('./recordtab.js?v=829a36dd').then(m => m.initRecordTab),
+  units: () => import('./units-tab.js?v=829a36dd').then(m => m.initUnitsTab),
+  swarm: () => import('./labs/swarm-tab.js?v=829a36dd').then(m => m.initSwarmTab),
+  boss: () => import('./labs/boss-tab.js?v=829a36dd').then(m => m.initBossTab),
+  beam: () => import('./beam-tab.js?v=829a36dd').then(m => m.initBeamTab),
+  metal: () => import('./metal-tab.js?v=829a36dd').then(m => m.initMetalTab),
+  story: () => import('./labs/story-tab.js?v=829a36dd').then(m => m.initStoryTab),
+  sentry: () => import('./sentry-tab.js?v=829a36dd').then(m => m.initSentryTab),
+  portal: () => import('./portal-tab.js?v=829a36dd').then(m => m.initPortalTab),
+  sim: () => import('./sim-tab.js?v=829a36dd').then(m => m.initSimTab),
+  laser: () => import('./labs/laser-tab.js?v=829a36dd').then(m => m.initLaserTab),
+  gunship: () => import('./labs/gunship-tab.js?v=829a36dd').then(m => m.initGunshipTab),
+  debrief: () => import('./labs/debrief-tab.js?v=829a36dd').then(m => m.initDebriefTab),
+  voice: () => import('./labs/voice-tab.js?v=829a36dd').then(m => m.initVoiceTab),
 };
 const name = location.hash.slice(1) || (workshop ? 'units' : 'td');
 // the retired roadmap tab: the workshop opens with the docs overlay on the roadmap
@@ -103,7 +103,7 @@ if (leaving) {
     const init = await routes[target]();
     const api = init(root);
     const choices = workshop
-      ? (await import('./labs/choice-browser.js?v=9d95390b')).mountChoiceBrowser(root) : null;
+      ? (await import('./labs/choice-browser.js?v=829a36dd')).mountChoiceBrowser(root) : null;
     api?.setActive?.(true);
     addEventListener('pagehide', e => { if (!e.persisted) { choices?.dispose(); api?.dispose?.(); } });
     record('app.ready', { route: target, workshop, content: content.id });

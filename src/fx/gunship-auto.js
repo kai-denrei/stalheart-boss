@@ -3,7 +3,7 @@
 // seat, fires bursts at the densest pile near its track (src/domain/laser-auto.js densestTarget), alternating the rotary and the
 // Bofors, lands its rounds exactly as the seat does, and once a pass drops the MK-9 on a pile the player can see. The seat taken, it
 // lets go at once. `G` is the rig's pilot bag (src/fx/gunship-rig.js pilotBag), the same hands the seat has.
-import { densestTarget } from '../domain/laser-auto.js?v=9d95390b';
+import { densestTarget } from '../domain/laser-auto.js?v=829a36dd';
 
 // `friends()`: the points the MK-9 must never land near (the heart, the hull, the base's walls, structures and sentry sockets). The
 // dummy nuke breaks towers and walls where it lands, so on auto it only goes down on a pile `nukeSafeCells` clear of its own blast
