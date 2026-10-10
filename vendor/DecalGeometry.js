@@ -3,7 +3,7 @@ import {
 	Float32BufferAttribute,
 	Matrix4,
 	Vector3
-} from './three.module.js?v=ceff5e94';
+} from './three.module.js?v=8825cf41';
 
 /**
  * You can use this geometry to create a decal mesh, that serves different kinds of purposes.

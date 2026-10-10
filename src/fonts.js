@@ -1,4 +1,4 @@
-import { storage as localStorage } from './storage.js?v=ceff5e94';
+import { storage as localStorage } from './storage.js?v=8825cf41';
 // fonts.js — the typeface registry. Same seam as looks.js and towerlooks.js:
 // changing how the game SOUNDS on screen never edits what it says.
 //
@@ -16,7 +16,7 @@ import { storage as localStorage } from './storage.js?v=ceff5e94';
 //
 // Pure data plus one thin effectful call — the standing testability line.
 
-import { makeParams, clampParams, formatKnobs } from './knobs.js?v=ceff5e94';
+import { makeParams, clampParams, formatKnobs } from './knobs.js?v=8825cf41';
 
 const MONO = 'ui-monospace, "SF Mono", SFMono-Regular, Menlo, monospace';
 const CJK = '"DotGothic16"';   // the shared Japanese voice, appended everywhere

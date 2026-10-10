@@ -8,9 +8,9 @@ import {
 	AgXToneMapping,
 	ACESFilmicToneMapping,
 	SRGBTransfer
-} from './three.module.js?v=ceff5e94';
-import { Pass, FullScreenQuad } from './Pass.js?v=ceff5e94';
-import { OutputShader } from './OutputShader.js?v=ceff5e94';
+} from './three.module.js?v=8825cf41';
+import { Pass, FullScreenQuad } from './Pass.js?v=8825cf41';
+import { OutputShader } from './OutputShader.js?v=8825cf41';
 
 class OutputPass extends Pass {
 

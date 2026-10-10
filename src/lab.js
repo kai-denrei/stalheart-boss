@@ -11,8 +11,8 @@
 // like, how the URL seeds it, and what its console line says. The board
 // consumes it under `lab.on && …` and nothing else — a run without the flag
 // runs the code it ran yesterday.
-import { clampParams, knobProblems } from './knobs.js?v=ceff5e94';
-import { SKY_PRESET } from './galaxyseed.js?v=ceff5e94';
+import { clampParams, knobProblems } from './knobs.js?v=8825cf41';
+import { SKY_PRESET } from './galaxyseed.js?v=8825cf41';
 
 export const LAB_DEFAULTS = {
   waveMult: 1,           // × computeWavePlan's base, after the opening taper

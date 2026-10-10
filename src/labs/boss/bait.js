@@ -67,12 +67,12 @@
 // changing, the boss's centre lurching, no longer whip the picture round), the eye riding his drawn body as it was.
 //
 // Positions are the lab's local metres [x, z]; the host gives the ground under a point and the frame there, so this file knows no planet.
-import * as THREE from '../../../vendor/three.module.js?v=ceff5e94';
-import { makeBait, planBait, moveBait, hurtBait, baitCaught, hopBait, startHop, envelopeBait, reachOf, constrainBait } from '../../domain/boss-bait.js?v=ceff5e94';
-import { lineOf, capture } from '../../domain/boss-fight.js?v=ceff5e94';
-import { makeIsaoDrone, preloadFabricator } from '../../units.js?v=ceff5e94';
-import { STORY_SCALE } from '../../content/story-defaults.js?v=ceff5e94';
-import { createChatter } from './chatter.js?v=ceff5e94';
+import * as THREE from '../../../vendor/three.module.js?v=8825cf41';
+import { makeBait, planBait, moveBait, hurtBait, baitCaught, hopBait, startHop, envelopeBait, reachOf, constrainBait } from '../../domain/boss-bait.js?v=8825cf41';
+import { lineOf, capture } from '../../domain/boss-fight.js?v=8825cf41';
+import { makeIsaoDrone, preloadFabricator } from '../../units.js?v=8825cf41';
+import { STORY_SCALE } from '../../content/story-defaults.js?v=8825cf41';
+import { createChatter } from './chatter.js?v=8825cf41';
 
 const ALTITUDE = 4;        // the lab's default flying height, metres (the knob's range is the panel's)
 const CLIMB = 8;           // metres a second his altitude eases toward the knob

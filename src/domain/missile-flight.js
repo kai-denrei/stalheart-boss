@@ -1,4 +1,4 @@
-import { sample, profiles } from '../core/a6-missile-flight.js?v=ceff5e94';
+import { sample, profiles } from '../core/a6-missile-flight.js?v=8825cf41';
 
 // THE POP-OUT HAS A HEIGHT IN METRES (owner, 2026-09-16: the Quiver's rocket must never leave the frame during the pop-out, hover, drop
 // and ignite). The authored opening scaled with range like the rest of the flight, so a 235 m shot popped 25 m over its launcher. Its

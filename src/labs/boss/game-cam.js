@@ -36,11 +36,11 @@
 //
 // The host gives the stage the frame lives in, `hull()` and `clearRight()`: the hull's ground point on the sphere and its heading (a world
 // tangent), both centred on the planet; this file converts to the lab's scene, whose sphere group sits one radius down.
-import * as THREE from '../../../vendor/three.module.js?v=ceff5e94';
-import { tankViewPose } from '../../domain/camera-goal.js?v=ceff5e94';
-import { TANK_LENS } from '../../domain/seat-view.js?v=ceff5e94';
-import { STORY_RECIPE, STORY_SCALE } from '../../content/story-defaults.js?v=ceff5e94';
-import { add3, sub3, scale3, dot3, cross3, norm3 } from '../../vec3.js?v=ceff5e94';
+import * as THREE from '../../../vendor/three.module.js?v=8825cf41';
+import { tankViewPose } from '../../domain/camera-goal.js?v=8825cf41';
+import { TANK_LENS } from '../../domain/seat-view.js?v=8825cf41';
+import { STORY_RECIPE, STORY_SCALE } from '../../content/story-defaults.js?v=8825cf41';
+import { add3, sub3, scale3, dot3, cross3, norm3 } from '../../vec3.js?v=8825cf41';
 
 const SMOOTH_RATE = 5.0;   // rad/s: src/fx/hull-drive.js updateSmoothDir
 const CAM_LERP = 0.14;     // a frame: src/td-tab.js, the camera's position lerp and quaternion slerp toward the goal

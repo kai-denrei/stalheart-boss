@@ -26,7 +26,7 @@
 //
 // Imports only ./gunship.js's falloff (`splashDamage`), so a landing hurts exactly as the game's splash does.
 
-import { splashDamage } from './gunship.js?v=ceff5e94';
+import { splashDamage } from './gunship.js?v=8825cf41';
 
 const GOLDEN = 2.399963, SPREAD = 8, KINDS = ['rotary', 'bofors', 'nuke', 'sol'], FAR = { pos: [1e6, 0], radius: 0 };
 const STREAM_HOLD = 0.1;   // a player's stream lives this long past the last hold

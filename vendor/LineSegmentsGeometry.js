@@ -7,7 +7,7 @@ import {
 	Sphere,
 	Vector3,
 	WireframeGeometry
-} from './three.module.js?v=ceff5e94';
+} from './three.module.js?v=8825cf41';
 
 const _box = new Box3();
 const _vector = new Vector3();

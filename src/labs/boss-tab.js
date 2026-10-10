@@ -19,51 +19,51 @@
 // the gravity goes to `deathGravity`. LOST is a meal (feeding leaving `hunting`) or a landing on the hull. THE RESET (the round's, or the panel's button) puts the creature back at
 // the frame's origin and the tank `respawn` metres out on the far side; it waits for a meal in progress (MEAL_WAIT at most) so
 // the meal is counted in `taken` and the prey is never moved under the kit.
-import * as THREE from '../../vendor/three.module.js?v=ceff5e94';
-import { OrbitControls } from '../../vendor/OrbitControls.js?v=ceff5e94';
-import GUI from '../../vendor/lil-gui.esm.js?v=ceff5e94';
-import { buildUnit, preloadMork } from '../units.js?v=ceff5e94';
-import { createPlaneDrive } from './boss/drive.js?v=ceff5e94';
-import { createBodyRules, kitNow, shiftKit } from './boss/body.js?v=ceff5e94';
-import { createCannon } from './boss/cannon.js?v=ceff5e94';
-import { createFriendlies } from './boss/friendlies.js?v=ceff5e94';
-import { createFear } from './boss/fear.js?v=ceff5e94';
-import { createTemperament } from './boss/temperament.js?v=ceff5e94';
-import { createArena, deeper } from './boss/arena.js?v=ceff5e94';
-import { createRound } from './boss/round.js?v=ceff5e94';
-import { createBaitMode } from './boss/bait.js?v=ceff5e94';
-import { createGameSeat } from './boss/game-seat.js?v=ceff5e94';
-import { createGameCam } from './boss/game-cam.js?v=ceff5e94';
-import { createLabHandle } from './boss/handle.js?v=ceff5e94';
-import { createWave } from './boss/wave.js?v=ceff5e94';
-import { createLabSinkhole } from './boss/sinkhole.js?v=ceff5e94';
-import { settingsBlock, folderGroups } from './boss/settings-copy.js?v=ceff5e94';
-import { makeFight, startFight, capture, readout as fightReadout } from '../domain/boss-fight.js?v=ceff5e94';
-import { entryClear, emergence, keepOut } from '../domain/boss-wave.js?v=ceff5e94';
-import { BOSS_FIGHT } from '../content/boss-fight.js?v=ceff5e94';
-import { LASER_AUDIO } from '../content/orbital-laser.js?v=ceff5e94';
-import { voiceSounds } from '../content/voice-hooks.js?v=ceff5e94';
-import { SOUNDS } from '../audiomanifest.js?v=ceff5e94';
-import { BREACH_SOUNDS } from '../content/breach-defaults.js?v=ceff5e94';
-import { createExplosions } from '../fx/explosions.js?v=ceff5e94';
-import { makeTankFeel, stepTankFeel, applyTankFeel, landTankFeel } from '../tankfeel.js?v=ceff5e94';
-import { FEEL, loadFeel } from '../feelstore.js?v=ceff5e94';
-import { makeAudio } from '../audio.js?v=ceff5e94';
-import { frameAt, toWorld, toLocal, reanchor, sagitta } from '../domain/surface-frame.js?v=ceff5e94';
-import { LOOKS } from '../looks.js?v=ceff5e94';
-import { STORY_RECIPE, STORY_CLEARING, STORY_DAY } from '../content/story-defaults.js?v=ceff5e94';
-import { createDaylight } from '../fx/daylight.js?v=ceff5e94';
-import { buildStoryPlanet } from '../domain/story-planet.js?v=ceff5e94';
-import { planetBake, loadPlanetBake } from '../platform/planet-bake.js?v=ceff5e94';
-import { buildStoryPlanetMesh } from './story-planet-mesh.js?v=ceff5e94';
-import { createNihDairia } from '../fx/nih-dairia/creature.js?v=ceff5e94';
-import { createPrey } from '../fx/nih-dairia/prey.js?v=ceff5e94';
-import { AutoLure } from '../fx/nih-dairia/auto-lure.js?v=ceff5e94';
-import { ARENA } from '../fx/nih-dairia/arena.js?v=ceff5e94';
-import { PHYS } from '../fx/nih-dairia/constants.js?v=ceff5e94';
-import { MOTION_CONTROLS } from '../fx/nih-dairia/motion-settings.js?v=ceff5e94';
-import { CREATURE_VARIANTS } from '../fx/nih-dairia/variants.js?v=ceff5e94';
-import { NIH_DAIRIA_MOTION, NIH_DAIRIA_PREDATOR, NIH_DAIRIA_PREDATOR_SIZE_METRES, NIH_DAIRIA_VARIANT, NIH_DAIRIA_SIZE_METRES, NIH_DAIRIA_LOOK, NIH_DAIRIA_MODELS } from '../content/nih-dairia.js?v=ceff5e94';
+import * as THREE from '../../vendor/three.module.js?v=8825cf41';
+import { OrbitControls } from '../../vendor/OrbitControls.js?v=8825cf41';
+import GUI from '../../vendor/lil-gui.esm.js?v=8825cf41';
+import { buildUnit, preloadMork } from '../units.js?v=8825cf41';
+import { createPlaneDrive } from './boss/drive.js?v=8825cf41';
+import { createBodyRules, kitNow, shiftKit } from './boss/body.js?v=8825cf41';
+import { createCannon } from './boss/cannon.js?v=8825cf41';
+import { createFriendlies } from './boss/friendlies.js?v=8825cf41';
+import { createFear } from './boss/fear.js?v=8825cf41';
+import { createTemperament } from './boss/temperament.js?v=8825cf41';
+import { createArena, deeper } from './boss/arena.js?v=8825cf41';
+import { createRound } from './boss/round.js?v=8825cf41';
+import { createBaitMode } from './boss/bait.js?v=8825cf41';
+import { createGameSeat } from './boss/game-seat.js?v=8825cf41';
+import { createGameCam } from './boss/game-cam.js?v=8825cf41';
+import { createLabHandle } from './boss/handle.js?v=8825cf41';
+import { createWave } from './boss/wave.js?v=8825cf41';
+import { createLabSinkhole } from './boss/sinkhole.js?v=8825cf41';
+import { settingsBlock, folderGroups } from './boss/settings-copy.js?v=8825cf41';
+import { makeFight, startFight, capture, readout as fightReadout } from '../domain/boss-fight.js?v=8825cf41';
+import { entryClear, emergence, keepOut } from '../domain/boss-wave.js?v=8825cf41';
+import { BOSS_FIGHT } from '../content/boss-fight.js?v=8825cf41';
+import { LASER_AUDIO } from '../content/orbital-laser.js?v=8825cf41';
+import { voiceSounds } from '../content/voice-hooks.js?v=8825cf41';
+import { SOUNDS } from '../audiomanifest.js?v=8825cf41';
+import { BREACH_SOUNDS } from '../content/breach-defaults.js?v=8825cf41';
+import { createExplosions } from '../fx/explosions.js?v=8825cf41';
+import { makeTankFeel, stepTankFeel, applyTankFeel, landTankFeel } from '../tankfeel.js?v=8825cf41';
+import { FEEL, loadFeel } from '../feelstore.js?v=8825cf41';
+import { makeAudio } from '../audio.js?v=8825cf41';
+import { frameAt, toWorld, toLocal, reanchor, sagitta } from '../domain/surface-frame.js?v=8825cf41';
+import { LOOKS } from '../looks.js?v=8825cf41';
+import { STORY_RECIPE, STORY_CLEARING, STORY_DAY } from '../content/story-defaults.js?v=8825cf41';
+import { createDaylight } from '../fx/daylight.js?v=8825cf41';
+import { buildStoryPlanet } from '../domain/story-planet.js?v=8825cf41';
+import { planetBake, loadPlanetBake } from '../platform/planet-bake.js?v=8825cf41';
+import { buildStoryPlanetMesh } from './story-planet-mesh.js?v=8825cf41';
+import { createNihDairia } from '../fx/nih-dairia/creature.js?v=8825cf41';
+import { createPrey } from '../fx/nih-dairia/prey.js?v=8825cf41';
+import { AutoLure } from '../fx/nih-dairia/auto-lure.js?v=8825cf41';
+import { ARENA } from '../fx/nih-dairia/arena.js?v=8825cf41';
+import { PHYS } from '../fx/nih-dairia/constants.js?v=8825cf41';
+import { MOTION_CONTROLS } from '../fx/nih-dairia/motion-settings.js?v=8825cf41';
+import { CREATURE_VARIANTS } from '../fx/nih-dairia/variants.js?v=8825cf41';
+import { NIH_DAIRIA_MOTION, NIH_DAIRIA_PREDATOR, NIH_DAIRIA_PREDATOR_SIZE_METRES, NIH_DAIRIA_VARIANT, NIH_DAIRIA_SIZE_METRES, NIH_DAIRIA_LOOK, NIH_DAIRIA_MODELS } from '../content/nih-dairia.js?v=8825cf41';
 
 const TANK_R = 3.4;          // the swarm lab's hull scale: MÖRK at its real size
 const CRUISE_TAP = 0.35;     // seconds between two W taps that toggle cruise (td-tab.js noteFastTap)
@@ -396,11 +396,13 @@ export function initBossTab(root) {
     bound: () => { const b = arena.bound(); return b.on ? { at: b.at, radius: b.radius, inset: fightTune.bounds.baitMargin } : null; },   // the fly-over's: trapped against it, and the far side held inside it
     gunner: () => seat.gunner(),   // the player's fire, for his lines
   });
+  // a sphere-space point as the lab's local ground point [x, z] (projected to the surface along the frame's up first): the seat's, and the carcasses'
+  const sphereLocal = (p) => { const u = frame.up, k = planet.radius / (p[0] * u[0] + p[1] * u[1] + p[2] * u[2]), l = toLocal(frame, [p[0] * k, p[1] * k, p[2] * k], 1); return [l[0], l[2]]; };
   // THE GUNNER SEAT (./boss/game-seat.js): in the bait mode the player sits in the game's own gunship seat (src/sentry-pilot.js), its
   // thermal and its GROUND TRUTH monitor; every round it fires is resolved by the fight through the friendlies' paths
   const seat = createGameSeat({
     stage, renderer, scene, sphere, camera: cam, audio, explosions, planet: () => planet, ground: (x, z) => tankWorld(x, z),
-    local: (p) => { const u = frame.up, k = planet.radius / (p[0] * u[0] + p[1] * u[1] + p[2] * u[2]), l = toLocal(frame, [p[0] * k, p[1] * k, p[2] * k], 1); return [l[0], l[2]]; },
+    local: sphereLocal,
     tune: () => fightTune, fight: () => fight, now: () => t, creature: huntedNow, isao: () => bait.marker(),
     parts: () => ({ creature: waving() ? wave.group : creature?.mesh, isao: sphere.getObjectByName('Isao'), ring: arena.ring }),
     resolve: (plan, dt) => { friendlies.resolve(plan, dt); wave.resolve(plan, dt); },   // a round of the player's on the boss (none while the wave holds it back), Isao and the arena, and on every live Reed
@@ -423,7 +425,7 @@ export function initBossTab(root) {
     aim: (from, to) => arena.clamp(arena.route(from, to), fightTune.bounds.creatureMargin),   // the boss's hunt: round the obstacles, then inside the bound
     isao: () => bait.asTank(), isaoPos: () => (bait.has() && !bait.gone() ? bait.pos() : null), fearOn: () => fightOn.fight && fightOn.fear,
     camera: () => cam, extentOf: nativeExtent, onError: (m) => { frameError = m; frameErrorAt = t; },
-    gate: () => sinkhole.who() === 'reeds' && sinkhole.ready(), hot: () => seat.thermal(),
+    gate: () => sinkhole.who() === 'reeds' && sinkhole.ready(), hot: () => seat.thermal(), local: sphereLocal,
   });
   // THE SINKHOLE (owner, 2026-10-10: "the initial Tremor is not just the ground shaking, it is our sinkhole animation from the game mode"; ./boss/sinkhole.js hosts
   // the game's src/game-breaches.js): a round of the bait mode opens one at the arena's centre (`wave.sinkhole.reeds` cells wide), the Reeds come up out of it one after
@@ -900,6 +902,7 @@ export function initBossTab(root) {
       + ` &middot; temper <b>${r.temper.phase}</b> (lunges <b>${r.temper.lunges}</b>) &middot; barrage <b>${fmt(r.gunFear.meter, 2)}</b> &middot; flinch/wild/panic <b>${r.gunFear.flinch}/${r.gunFear.wild}/${r.gunFear.panic}</b>`;
     if (r.mode === 'bait' && !r.wave.boss) html += `<br>wave 1 &middot; Reeds <b>${r.wave.alive}/${r.wave.count}</b> (${r.wave.made} made) &middot; solver <b>${fmt(r.wave.meanSolver, 1)} ms</b>`
       + ` &middot; clock <b>&times;${fmt(r.wave.meanScale)}</b> &middot; off-screen <b>${r.wave.lod}</b> &middot; <b>${fmt(r.wave.cost)} ms</b>/step`;
+    if (r.mode === 'bait' && r.wave.carcassStats.count) html += `${r.wave.boss ? '<br>' : ' &middot; '}carcasses <b>${r.wave.carcassStats.count}</b> (<b>${fmt(r.wave.carcassStats.ms, 2)} ms</b>, ${r.wave.carcassStats.moving} pieces moving)`;
     if (shaderErrors.length) html += `<br><b class="late">shader: ${escapeHtml(shaderErrors[shaderErrors.length - 1])}</b>`;
     if (frameError && t - frameErrorAt < 5) html += `<br><b class="late">${escapeHtml(frameError)}; reset</b>`;
     read.innerHTML = html;
@@ -1163,6 +1166,15 @@ export function initBossTab(root) {
     plane, drive, keys, state, cam, params, gui, arena, fear, fightTune, scene, wave, sinkhole,
     reeds: (n) => { if (n !== undefined) { fightTune.wave.count = Math.max(0, Math.min(WAVE_MAX, Math.round(n))); gui.controllersRecursive().forEach((c) => c.updateDisplay()); newRound(); } return fightTune.wave.count; },
     chase: () => { if (state.view !== 'free' || !creature) return false; chaseCam(); return true; },
+    closeTo: (id, back = 14, up = 9) => {   // the free orbit's camera on carcass `id`, `back` m off along its frame's east and `up` m above it
+      const o = state.view === 'free' && wave.carcassGroup.getObjectByName(`Reed ${id} carcass`), m = o && o.getObjectByName('Reed carcass');
+      if (!m) return false;
+      m.updateWorldMatrix(true, false);
+      const c = m.geometry.boundingSphere.center.clone().applyMatrix4(m.matrixWorld), e = o.matrixWorld.elements;
+      const u = new THREE.Vector3(e[4], e[5], e[6]).normalize(), x = new THREE.Vector3(e[0], e[1], e[2]).normalize();
+      cam.up.copy(u); cam.position.copy(c).addScaledVector(x, back).addScaledVector(u, up); cam.lookAt(c); controls.target.copy(c);
+      return true;
+    },
   });
   if (q.get('acceptance') === '1') window.__bossLab = lab;
   resize();

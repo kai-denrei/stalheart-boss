@@ -16,7 +16,7 @@
 // task is gone. The nine are the same base materials again and their cache keys differ from the warmed ones by the output colour
 // space field, which is exactly what this module already binds both ways; the remaining difference was not identified and may be
 // a light-count field the diff could not tell apart. The gap is narrowed and measured, not closed.
-import * as THREE from '../../vendor/three.module.js?v=ceff5e94';
+import * as THREE from '../../vendor/three.module.js?v=8825cf41';
 
 // What a program is actually keyed on, of the part the object contributes: the rest is the material's own. Thousands of meshes in
 // the story scene share a few dozen of these, and compiling one of each is the whole job — compiling all of them is not, because

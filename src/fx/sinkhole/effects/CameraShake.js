@@ -1,5 +1,5 @@
-import { Vector3 } from '../../../../vendor/three.module.js?v=ceff5e94';
-import { settings } from '../config/settings.js?v=ceff5e94';
+import { Vector3 } from '../../../../vendor/three.module.js?v=8825cf41';
+import { settings } from '../config/settings.js?v=8825cf41';
 
 /**
  * Additive camera shake driven by layered noise.

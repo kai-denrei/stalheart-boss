@@ -3,9 +3,9 @@
 // renderer is a SECOND WebGL context (an open finding for the owner: the main renderer could draw the sprite to a render target);
 // the controller makes it (host.makeRenderer) so this module never constructs a context itself. The controller keeps the banner
 // element and its timer (another banner shares them) and spins unit() in its frame.
-import * as THREE from '../../vendor/three.module.js?v=ceff5e94';
-import { buildCreature } from '../units.js?v=ceff5e94';
-import { CREATURE_TINTS, ENEMY_SPEC, INTROS, computeWavePlan } from '../enemyspec.js?v=ceff5e94';
+import * as THREE from '../../vendor/three.module.js?v=8825cf41';
+import { buildCreature } from '../units.js?v=8825cf41';
+import { CREATURE_TINTS, ENEMY_SPEC, INTROS, computeWavePlan } from '../enemyspec.js?v=8825cf41';
 
 export function createWaveCard(host) {
 

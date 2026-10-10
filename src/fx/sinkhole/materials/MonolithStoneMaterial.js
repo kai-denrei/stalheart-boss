@@ -1,10 +1,10 @@
-import { MeshStandardMaterial, Color, DoubleSide } from '../../../../vendor/three.module.js?v=ceff5e94';
-import { noiseGLSL } from '../shaders/lib/noise.glsl.js?v=ceff5e94';
-import { getStoneTextures, STONE_TILE_METRES } from '../loaders/StoneTextures.js?v=ceff5e94';
-import { frame } from '../core/FrameUniforms.js?v=ceff5e94';
-import { settings } from '../config/settings.js?v=ceff5e94';
-import { getColor } from '../utils/color.js?v=ceff5e94';
-import { saturate } from '../utils/math.js?v=ceff5e94';
+import { MeshStandardMaterial, Color, DoubleSide } from '../../../../vendor/three.module.js?v=8825cf41';
+import { noiseGLSL } from '../shaders/lib/noise.glsl.js?v=8825cf41';
+import { getStoneTextures, STONE_TILE_METRES } from '../loaders/StoneTextures.js?v=8825cf41';
+import { frame } from '../core/FrameUniforms.js?v=8825cf41';
+import { settings } from '../config/settings.js?v=8825cf41';
+import { getColor } from '../utils/color.js?v=8825cf41';
+import { saturate } from '../utils/math.js?v=8825cf41';
 
 /**
  * The stone of the Monolith Rift — layers 1, 3 and 4 of the breakdown.

@@ -1,9 +1,9 @@
-import { createBreachRubble } from './breach-rubble.js?v=ceff5e94';
-import * as THREE from '../vendor/three.module.js?v=ceff5e94';
-import { createSinkhole } from './sinkhole.js?v=ceff5e94';
-import { CONTENT } from './content/runtime.js?v=ceff5e94';
-import { BREACH_SURFACE_GLSL } from './core/breach-surface.js?v=ceff5e94';
-import { SINKHOLE_BOUNDARY_GLSL } from './core/sinkhole-shape.js?v=ceff5e94';
+import { createBreachRubble } from './breach-rubble.js?v=8825cf41';
+import * as THREE from '../vendor/three.module.js?v=8825cf41';
+import { createSinkhole } from './sinkhole.js?v=8825cf41';
+import { CONTENT } from './content/runtime.js?v=8825cf41';
+import { BREACH_SURFACE_GLSL } from './core/breach-surface.js?v=8825cf41';
+import { SINKHOLE_BOUNDARY_GLSL } from './core/sinkhole-shape.js?v=8825cf41';
 
 // Game owns walls, navigation, wave counts and health. This adapter owns ground visuals.
 // `look` (optional getter): the game's visual identity (params.look), re-read on create and every update so a sinkhole

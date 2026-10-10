@@ -3,7 +3,7 @@
 // turning, so a beam drawn once is left hanging where the barrel was. Each frame the held beam is re-aimed from the barrel's
 // current tip at what the head is tracking: the pilot's target or reticle in the seat, else tower-aim's `trackTarget`. Drawing
 // only; the damage stays with the shot. Returns null to leave the beam as it is (no barrel, nothing alive to point at).
-import * as THREE from '../../vendor/three.module.js?v=ceff5e94';
+import * as THREE from '../../vendor/three.module.js?v=8825cf41';
 
 const v = new THREE.Vector3(), q = new THREE.Quaternion(), f = new THREE.Vector3();
 // THE BEAM LEAVES ALONG THE BARREL (owner, 2026-10-05: "sometimes the laser beam does not follow the muzzle when it moves too fast to a

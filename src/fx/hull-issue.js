@@ -12,9 +12,9 @@
 //   host.now()         the game clock
 //   host.issue(quiet)  put the hull in the world: quiet sets it down outside the door, otherwise it rolls out on camera
 // States: held (no hull) -> rolling (issued, still on screen) -> out.
-import { hasPerk as programmeHas } from '../domain/build-programme.js?v=ceff5e94';
-import { berthIndexFor } from '../domain/berths.js?v=ceff5e94';
-import { showOrder } from './order-callout.js?v=ceff5e94';
+import { hasPerk as programmeHas } from '../domain/build-programme.js?v=8825cf41';
+import { berthIndexFor } from '../domain/berths.js?v=8825cf41';
+import { showOrder } from './order-callout.js?v=8825cf41';
 
 export function createHullIssue({ held = false, perk = 'stalheart', door = null, lead = 1.6 } = {}) {
   let state = held ? 'held' : 'out', issuedAt = null, quiet = null;

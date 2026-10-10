@@ -6,12 +6,12 @@ import {
   NormalBlending,
   Color,
   Group
-} from '../../../../vendor/three.module.js?v=ceff5e94';
-import { noiseGLSL } from '../shaders/lib/noise.glsl.js?v=ceff5e94';
-import { commonGLSL } from '../shaders/lib/common.glsl.js?v=ceff5e94';
-import { sharedUniforms } from '../core/FrameUniforms.js?v=ceff5e94';
-import { LAYER } from '../core/Layers.js?v=ceff5e94';
-import { ObjectPool } from '../utils/ObjectPool.js?v=ceff5e94';
+} from '../../../../vendor/three.module.js?v=8825cf41';
+import { noiseGLSL } from '../shaders/lib/noise.glsl.js?v=8825cf41';
+import { commonGLSL } from '../shaders/lib/common.glsl.js?v=8825cf41';
+import { sharedUniforms } from '../core/FrameUniforms.js?v=8825cf41';
+import { LAYER } from '../core/Layers.js?v=8825cf41';
+import { ObjectPool } from '../utils/ObjectPool.js?v=8825cf41';
 
 /**
  * SCORCH, SHOCKWAVE, FROST and ARC are used by the live abilities; the rest are

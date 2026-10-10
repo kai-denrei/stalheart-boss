@@ -1,6 +1,6 @@
 // Isao's build programme: which step of the base he prints next and what it switches on. Pure: the steps come in from content
 // (src/content/base-programme.js), the host passes the story phase, the sector and whether a wave is on, and prints the step itself.
-import { STORY_PHASES } from './automation.js?v=ceff5e94';
+import { STORY_PHASES } from './automation.js?v=8825cf41';
 
 // `standing(step)` says a step's pieces already stand (a static stage, or a jump past it): those count as printed from the start,
 // perks included, so a stage-8 base has every perk without a print

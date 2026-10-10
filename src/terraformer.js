@@ -1,8 +1,8 @@
 // Opt-in Sentry Workshop asset adapter. Articulated clips stay authored; the host
 // still owns the tangent transform, heart rules, pedestal footprint and clock.
-import * as THREE from '../vendor/three.module.js?v=ceff5e94';
-import { loadGlbWithClips, fitModel, mergeByMaterial } from './glbmodels.js?v=ceff5e94';
-import { record } from './diagnostics.js?v=ceff5e94';
+import * as THREE from '../vendor/three.module.js?v=8825cf41';
+import { loadGlbWithClips, fitModel, mergeByMaterial } from './glbmodels.js?v=8825cf41';
+import { record } from './diagnostics.js?v=8825cf41';
 const states = new Map();
 const pending = new Map();
 export const terraformerState = hp => hp <= 0 ? 3 : hp <= 0.3 ? 2 : hp <= 0.65 ? 1 : 0;

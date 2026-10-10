@@ -17,11 +17,11 @@
 // THAT. The tower-defence tab spawns the cloud form instead, so a viewer
 // built on buildUnit was showing a drifter the player will never meet — and
 // none of the rammable/not tells, which live only on the cloud.
-import { ENEMY_SPEC } from './enemyspec.js?v=ceff5e94';
-import { TOWERS, towerSound } from './towers.js?v=ceff5e94';
-import { PICKUPS, SHELL_PICKUP } from './pickups.js?v=ceff5e94';
-import { LASER_PLATFORMS } from './content/orbital-laser.js?v=ceff5e94';
-import { SHOWCASE_ELEMENTS } from './content/showcase.js?v=ceff5e94';
+import { ENEMY_SPEC } from './enemyspec.js?v=8825cf41';
+import { TOWERS, towerSound } from './towers.js?v=8825cf41';
+import { PICKUPS, SHELL_PICKUP } from './pickups.js?v=8825cf41';
+import { LASER_PLATFORMS } from './content/orbital-laser.js?v=8825cf41';
+import { SHOWCASE_ELEMENTS } from './content/showcase.js?v=8825cf41';
 
 export const GROUPS = ['friendly', 'neutral', 'hostile'];
 

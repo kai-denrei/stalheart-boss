@@ -12,10 +12,10 @@
 // intro is the demo's, not the board's. No bloom, no composite: a faint sky
 // wants neither, and the board's own chain blacks the background out of its
 // weighted pass anyway (postfx.js: "the sky must not bloom").
-import * as THREE from '../vendor/three.module.js?v=ceff5e94';
+import * as THREE from '../vendor/three.module.js?v=8825cf41';
 import {
   GALAXY_PALETTES, buildFieldStars, buildGalaxyDust, buildGalaxyStars, galaxyLayout, galaxyParams,
-} from './galaxyseed.js?v=ceff5e94';
+} from './galaxyseed.js?v=8825cf41';
 
 const STAR_VERT = /* glsl */ `
 attribute vec4 d0; attribute vec4 d1; attribute float pp;

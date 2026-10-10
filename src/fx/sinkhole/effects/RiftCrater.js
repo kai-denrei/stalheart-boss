@@ -1,9 +1,9 @@
-import { Mesh } from '../../../../vendor/three.module.js?v=ceff5e94';
-import { createShatterPlateGeometry } from '../assets/ShatterGeometry.js?v=ceff5e94';
-import { createRiftCraterMaterial } from '../materials/MonolithStoneMaterial.js?v=ceff5e94';
-import { LAYER } from '../core/Layers.js?v=ceff5e94';
-import { settings } from '../config/settings.js?v=ceff5e94';
-import { saturate, Easing } from '../utils/math.js?v=ceff5e94';
+import { Mesh } from '../../../../vendor/three.module.js?v=8825cf41';
+import { createShatterPlateGeometry } from '../assets/ShatterGeometry.js?v=8825cf41';
+import { createRiftCraterMaterial } from '../materials/MonolithStoneMaterial.js?v=8825cf41';
+import { LAYER } from '../core/Layers.js?v=8825cf41';
+import { settings } from '../config/settings.js?v=8825cf41';
+import { saturate, Easing } from '../utils/math.js?v=8825cf41';
 
 /**
  * The broken floor at the impact — the bed the monoliths stand in.
@@ -24,7 +24,7 @@ import { saturate, Easing } from '../utils/math.js?v=ceff5e94';
  */
 export class RiftCrater {
   /**
-   * @param {import('../world/Environment.js?v=ceff5e94').Environment} environment
+   * @param {import('../world/Environment.js?v=8825cf41').Environment} environment
    */
   constructor(environment) {
     this.material = createRiftCraterMaterial(environment);

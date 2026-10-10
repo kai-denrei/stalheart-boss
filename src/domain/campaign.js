@@ -1,4 +1,4 @@
-import { SHIELD_TUNE } from './shield.js?v=ceff5e94';
+import { SHIELD_TUNE } from './shield.js?v=8825cf41';
 // Campaign purchase policy; ordinary combat earnings are unchanged.
 export const GAME_START_BIOMASS = 170;
 export const SINK = Object.freeze({ tollBase:250, tollStep:150, hull:400, strike:350, drone:500, mines:200, shields:SHIELD_TUNE.price });

@@ -4,8 +4,8 @@
 // darkens the ground (premultiplied, so it occludes); and embers — a hot glow cooling from warm to ember red over `hot` seconds,
 // with a speckle of coals that smoulders on long after (owner, 2026-09-15). `stack` divides the glow by how many stamps overlap
 // along a path, so dense stamping does not white out. `size` is a stamp's side in scene units, `lift` how far off the ground.
-import * as THREE from '../../vendor/three.module.js?v=ceff5e94';
-import { EXPLOSION_PALETTE } from '../content/explosions.js?v=ceff5e94';
+import * as THREE from '../../vendor/three.module.js?v=8825cf41';
+import { EXPLOSION_PALETTE } from '../content/explosions.js?v=8825cf41';
 
 const Y = new THREE.Vector3(0, 1, 0);
 

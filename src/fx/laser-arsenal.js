@@ -9,13 +9,13 @@
 //
 // FRAMES. The game draws a unit sphere at the origin, cellSide scene units to a 10 m cell; the domain works in metres on
 // a sphere of radius R about the origin. R = 10 / cellSide, so a scene point times R is the same point in metres.
-import * as THREE from '../../vendor/three.module.js?v=ceff5e94';
-import { LASER_ORBIT, LASER_BEAM, LASER_BURN, LASER_GAME, LASER_CONTACT_RATE, LASER_SMOKE_RATE, LASER_SOUNDS, LASER_STRUCTURES, LASER_AUTO, LASER_PLATFORMS } from '../content/orbital-laser.js?v=ceff5e94';
-import { densestTarget, countdownTimes } from '../domain/laser-auto.js?v=ceff5e94';
-import { makeLaser, stepLaser, aimLaser, burnLaser, burnContacts, laserProgress, clampToRange, inFootprint, laserStrip } from '../domain/orbital-laser.js?v=ceff5e94';
-import { createOrbitalLaser } from './orbital-laser.js?v=ceff5e94';
-import { BLOCKED } from '../dungeon.js?v=ceff5e94';
-import { isaoSpeak } from './isao-voice.js?v=ceff5e94';
+import * as THREE from '../../vendor/three.module.js?v=8825cf41';
+import { LASER_ORBIT, LASER_BEAM, LASER_BURN, LASER_GAME, LASER_CONTACT_RATE, LASER_SMOKE_RATE, LASER_SOUNDS, LASER_STRUCTURES, LASER_AUTO, LASER_PLATFORMS } from '../content/orbital-laser.js?v=8825cf41';
+import { densestTarget, countdownTimes } from '../domain/laser-auto.js?v=8825cf41';
+import { makeLaser, stepLaser, aimLaser, burnLaser, burnContacts, laserProgress, clampToRange, inFootprint, laserStrip } from '../domain/orbital-laser.js?v=8825cf41';
+import { createOrbitalLaser } from './orbital-laser.js?v=8825cf41';
+import { BLOCKED } from '../dungeon.js?v=8825cf41';
+import { isaoSpeak } from './isao-voice.js?v=8825cf41';
 
 const METRES_PER_CELL = 10;
 const NOTHING = Object.freeze({ soft: 0, hard: 0, wall: 0, rock: 0, tower: 0, seal: 0, tank: 0, heart: 0, structure: 0 });
