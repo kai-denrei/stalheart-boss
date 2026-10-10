@@ -6,7 +6,7 @@
 // so the empty sky round it cannot show as a square; a normal-blended sprite did, whatever its alpha said), and the shadow, the rays
 // that fell in, as an opaque black disc sized from the rendered picture, turned to the camera (accretionShadow). No asset, no pin:
 // the shader is the picture.
-import * as THREE from '../../vendor/three.module.js?v=6e1ea8d0';
+import * as THREE from '../../vendor/three.module.js?v=cc48435a';
 
 // size: the texture's side in pixels; pose: [tilt, roll] of the camera about the hole (the original's Tilted preset); time: the
 // disk's flow phase (any value: it is a still)

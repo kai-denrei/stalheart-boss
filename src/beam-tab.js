@@ -1,4 +1,4 @@
-import { DEFAULT_TANK } from './content/tank.js?v=6e1ea8d0';
+import { DEFAULT_TANK } from './content/tank.js?v=cc48435a';
 // beam-tab.js — THE BEAM LAB, inside our own world.
 //
 // lab-satisfying-lasers tunes a beam against a neutral stage: near-black
@@ -14,22 +14,22 @@ import { DEFAULT_TANK } from './content/tank.js?v=6e1ea8d0';
 // The one control the lab does not have, and the reason this tab exists:
 // TONE MAPPING. Toggle it and watch the whole frame re-grade. That is the
 // decision the beam spec is blocked on, and it is an eye decision.
-import * as THREE from '../vendor/three.module.js?v=6e1ea8d0';
-import { OrbitControls } from '../vendor/OrbitControls.js?v=6e1ea8d0';
-import GUI from '../vendor/lil-gui.esm.js?v=6e1ea8d0';
+import * as THREE from '../vendor/three.module.js?v=cc48435a';
+import { OrbitControls } from '../vendor/OrbitControls.js?v=cc48435a';
+import GUI from '../vendor/lil-gui.esm.js?v=cc48435a';
 // DEFAULTS only: the meshes are the rig's now (beamdraw.js), and this file
 // no longer calls createBeam directly.
-import { DEFAULTS } from './beamfx.js?v=6e1ea8d0';
-import { makeBloom } from './postfx.js?v=6e1ea8d0';
-import { LOOKS } from './looks.js?v=6e1ea8d0';
+import { DEFAULTS } from './beamfx.js?v=cc48435a';
+import { makeBloom } from './postfx.js?v=cc48435a';
+import { LOOKS } from './looks.js?v=cc48435a';
 import { buildCreature, preloadMork, SECONDARY_TOE,
-  applySecondaryToe, secondaryPivots } from './units.js?v=6e1ea8d0';
-import { BEAM_STEPS, beamStep } from './beamranks.js?v=6e1ea8d0';
-import { arcPoint, projectToArc, toeForCrossing, crossingForToe } from './arc.js?v=6e1ea8d0';
-import { burnReport, sweepAdvance } from './beamburn.js?v=6e1ea8d0';
-import { createBeamRig, PLASMA_DEFAULTS, BOARD_PRESET } from './beamdraw.js?v=6e1ea8d0';
-import { SAFE_HUES, ALARM_HUES } from './enemyspec.js?v=6e1ea8d0';
-import { deepLink, wireDeepLink } from './deeplink.js?v=6e1ea8d0';
+  applySecondaryToe, secondaryPivots } from './units.js?v=cc48435a';
+import { BEAM_STEPS, beamStep } from './beamranks.js?v=cc48435a';
+import { arcPoint, projectToArc, toeForCrossing, crossingForToe } from './arc.js?v=cc48435a';
+import { burnReport, sweepAdvance } from './beamburn.js?v=cc48435a';
+import { createBeamRig, PLASMA_DEFAULTS, BOARD_PRESET } from './beamdraw.js?v=cc48435a';
+import { SAFE_HUES, ALARM_HUES } from './enemyspec.js?v=cc48435a';
+import { deepLink, wireDeepLink } from './deeplink.js?v=cc48435a';
 
 // the heat clock the secondary actually runs on, mirrored from td-tab so the
 // envelope tuned here is the envelope the weapon will fire

@@ -18,9 +18,9 @@
 //
 // Deterministic: a hashed pseudo-stream per effect, seeded by the caller.
 // House rule — no Math.random in anything the game can replay.
-import * as THREE from '../vendor/three.module.js?v=6e1ea8d0';
+import * as THREE from '../vendor/three.module.js?v=cc48435a';
 
-import { IMPACT_TUNE, IMPACT_KNOBS, makeImpactParams, clampImpactParams, formatImpactTune, impactKnobProblems, IMPACT_FAMILIES, IMPACT_RECIPES } from './content/impact-schema.js?v=6e1ea8d0';
+import { IMPACT_TUNE, IMPACT_KNOBS, makeImpactParams, clampImpactParams, formatImpactTune, impactKnobProblems, IMPACT_FAMILIES, IMPACT_RECIPES } from './content/impact-schema.js?v=cc48435a';
 export { IMPACT_TUNE, IMPACT_KNOBS, makeImpactParams, clampImpactParams, formatImpactTune, impactKnobProblems, IMPACT_FAMILIES, IMPACT_RECIPES };
 
 // --- the deterministic stream ---------------------------------------------

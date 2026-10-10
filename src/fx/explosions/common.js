@@ -4,7 +4,7 @@
 // Layers animate in the vertex shader from one uniform, uTime (seconds since
 // spawn). Every random number is drawn in JS at spawn from the seed, so a run
 // is a pure function of (seed, t).
-import * as THREE from '../../../vendor/three.module.js?v=6e1ea8d0';
+import * as THREE from '../../../vendor/three.module.js?v=cc48435a';
 
 // ---------------------------------------------------------------- random
 

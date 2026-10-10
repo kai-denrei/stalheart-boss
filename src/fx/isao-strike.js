@@ -4,9 +4,9 @@
 // and kills exactly one body. His board goes from 0 to 1 and celebrates; he bounces with glee, then is handed back to his queue.
 // host: isao() (the controller's record: obj, dir, held, state, gleeT), enemies(), tank() (unit point), cellSide(), scene, explode(use, p),
 // kill(e) -> killed, brief(id), sfx, onKill() (the books and the board)
-import * as THREE from '../../vendor/three.module.js?v=6e1ea8d0';
-import { loadModelFixture, cloneFixture } from './model-fixture.js?v=6e1ea8d0';
-import { pickStrikeTarget } from '../domain/isao-strike.js?v=6e1ea8d0';
+import * as THREE from '../../vendor/three.module.js?v=cc48435a';
+import { loadModelFixture, cloneFixture } from './model-fixture.js?v=cc48435a';
+import { pickStrikeTarget } from '../domain/isao-strike.js?v=cc48435a';
 
 const norm = (v) => { const l = Math.hypot(v[0], v[1], v[2]) || 1; return [v[0] / l, v[1] / l, v[2] / l]; };
 function slerp(a, b, k) {

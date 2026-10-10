@@ -22,10 +22,10 @@
 //
 // COST: nothing a frame for a carcass at rest but its fade, its warmth and one look at its next crumble; vertices are rewritten only for the pieces flying,
 // crumbling or hopping, the index only when a piece comes or goes.
-import * as THREE from '../../../vendor/three.module.js?v=6e1ea8d0';
-import { carcassDamage, blastBreaks, severance, hopOf, hopPose, coreChunks, severedCrumble, charOf, carcassStage, stageLabel, STAGES, flingOf, flingPose, crumblePose } from '../../domain/boss-carcass.js?v=6e1ea8d0';
-import { HEAT } from '../../fx/thermal-heat.js?v=6e1ea8d0';
-import { build, tissueOf } from './carcass.js?v=6e1ea8d0';
+import * as THREE from '../../../vendor/three.module.js?v=cc48435a';
+import { carcassDamage, blastBreaks, severance, hopOf, hopPose, coreChunks, severedCrumble, charOf, carcassStage, stageLabel, STAGES, flingOf, flingPose, crumblePose } from '../../domain/boss-carcass.js?v=cc48435a';
+import { HEAT } from '../../fx/thermal-heat.js?v=cc48435a';
+import { build, tissueOf } from './carcass.js?v=cc48435a';
 
 const CHAR = new THREE.Color(0x16110e);   // a hurt target darkens toward this
 const BLACK = new THREE.Color(0, 0, 0), WHITE_HEAT = new THREE.Color(1, 1, 1);

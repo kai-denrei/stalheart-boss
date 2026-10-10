@@ -1,2 +1,2 @@
 // Compatibility facade. Rules live in domain.
-export * from './domain/berths.js?v=6e1ea8d0';
+export * from './domain/berths.js?v=cc48435a';

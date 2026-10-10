@@ -1,9 +1,9 @@
 // Which planet the game plays on. The default recipe is the pinned lane
 // world; the story world is the larger polar-clearing planet with its heart
 // at the pole. The controller consumes mesh, dungeon and wall height only.
-import { generateSphereMesh, relax } from '../grid.js?v=6e1ea8d0';
-import { generateDungeon, bfsDist, BLOCKED } from '../dungeon.js?v=6e1ea8d0';
-import { buildStoryPlanet } from './story-planet.js?v=6e1ea8d0';
+import { generateSphereMesh, relax } from '../grid.js?v=cc48435a';
+import { generateDungeon, bfsDist, BLOCKED } from '../dungeon.js?v=cc48435a';
+import { buildStoryPlanet } from './story-planet.js?v=cc48435a';
 
 export function buildWorld({ world = 'default', params, story = null }) {
   if (world === 'story' && story) {

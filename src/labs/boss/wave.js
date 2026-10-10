@@ -39,15 +39,15 @@
 // fear go. The tips crumble first with time, every round the lab resolves breaks the pieces within its reach (`resolve`, also once the boss is in), and the whole
 // darkens, sinks and cools in the seat's thermal (`hot()`) over `carcass.decay` s; at most `carcass.max` lie. They block nothing and are no one's target. A new wave
 // clears them.
-import * as THREE from '../../../vendor/three.module.js?v=6e1ea8d0';
-import { makeWave, emergePlan, emergence, waveStep, aliveCount, resolveReeds, hurtReed, waveCleared, bossEnters, nearestReed } from '../../domain/boss-wave.js?v=6e1ea8d0';
-import { createNihDairia, loadMonsterCage } from '../../fx/nih-dairia/creature.js?v=6e1ea8d0';
-import { ARENA } from '../../fx/nih-dairia/arena.js?v=6e1ea8d0';
-import { NIH_DAIRIA_LOOK, NIH_DAIRIA_MODELS } from '../../content/nih-dairia.js?v=6e1ea8d0';
-import { createFear } from './fear.js?v=6e1ea8d0';
-import { createTemperament } from './temperament.js?v=6e1ea8d0';
-import { kitNow, nodesOf, shiftKit } from './body.js?v=6e1ea8d0';
-import { createCarcasses } from './carcass.js?v=6e1ea8d0';
+import * as THREE from '../../../vendor/three.module.js?v=cc48435a';
+import { makeWave, emergePlan, emergence, waveStep, aliveCount, resolveReeds, hurtReed, waveCleared, bossEnters, nearestReed } from '../../domain/boss-wave.js?v=cc48435a';
+import { createNihDairia, loadMonsterCage } from '../../fx/nih-dairia/creature.js?v=cc48435a';
+import { ARENA } from '../../fx/nih-dairia/arena.js?v=cc48435a';
+import { NIH_DAIRIA_LOOK, NIH_DAIRIA_MODELS } from '../../content/nih-dairia.js?v=cc48435a';
+import { createFear } from './fear.js?v=cc48435a';
+import { createTemperament } from './temperament.js?v=cc48435a';
+import { kitNow, nodesOf, shiftKit } from './body.js?v=cc48435a';
+import { createCarcasses } from './carcass.js?v=cc48435a';
 
 const VARIANT = 'reed';
 const BATCH = 3;            // Reeds made a frame while the wave loads

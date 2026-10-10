@@ -14,7 +14,7 @@
 // `stage()` the dead boss's carcass's stage once KILLED (./remains.js: `INTACT`, `LIMBS SEVERED n/N`, `CORE CRACKED`, `SCORCHED`; null before it lies): the row reads it after the hits.
 // THE BAR is the integrity HUD's gate row (src/fx/integrity-hud.js: `ih-lbl`, `ih-bar > i`, `ih-num`, `ih-low` at a quarter)
 // in the stage's `.sw-hud`, with the fight's clock `m:ss.t` and `hits <n>`; hidden while `on()` is false (the fight switch off).
-import { kill, tick as tickFight } from '../../domain/boss-fight.js?v=6e1ea8d0';
+import { kill, tick as tickFight } from '../../domain/boss-fight.js?v=cc48435a';
 
 const LOW = 0.25;   // the HUD's gate threshold: the fill turns amber at a quarter
 

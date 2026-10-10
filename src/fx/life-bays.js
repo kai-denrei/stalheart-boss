@@ -1,7 +1,7 @@
 // THE LIFE CONTAINERS. v3: one hull per shallow container, three in a row. Container i holds a spare while i < HP-1; the spawn
 // commandeers container min(2, HP-1) — the one whose hull just left. The controller keeps the containers (lifeContainers) and
 // when to adopt or repaint them (adoptBays, syncLifeContainers); these are what adopting the story's bays builds and a repaint.
-import * as THREE from '../../vendor/three.module.js?v=6e1ea8d0';
+import * as THREE from '../../vendor/three.module.js?v=cc48435a';
 
 // the story's printed bays as life containers: an empty holder whose "stocked" call opens the bay when its hull leaves, the bay's
 // own vehicle as the racked hull, and the berth each stands on

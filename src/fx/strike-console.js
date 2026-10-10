@@ -3,10 +3,10 @@
 // refusals) over strike.js's state machine, and executeStrike, the blast itself. Its listeners are registered when it is created,
 // at the controller's own point of start-up. The controller keeps the strike's state (strike, strikeTune, strikeGrace) and hands
 // it in.
-import { BLOCKED } from '../dungeon.js?v=6e1ea8d0';
-import { sub3, add3, scale3, dot3, norm3, dist3, tangentBasis } from '../vec3.js?v=6e1ea8d0';
-import { makeDotBurst } from '../units.js?v=6e1ea8d0';
-import { toggleArm, launchStrike, strikeDamage, orbitProgress } from '../strike.js?v=6e1ea8d0';
+import { BLOCKED } from '../dungeon.js?v=cc48435a';
+import { sub3, add3, scale3, dot3, norm3, dist3, tangentBasis } from '../vec3.js?v=cc48435a';
+import { makeDotBurst } from '../units.js?v=cc48435a';
+import { toggleArm, launchStrike, strikeDamage, orbitProgress } from '../strike.js?v=cc48435a';
 
 export function createStrikeConsole(host) {
   const strikecamEl = host.root.querySelector('#td-strikecam');

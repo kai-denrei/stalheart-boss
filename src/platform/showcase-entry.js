@@ -11,7 +11,7 @@
 // browser suite names a key that says something about the run (`cine=0`, `acceptance=1`, `world=story`, `stage=`), so
 // nothing else in the harness starts meeting a montage. The one suite that did — the `index.html?sw=0#td` default-route
 // check — says `intro=0` now rather than clearing the store, because what it wants is the landing, not a fresh browser.
-import { storage } from '../storage.js?v=6e1ea8d0';
+import { storage } from '../storage.js?v=cc48435a';
 
 // src/storage.js only keeps keys matching /^(td[.-]|ssg[.-])/
 export const SHOWCASE_SEEN_KEY = 'td-showcase-seen';

@@ -1,5 +1,5 @@
 // Effect authoring edits the same package the range fires and exports.
-import { IMPACT_TUNE, IMPACT_KNOBS, IMPACT_FAMILIES, IMPACT_RECIPES } from '../content/impact-schema.js?v=6e1ea8d0';
+import { IMPACT_TUNE, IMPACT_KNOBS, IMPACT_FAMILIES, IMPACT_RECIPES } from '../content/impact-schema.js?v=cc48435a';
 export function mountSentryEffects(gui, profile) {
   const state = { effectSlot: 'impact', effectRecipe: 'shell', effectSize: 1, ...IMPACT_TUNE };
   const folder = gui.addFolder('muzzle / impact').close();

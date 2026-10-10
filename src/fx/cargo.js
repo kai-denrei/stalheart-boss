@@ -3,10 +3,10 @@
 // the back at home with two bounces and a thud, or tumbles off a lost hull; a small trophy flag goes up at home per part.
 // Presentation only: the host owns the rules (src/domain/expeditions.js), the sphere and the clock, and says where things go
 // in world units. Works without a document (Node tests): nothing is fetched, the timings and states still run.
-import * as THREE from '../../vendor/three.module.js?v=6e1ea8d0';
-import { GLTFLoader } from '../../vendor/GLTFLoader.js?v=6e1ea8d0';
-import { MeshoptDecoder } from '../../vendor/meshopt_decoder.module.js?v=6e1ea8d0';
-import { CARGO_ASSETS, CARGO_TINTS, CARGO_CRATE_TINTS, CARGO_LOOK, CARGO_CUES } from '../content/cargo.js?v=6e1ea8d0';
+import * as THREE from '../../vendor/three.module.js?v=cc48435a';
+import { GLTFLoader } from '../../vendor/GLTFLoader.js?v=cc48435a';
+import { MeshoptDecoder } from '../../vendor/meshopt_decoder.module.js?v=cc48435a';
+import { CARGO_ASSETS, CARGO_TINTS, CARGO_CRATE_TINTS, CARGO_LOOK, CARGO_CUES } from '../content/cargo.js?v=cc48435a';
 
 const browser = typeof document !== 'undefined';
 const Y = new THREE.Vector3(0, 1, 0), X = new THREE.Vector3(1, 0, 0);

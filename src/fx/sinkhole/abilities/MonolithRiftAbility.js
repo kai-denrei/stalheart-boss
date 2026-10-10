@@ -1,24 +1,24 @@
-import { InstancedBufferAttribute, InstancedMesh, Object3D, Quaternion, Vector3 } from '../../../../vendor/three.module.js?v=6e1ea8d0';
-import { Ability, AbilityPhase } from './Ability.js?v=6e1ea8d0';
+import { InstancedBufferAttribute, InstancedMesh, Object3D, Quaternion, Vector3 } from '../../../../vendor/three.module.js?v=cc48435a';
+import { Ability, AbilityPhase } from './Ability.js?v=cc48435a';
 import {
   createMonolithMaterial,
   createDebrisMaterial
-} from '../materials/MonolithStoneMaterial.js?v=6e1ea8d0';
+} from '../materials/MonolithStoneMaterial.js?v=cc48435a';
 import {
   createMonolithGeometry,
   createDebrisGeometry,
   monolithVariantOptions
-} from '../assets/MonolithGeometry.js?v=6e1ea8d0';
-import { RiftCrater } from '../effects/RiftCrater.js?v=6e1ea8d0';
-import { RiftFissures } from '../effects/RiftFissures.js?v=6e1ea8d0';
-import { ParticleShape } from '../particles/ParticleSystem.js?v=6e1ea8d0';
-import { RateEmitter } from '../particles/ParticleEngine.js?v=6e1ea8d0';
-import { DecalType } from '../effects/GroundDecals.js?v=6e1ea8d0';
-import { LAYER } from '../core/Layers.js?v=6e1ea8d0';
-import { frame } from '../core/FrameUniforms.js?v=6e1ea8d0';
-import { settings } from '../config/settings.js?v=6e1ea8d0';
-import { getColor } from '../utils/color.js?v=6e1ea8d0';
-import { saturate, lerp, smoothstep, Easing, randRange } from '../utils/math.js?v=6e1ea8d0';
+} from '../assets/MonolithGeometry.js?v=cc48435a';
+import { RiftCrater } from '../effects/RiftCrater.js?v=cc48435a';
+import { RiftFissures } from '../effects/RiftFissures.js?v=cc48435a';
+import { ParticleShape } from '../particles/ParticleSystem.js?v=cc48435a';
+import { RateEmitter } from '../particles/ParticleEngine.js?v=cc48435a';
+import { DecalType } from '../effects/GroundDecals.js?v=cc48435a';
+import { LAYER } from '../core/Layers.js?v=cc48435a';
+import { frame } from '../core/FrameUniforms.js?v=cc48435a';
+import { settings } from '../config/settings.js?v=cc48435a';
+import { getColor } from '../utils/color.js?v=cc48435a';
+import { saturate, lerp, smoothstep, Easing, randRange } from '../utils/math.js?v=cc48435a';
 
 /** Hard ceiling on standing stones per cast. The editor's count sliders clamp to this. */
 const MAX_STONES = 280;

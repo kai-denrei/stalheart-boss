@@ -1,5 +1,5 @@
-import { normaliseResult, acceptsResult } from './simresult.js?v=6e1ea8d0';
-import { downloadJSON } from './diagnostics.js?v=6e1ea8d0';
+import { normaliseResult, acceptsResult } from './simresult.js?v=cc48435a';
+import { downloadJSON } from './diagnostics.js?v=cc48435a';
 export function initSimTab(root) {
   const $ = s => root.querySelector(s), frame=$('#sim-frame'), results=[];
   let running=false, cancel=null;

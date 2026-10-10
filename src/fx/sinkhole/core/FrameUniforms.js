@@ -1,4 +1,4 @@
-import { Vector2, Vector3 } from '../../../../vendor/three.module.js?v=6e1ea8d0';
+import { Vector2, Vector3 } from '../../../../vendor/three.module.js?v=cc48435a';
 
 /**
  * Uniform objects shared by *every* custom material, by identity.

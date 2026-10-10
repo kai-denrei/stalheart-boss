@@ -2,13 +2,13 @@
 // (src/fx/paint-pad.js). Isao's two lines, then the palettes, every one open (2026-10-03: the belt dyes and their break-between-sectors
 // card are retired); a swatch paints the hull at once, shown on a turntable in the screen (2026-10-03), and DONE closes it. Also the paint
 // itself: applyLivery recolours the hull's two named surfaces, cloning each material once so a shared cached hull is never touched.
-import * as THREE from '../../vendor/three.module.js?v=6e1ea8d0';
-import { DecalGeometry } from '../../vendor/DecalGeometry.js?v=6e1ea8d0';
-import { mergeGeometries } from '../../vendor/BufferGeometryUtils.js?v=6e1ea8d0';
-import { createAppearance, browserTexture } from '../../assets/models/livery/runtime.js?v=6e1ea8d0';
-import { PALETTES, PALETTE_BY_ID, LIVERY_LOOKS, LIVERY_IDS, ACCENT, DYE_SHOP } from '../content/dyes.js?v=6e1ea8d0';
-import { paint } from '../domain/dyes.js?v=6e1ea8d0';
-import { createLiveryPreview } from './livery-preview.js?v=6e1ea8d0';
+import * as THREE from '../../vendor/three.module.js?v=cc48435a';
+import { DecalGeometry } from '../../vendor/DecalGeometry.js?v=cc48435a';
+import { mergeGeometries } from '../../vendor/BufferGeometryUtils.js?v=cc48435a';
+import { createAppearance, browserTexture } from '../../assets/models/livery/runtime.js?v=cc48435a';
+import { PALETTES, PALETTE_BY_ID, LIVERY_LOOKS, LIVERY_IDS, ACCENT, DYE_SHOP } from '../content/dyes.js?v=cc48435a';
+import { paint } from '../domain/dyes.js?v=cc48435a';
+import { createLiveryPreview } from './livery-preview.js?v=cc48435a';
 
 // THE PAINT IS THE A6 LIVERY RUNTIME (2026-10-03): one appearance context per hull root, a recipe per choice. A look is the upstream preset
 // file; a palette is a plain recipe of its two paints; the factory paint is the upstream factory preset. HAZARD's stripes: the recipe asks

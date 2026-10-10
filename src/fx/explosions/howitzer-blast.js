@@ -1,7 +1,7 @@
 // Large: the gunship's 105 mm shell. A big flash, a fireball of hot puffs,
 // a rising smoke column, a heavy dust surge, long sparks and two ground rings
 // (a fast bright shock front and a slow dusty glow).
-import { assemble, mulberry32, range, direction, prewarm } from './common.js?v=6e1ea8d0';
+import { assemble, mulberry32, range, direction, prewarm } from './common.js?v=cc48435a';
 
 export { prewarm };
 

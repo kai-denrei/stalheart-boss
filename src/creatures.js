@@ -1,5 +1,5 @@
-import { ORGANIC_FORMS } from './organic-forms.js?v=6e1ea8d0';
-import { DOT_WOBBLE, DOT_SWIM } from './content/dot-wobble.js?v=6e1ea8d0';
+import { ORGANIC_FORMS } from './organic-forms.js?v=cc48435a';
+import { DOT_WOBBLE, DOT_SWIM } from './content/dot-wobble.js?v=cc48435a';
 // creatures.js — organic dot-cloud units, ported from ~/Dev/Braille
 // fun-shapes (half-dotted > organic): amoeba, bacteriophage, jellyfish.
 // Each generator returns unit-radius points [x,y,z,(hi)] where hi===1 marks a

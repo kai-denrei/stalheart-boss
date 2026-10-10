@@ -22,7 +22,7 @@
 // NO EYES AND NO MOUTH (operator). It is a mass, not a creature with a face —
 // the moment it has eyes it reads as cute, and the silhouette stops being the
 // thing the player is looking at.
-import * as THREE from '../vendor/three.module.js?v=6e1ea8d0';
+import * as THREE from '../vendor/three.module.js?v=cc48435a';
 
 export const JELLY_TUNE = {
   // three's polyhedron `detail` subdivides each of the 20 faces into

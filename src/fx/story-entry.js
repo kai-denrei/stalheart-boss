@@ -9,7 +9,7 @@
 //   sentries stand on their story sockets as a finished order leaves them. Past the hull's issue the Stålheart's door is every berth.
 // `h` is the controller's hands: printed(step), commitTower(key, ci, spent), setBerths(berths), expeditions(), grant(n), fillRack(),
 // refillArrays(), showBrief(id).
-import { STORY_SKIP } from '../content/story-defaults.js?v=6e1ea8d0';
+import { STORY_SKIP } from '../content/story-defaults.js?v=cc48435a';
 
 export function openStoryAt(query, story, h) {
   if (!story) return;

@@ -1,8 +1,8 @@
-import { SENTRIES } from '../content/sentries.js?v=6e1ea8d0';
-import { makeAudio } from '../audio.js?v=6e1ea8d0';
-import { CONTENT } from '../content/runtime.js?v=6e1ea8d0';
-import { AUDIO_KNOBS, clone, resolveSounds } from '../content/preset.js?v=6e1ea8d0';
-import { mountPresetPanel } from './preset-panel.js?v=6e1ea8d0';
+import { SENTRIES } from '../content/sentries.js?v=cc48435a';
+import { makeAudio } from '../audio.js?v=cc48435a';
+import { CONTENT } from '../content/runtime.js?v=cc48435a';
+import { AUDIO_KNOBS, clone, resolveSounds } from '../content/preset.js?v=cc48435a';
+import { mountPresetPanel } from './preset-panel.js?v=cc48435a';
 export function initAudioTab(root) {
   let draft=clone(CONTENT);
   const definitions=resolveSounds(draft);

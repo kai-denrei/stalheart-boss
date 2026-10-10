@@ -26,14 +26,14 @@
 //
 // The host is td-tab's storyApi, handed to tick every frame, frozen or not: brief(id), camera, startShot, snapCamera, drone() (Isao's
 // record: obj, dir, loiter, faceLock), sfx (src/audio.js); the beats' deploy runs the foundry through it.
-import * as THREE from '../../vendor/three.module.js?v=6e1ea8d0';
-import { createLaunchPlume } from './launch-plume.js?v=6e1ea8d0';
-import { makeScorch, makeEmbers, IMPACT_TUNE } from '../impactfx.js?v=6e1ea8d0';
-import { PLUME_CLUSTER, SH02_WELL, STORY_ARRIVAL } from '../content/story-defaults.js?v=6e1ea8d0';
-import { makeArrivalShot } from '../domain/arrival-shot.js?v=6e1ea8d0';
-import { isaoFace } from '../domain/story-shots.js?v=6e1ea8d0';
-import { BRIEFS, lineDwell } from '../isaobriefs.js?v=6e1ea8d0';
-import { createStartGate } from './start-gate.js?v=6e1ea8d0';
+import * as THREE from '../../vendor/three.module.js?v=cc48435a';
+import { createLaunchPlume } from './launch-plume.js?v=cc48435a';
+import { makeScorch, makeEmbers, IMPACT_TUNE } from '../impactfx.js?v=cc48435a';
+import { PLUME_CLUSTER, SH02_WELL, STORY_ARRIVAL } from '../content/story-defaults.js?v=cc48435a';
+import { makeArrivalShot } from '../domain/arrival-shot.js?v=cc48435a';
+import { isaoFace } from '../domain/story-shots.js?v=cc48435a';
+import { BRIEFS, lineDwell } from '../isaobriefs.js?v=cc48435a';
+import { createStartGate } from './start-gate.js?v=cc48435a';
 
 const IDS = ['sh02', 'sh02-salvage', 'foundry'];
 const CLIPS = ['Legs_Deploy', 'Landing_Shock', 'Top_Door_Open'];

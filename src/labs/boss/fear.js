@@ -18,8 +18,8 @@
 // the barrage meter and its flinch disturbs the kit (the crouch is the flinch); a 40 mm landing sends it wild, an MK-9 into a panic (and stuns it for
 // `gunFear.nuke.stun` seconds, 0 by default), neither disturbing it (the recoil would hold it still for half a second of its flight). `step` then returns the
 // flight with the flee point ({ mode, point, flight }), for the lab's temperament; `onScare(report)` hears every scare (the chatter's stagger).
-import { makeFear, inReach, frighten, stun, fearNow, clearFear, barrage, scare, flightNow, meterNow } from '../../domain/boss-fear.js?v=6e1ea8d0';
-import { lineOf } from '../../domain/boss-fight.js?v=6e1ea8d0';
+import { makeFear, inReach, frighten, stun, fearNow, clearFear, barrage, scare, flightNow, meterNow } from '../../domain/boss-fear.js?v=cc48435a';
+import { lineOf } from '../../domain/boss-fight.js?v=cc48435a';
 
 // `tune()` the fight's live numbers, `creature()` the rules' creature (centre and contacts), `tank()` the rules' tank, `fight()`
 // the round's state, `now()` the lab's clock, `kit()` the Nih-Dairia kit (or null), `on()` whether the fear switch and the fight are on

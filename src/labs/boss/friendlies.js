@@ -26,14 +26,14 @@
 //
 // POSITIONS: plans are in the lab's local metres [x, z]; `surface(x, z)` gives the ground in the planet-centred `sphere` group,
 // where the rings, the tracers, the laser and the explosions all live. `shift(sx, sz)` follows a re-anchor of the lab's frame.
-import * as THREE from '../../../vendor/three.module.js?v=6e1ea8d0';
-import { schedule, resolveLanding, burn, aimNow } from '../../domain/boss-fight.js?v=6e1ea8d0';
-import { makeGunship, stepGunship, mountGunship, fireRound, stepRounds } from '../../domain/gunship.js?v=6e1ea8d0';
-import { GUNSHIP_GUNS, GUNSHIP_ORBIT, GUNSHIP_PLATFORM, GUNSHIP_NUKE } from '../../content/gunship.js?v=6e1ea8d0';
-import { LASER_PRESET, LASER_SOUNDS, LASER_CONTACT_RATE } from '../../content/orbital-laser.js?v=6e1ea8d0';
-import { createGunshipOptic } from '../../fx/gunship-optic.js?v=6e1ea8d0';
-import { createGunshipDrop } from '../../fx/gunship-drop.js?v=6e1ea8d0';
-import { createOrbitalLaser } from '../../fx/orbital-laser.js?v=6e1ea8d0';
+import * as THREE from '../../../vendor/three.module.js?v=cc48435a';
+import { schedule, resolveLanding, burn, aimNow } from '../../domain/boss-fight.js?v=cc48435a';
+import { makeGunship, stepGunship, mountGunship, fireRound, stepRounds } from '../../domain/gunship.js?v=cc48435a';
+import { GUNSHIP_GUNS, GUNSHIP_ORBIT, GUNSHIP_PLATFORM, GUNSHIP_NUKE } from '../../content/gunship.js?v=cc48435a';
+import { LASER_PRESET, LASER_SOUNDS, LASER_CONTACT_RATE } from '../../content/orbital-laser.js?v=cc48435a';
+import { createGunshipOptic } from '../../fx/gunship-optic.js?v=cc48435a';
+import { createGunshipDrop } from '../../fx/gunship-drop.js?v=cc48435a';
+import { createOrbitalLaser } from '../../fx/orbital-laser.js?v=cc48435a';
 
 const SPOT = { hex: 0xff2a1a, inner: 0.94, hz: 6, lift: 0.1, order: 8 };   // the red spot: the seat highlight's additive ring
 const TRACER = { hex: 0xffb43d, width: 0.5 };

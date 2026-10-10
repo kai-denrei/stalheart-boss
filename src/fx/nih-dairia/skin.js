@@ -1,7 +1,7 @@
 // Ported from lab-creatures src/monster/skin.ts (kai-denrei, f2a4f89, export of 2026-10-08; derived from Jelly Baby by scottstts; GPL-3.0, see ./LICENSE), types stripped; the solver, the gait, the pursuit and the feeding are unchanged.
 // Changed from the kit: the pale and dark pigments come from content's NIH_DAIRIA_LOOK (the same #b8b99a and #374237 the kit hardcodes) through a third argument, so the look has one home; the numbers are the kit's.
-import { Color } from '../../../vendor/three.module.js?v=6e1ea8d0';
-import { NIH_DAIRIA_LOOK } from '../../content/nih-dairia.js?v=6e1ea8d0';
+import { Color } from '../../../vendor/three.module.js?v=cc48435a';
+import { NIH_DAIRIA_LOOK } from '../../content/nih-dairia.js?v=cc48435a';
 
 /** Shared pigmentation for the creature and the temporary wrapped-prey surface. */
 export function tissueColors(positions,limbs=6,look=NIH_DAIRIA_LOOK){

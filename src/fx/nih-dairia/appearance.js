@@ -1,7 +1,7 @@
 // Ported from lab-creatures src/monster/appearance.ts (kai-denrei, f2a4f89, export of 2026-10-08; derived from Jelly Baby by scottstts; GPL-3.0, see ./LICENSE), types stripped; the solver, the gait, the pursuit and the feeding are unchanged.
 // Rewritten for WebGL: r160 has no MeshPhysicalNodeMaterial, so the TSL transmissionNode (1-(1-smoothstep(.016,.040,|positionWorld.xz-center.xz|))*coverage)*.65 becomes a per-vertex transmissionMask written on the CPU in update() and multiplied into material.transmission by an onBeforeCompile patch; the function takes the look and returns { mesh, update }.
-import * as THREE from '../../../vendor/three.module.js?v=6e1ea8d0';
-import { tissueColors } from './skin.js?v=6e1ea8d0';
+import * as THREE from '../../../vendor/three.module.js?v=cc48435a';
+import { tissueColors } from './skin.js?v=cc48435a';
 
 const smoothstep=(a,b,x)=>{const t=Math.min(1,Math.max(0,(x-a)/(b-a)));return t*t*(3-2*t);};
 const MASKED_TRANSMISSION='material.transmission = transmission * vTransmissionMask;';

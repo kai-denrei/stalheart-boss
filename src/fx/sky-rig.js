@@ -1,10 +1,10 @@
 // THE SKY RIG (moved out of src/fx/programme-host.js unchanged, the refactor run, 2026-10-07): the black hole and the nebulae hung
 // in the scene once, at creation, and tick() aiming them behind the Stålheart once per world. The story's tick calls tick() first.
 // `c` hands in the controller: scene as a value, and storyBase, dungeon and graph as getters.
-import * as THREE from '../../vendor/three.module.js?v=6e1ea8d0';
-import { renderAccretion, accretionSkyPlanes, skyGlowPlane, aimSkyPlanes, skyDirectionToward, turnSkyDirection } from './accretion.js?v=6e1ea8d0';
-import { renderNebula } from './nebulae.js?v=6e1ea8d0';
-import { SKY_HOLE, SKY_VEIL, SKY_BLOOM } from '../galaxyseed.js?v=6e1ea8d0';
+import * as THREE from '../../vendor/three.module.js?v=cc48435a';
+import { renderAccretion, accretionSkyPlanes, skyGlowPlane, aimSkyPlanes, skyDirectionToward, turnSkyDirection } from './accretion.js?v=cc48435a';
+import { renderNebula } from './nebulae.js?v=cc48435a';
+import { SKY_HOLE, SKY_VEIL, SKY_BLOOM } from '../galaxyseed.js?v=cc48435a';
 
 export function createSkyRig(c) {
   // THE BLACK HOLE NOT FAR (owner, 2026-10-06: "not just at the ending, but during the entire game"; galaxyseed.js SKY_HOLE): the

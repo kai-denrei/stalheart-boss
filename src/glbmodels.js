@@ -15,10 +15,10 @@
 // 3. DRAW CALLS. These models are ~60-110 separate meshes. Merging per
 //    material cuts that by an order of magnitude — but merging destroys
 //    articulation, so anything that must still MOVE has to be preserved.
-import * as THREE from '../vendor/three.module.js?v=6e1ea8d0';
-import { GLTFLoader } from '../vendor/GLTFLoader.js?v=6e1ea8d0';
-import { MeshoptDecoder } from '../vendor/meshopt_decoder.module.js?v=6e1ea8d0';
-import { mergeGeometries } from '../vendor/BufferGeometryUtils.js?v=6e1ea8d0';
+import * as THREE from '../vendor/three.module.js?v=cc48435a';
+import { GLTFLoader } from '../vendor/GLTFLoader.js?v=cc48435a';
+import { MeshoptDecoder } from '../vendor/meshopt_decoder.module.js?v=cc48435a';
+import { mergeGeometries } from '../vendor/BufferGeometryUtils.js?v=cc48435a';
 
 // MESHOPT. A model exported with EXT_meshopt_compression does not fail with a
 // bad mesh or a warning — GLTFLoader THROWS on the first compressed buffer

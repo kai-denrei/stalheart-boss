@@ -11,9 +11,9 @@
 // opened at (src/platform/story-world.js story.chapter); `skipLanding()` ends the landing and says whether there was one to end. A
 // press on the card is the card's: the game's shot skip leaves it alone (src/td-tab.js shotSkipTap), so NEXT over the landing ends
 // the landing once, not the landing and then the chapter after it.
-import { STORY_CHAPTERS, STORY_CHAPTER_END } from '../content/story-defaults.js?v=6e1ea8d0';
-import { chapterAt } from '../domain/automation.js?v=6e1ea8d0';
-import { chapterUrl, skipTutorialUrl } from '../core/story-route.js?v=6e1ea8d0';
+import { STORY_CHAPTERS, STORY_CHAPTER_END } from '../content/story-defaults.js?v=cc48435a';
+import { chapterAt } from '../domain/automation.js?v=cc48435a';
+import { chapterUrl, skipTutorialUrl } from '../core/story-route.js?v=cc48435a';
 
 export function createTutorialCard(root, { search = '', from = 0, skipLanding = () => false, go = (url) => { location.href = url; }, chapters = STORY_CHAPTERS, end = STORY_CHAPTER_END } = {}) {
   const el = document.createElement('div');

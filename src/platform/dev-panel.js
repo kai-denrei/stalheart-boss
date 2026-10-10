@@ -5,14 +5,14 @@
 // `host` hands in the controller's fixed objects and functions as values (params, DIRECTIVES, HEART_LOOKS, PLASMA, TYPE, strikeTune,
 // postfx, sfx, root, applyCreature, applyLook, applyTowerLook, regenerate, setView, syncCalloutMode, syncDirectiveChip) and the
 // plasma plume it rebinds as a getter (plasma).
-import { UNIT_NAMES } from '../units.js?v=6e1ea8d0';
-import { LOOK_NAMES } from '../looks.js?v=6e1ea8d0';
-import { FONT_NAMES, applyFontPack } from '../fonts.js?v=6e1ea8d0';
-import { TANK_FEEL_KNOBS } from '../tankfeel.js?v=6e1ea8d0';
-import { FEEL, loadFeel, saveFeel } from '../feelstore.js?v=6e1ea8d0';
-import { STRIKE_KNOBS } from '../strike.js?v=6e1ea8d0';
-import { BLOOM_GROUPS } from '../bloomweights.js?v=6e1ea8d0';
-import { TOWER_LOOK_NAMES } from '../towerlooks.js?v=6e1ea8d0';
+import { UNIT_NAMES } from '../units.js?v=cc48435a';
+import { LOOK_NAMES } from '../looks.js?v=cc48435a';
+import { FONT_NAMES, applyFontPack } from '../fonts.js?v=cc48435a';
+import { TANK_FEEL_KNOBS } from '../tankfeel.js?v=cc48435a';
+import { FEEL, loadFeel, saveFeel } from '../feelstore.js?v=cc48435a';
+import { STRIKE_KNOBS } from '../strike.js?v=cc48435a';
+import { BLOOM_GROUPS } from '../bloomweights.js?v=cc48435a';
+import { TOWER_LOOK_NAMES } from '../towerlooks.js?v=cc48435a';
 
 export function createDevPanel(gui, host) {
   // hero + portal styling swap IN PLACE — cosmetics never reset a run

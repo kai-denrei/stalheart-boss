@@ -1,9 +1,9 @@
 // The story planet: the pinned grid kernel at a larger point count, a polar
 // clearing cut into terraces, and one open lane mouth for the armored gate.
-import { generateSphereMesh, relax } from '../grid.js?v=6e1ea8d0';
-import { generateDungeon, buildCellGraph, BLOCKED, PATH } from '../dungeon.js?v=6e1ea8d0';
-import { breachPoint } from '../core/breach-surface.js?v=6e1ea8d0';
-import { terraceAltitude, terraceFloor } from '../core/terrace-profile.js?v=6e1ea8d0';
+import { generateSphereMesh, relax } from '../grid.js?v=cc48435a';
+import { generateDungeon, buildCellGraph, BLOCKED, PATH } from '../dungeon.js?v=cc48435a';
+import { breachPoint } from '../core/breach-surface.js?v=cc48435a';
+import { terraceAltitude, terraceFloor } from '../core/terrace-profile.js?v=cc48435a';
 
 const clamp1 = (v) => Math.max(-1, Math.min(1, v));
 

@@ -14,8 +14,8 @@
 //
 // The motion itself is content (content/dot-wobble.js), shared with the CPU
 // re-pose in creatures.waveJelly so the two cannot drift.
-import * as THREE from '../../vendor/three.module.js?v=6e1ea8d0';
-import { wobbleGlsl, swimGlsl, DOT_SWIM } from '../content/dot-wobble.js?v=6e1ea8d0';
+import * as THREE from '../../vendor/three.module.js?v=cc48435a';
+import { wobbleGlsl, swimGlsl, DOT_SWIM } from '../content/dot-wobble.js?v=cc48435a';
 
 // The wobble is OPTIONAL. A static cloud still wants this material — the
 // alternative is two materials with two sets of compat properties — so the

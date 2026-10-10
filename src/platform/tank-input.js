@@ -3,13 +3,13 @@
 // the auto radial. Its listeners are registered when it is created, at the controller's own point of start-up, so their order
 // against the controller's other listeners is unchanged. The controller keeps the input state (keys, cruise, throttle, autoMode,
 // steerHold, the buildcam's lets) and hands it in as values or getters with setters.
-import { unlockedTowers } from '../domain/expeditions.js?v=6e1ea8d0';
-import { STORY_EXPEDITIONS } from '../content/story-defaults.js?v=6e1ea8d0';
-import { DIRECTIVE_LABEL, AUTO_OPTIONS } from '../content/controller-copy.js?v=6e1ea8d0';
-import { devModeOn } from '../core/dev-mode.js?v=6e1ea8d0';
-import { RELEASE_EVENTS, releasesHeld, releaseHeld } from '../core/held-input.js?v=6e1ea8d0';
-import { norm3 } from '../vec3.js?v=6e1ea8d0';
-import { TOWERS, upgradeCost, unlockedTowerKeys } from '../towers.js?v=6e1ea8d0';
+import { unlockedTowers } from '../domain/expeditions.js?v=cc48435a';
+import { STORY_EXPEDITIONS } from '../content/story-defaults.js?v=cc48435a';
+import { DIRECTIVE_LABEL, AUTO_OPTIONS } from '../content/controller-copy.js?v=cc48435a';
+import { devModeOn } from '../core/dev-mode.js?v=cc48435a';
+import { RELEASE_EVENTS, releasesHeld, releaseHeld } from '../core/held-input.js?v=cc48435a';
+import { norm3 } from '../vec3.js?v=cc48435a';
+import { TOWERS, upgradeCost, unlockedTowerKeys } from '../towers.js?v=cc48435a';
 
 export function createTankInput(host) {
   function onKeyEvent(ev, down) {

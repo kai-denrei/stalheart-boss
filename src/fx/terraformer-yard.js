@@ -2,11 +2,11 @@
 // time-keeping milestone (containers, a hull), its yard and queue, the doors, the drones' auto-upgrade, and the line on the HUD.
 // `host` hands in the controller's fixed objects and functions as values, the board and the run as getters, and the player's
 // hull count through a getter with a setter (playerHP).
-import * as THREE from '../../vendor/three.module.js?v=6e1ea8d0';
-import { BLOCKED } from '../dungeon.js?v=6e1ea8d0';
-import { scale3, norm3, dist3 } from '../vec3.js?v=6e1ea8d0';
-import { preloadContainer, makeContainerFixture, makeDotBurst } from '../units.js?v=6e1ea8d0';
-import { upgradeCost } from '../towers.js?v=6e1ea8d0';
+import * as THREE from '../../vendor/three.module.js?v=cc48435a';
+import { BLOCKED } from '../dungeon.js?v=cc48435a';
+import { scale3, norm3, dist3 } from '../vec3.js?v=cc48435a';
+import { preloadContainer, makeContainerFixture, makeDotBurst } from '../units.js?v=cc48435a';
+import { upgradeCost } from '../towers.js?v=cc48435a';
 
 export function createTerraformerYard(host) {
   // --- THE TERRAFORMER BUILDS (operator, 2026-09-02) ---------------------

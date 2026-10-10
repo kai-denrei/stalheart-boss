@@ -1,5 +1,5 @@
-import * as THREE from '../vendor/three.module.js?v=6e1ea8d0';
-import { LOOKS } from './looks.js?v=6e1ea8d0';
+import * as THREE from '../vendor/three.module.js?v=cc48435a';
+import { LOOKS } from './looks.js?v=cc48435a';
 
 // Lab-owned fixtures in surface arc coordinates; the shared surface adapter bends them.
 export function createBreachWalls(parent){

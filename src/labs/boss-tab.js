@@ -19,52 +19,52 @@
 // the gravity goes to `deathGravity`. LOST is a meal (feeding leaving `hunting`) or a landing on the hull. THE RESET (the round's, or the panel's button) puts the creature back at
 // the frame's origin and the tank `respawn` metres out on the far side; it waits for a meal in progress (MEAL_WAIT at most) so
 // the meal is counted in `taken` and the prey is never moved under the kit.
-import * as THREE from '../../vendor/three.module.js?v=6e1ea8d0';
-import { OrbitControls } from '../../vendor/OrbitControls.js?v=6e1ea8d0';
-import GUI from '../../vendor/lil-gui.esm.js?v=6e1ea8d0';
-import { buildUnit, preloadMork } from '../units.js?v=6e1ea8d0';
-import { createPlaneDrive } from './boss/drive.js?v=6e1ea8d0';
-import { createBodyRules, kitNow, shiftKit } from './boss/body.js?v=6e1ea8d0';
-import { createCannon } from './boss/cannon.js?v=6e1ea8d0';
-import { createFriendlies } from './boss/friendlies.js?v=6e1ea8d0';
-import { createFear } from './boss/fear.js?v=6e1ea8d0';
-import { createTemperament } from './boss/temperament.js?v=6e1ea8d0';
-import { createArena, deeper } from './boss/arena.js?v=6e1ea8d0';
-import { createRound } from './boss/round.js?v=6e1ea8d0';
-import { createBaitMode } from './boss/bait.js?v=6e1ea8d0';
-import { createGameSeat } from './boss/game-seat.js?v=6e1ea8d0';
-import { createGameCam } from './boss/game-cam.js?v=6e1ea8d0';
-import { createLabHandle } from './boss/handle.js?v=6e1ea8d0';
-import { createWave } from './boss/wave.js?v=6e1ea8d0';
-import { createRemains } from './boss/remains.js?v=6e1ea8d0';
-import { createLabSinkhole } from './boss/sinkhole.js?v=6e1ea8d0';
-import { settingsBlock, folderGroups } from './boss/settings-copy.js?v=6e1ea8d0';
-import { makeFight, startFight, capture, readout as fightReadout } from '../domain/boss-fight.js?v=6e1ea8d0';
-import { entryClear, emergence, keepOut } from '../domain/boss-wave.js?v=6e1ea8d0';
-import { BOSS_FIGHT } from '../content/boss-fight.js?v=6e1ea8d0';
-import { LASER_AUDIO } from '../content/orbital-laser.js?v=6e1ea8d0';
-import { voiceSounds } from '../content/voice-hooks.js?v=6e1ea8d0';
-import { SOUNDS } from '../audiomanifest.js?v=6e1ea8d0';
-import { BREACH_SOUNDS } from '../content/breach-defaults.js?v=6e1ea8d0';
-import { createExplosions } from '../fx/explosions.js?v=6e1ea8d0';
-import { makeTankFeel, stepTankFeel, applyTankFeel, landTankFeel } from '../tankfeel.js?v=6e1ea8d0';
-import { FEEL, loadFeel } from '../feelstore.js?v=6e1ea8d0';
-import { makeAudio } from '../audio.js?v=6e1ea8d0';
-import { frameAt, toWorld, toLocal, reanchor, sagitta } from '../domain/surface-frame.js?v=6e1ea8d0';
-import { LOOKS } from '../looks.js?v=6e1ea8d0';
-import { STORY_RECIPE, STORY_CLEARING, STORY_DAY } from '../content/story-defaults.js?v=6e1ea8d0';
-import { createDaylight } from '../fx/daylight.js?v=6e1ea8d0';
-import { buildStoryPlanet } from '../domain/story-planet.js?v=6e1ea8d0';
-import { planetBake, loadPlanetBake } from '../platform/planet-bake.js?v=6e1ea8d0';
-import { buildStoryPlanetMesh } from './story-planet-mesh.js?v=6e1ea8d0';
-import { createNihDairia } from '../fx/nih-dairia/creature.js?v=6e1ea8d0';
-import { createPrey } from '../fx/nih-dairia/prey.js?v=6e1ea8d0';
-import { AutoLure } from '../fx/nih-dairia/auto-lure.js?v=6e1ea8d0';
-import { ARENA } from '../fx/nih-dairia/arena.js?v=6e1ea8d0';
-import { PHYS } from '../fx/nih-dairia/constants.js?v=6e1ea8d0';
-import { MOTION_CONTROLS } from '../fx/nih-dairia/motion-settings.js?v=6e1ea8d0';
-import { CREATURE_VARIANTS } from '../fx/nih-dairia/variants.js?v=6e1ea8d0';
-import { NIH_DAIRIA_MOTION, NIH_DAIRIA_PREDATOR, NIH_DAIRIA_PREDATOR_SIZE_METRES, NIH_DAIRIA_VARIANT, NIH_DAIRIA_SIZE_METRES, NIH_DAIRIA_LOOK, NIH_DAIRIA_MODELS } from '../content/nih-dairia.js?v=6e1ea8d0';
+import * as THREE from '../../vendor/three.module.js?v=cc48435a';
+import { OrbitControls } from '../../vendor/OrbitControls.js?v=cc48435a';
+import GUI from '../../vendor/lil-gui.esm.js?v=cc48435a';
+import { buildUnit, preloadMork } from '../units.js?v=cc48435a';
+import { createPlaneDrive } from './boss/drive.js?v=cc48435a';
+import { createBodyRules, kitNow, shiftKit } from './boss/body.js?v=cc48435a';
+import { createCannon } from './boss/cannon.js?v=cc48435a';
+import { createFriendlies } from './boss/friendlies.js?v=cc48435a';
+import { createFear } from './boss/fear.js?v=cc48435a';
+import { createTemperament } from './boss/temperament.js?v=cc48435a';
+import { createArena, deeper } from './boss/arena.js?v=cc48435a';
+import { createRound } from './boss/round.js?v=cc48435a';
+import { createBaitMode } from './boss/bait.js?v=cc48435a';
+import { createGameSeat } from './boss/game-seat.js?v=cc48435a';
+import { createGameCam } from './boss/game-cam.js?v=cc48435a';
+import { createLabHandle } from './boss/handle.js?v=cc48435a';
+import { createWave } from './boss/wave.js?v=cc48435a';
+import { createRemains } from './boss/remains.js?v=cc48435a';
+import { createLabSinkhole } from './boss/sinkhole.js?v=cc48435a';
+import { settingsBlock, folderGroups } from './boss/settings-copy.js?v=cc48435a';
+import { makeFight, startFight, capture, readout as fightReadout } from '../domain/boss-fight.js?v=cc48435a';
+import { entryClear, emergence, keepOut } from '../domain/boss-wave.js?v=cc48435a';
+import { BOSS_FIGHT } from '../content/boss-fight.js?v=cc48435a';
+import { LASER_AUDIO } from '../content/orbital-laser.js?v=cc48435a';
+import { voiceSounds } from '../content/voice-hooks.js?v=cc48435a';
+import { SOUNDS } from '../audiomanifest.js?v=cc48435a';
+import { BREACH_SOUNDS } from '../content/breach-defaults.js?v=cc48435a';
+import { createExplosions } from '../fx/explosions.js?v=cc48435a';
+import { makeTankFeel, stepTankFeel, applyTankFeel, landTankFeel } from '../tankfeel.js?v=cc48435a';
+import { FEEL, loadFeel } from '../feelstore.js?v=cc48435a';
+import { makeAudio } from '../audio.js?v=cc48435a';
+import { frameAt, toWorld, toLocal, reanchor, sagitta } from '../domain/surface-frame.js?v=cc48435a';
+import { LOOKS } from '../looks.js?v=cc48435a';
+import { STORY_RECIPE, STORY_CLEARING, STORY_DAY } from '../content/story-defaults.js?v=cc48435a';
+import { createDaylight } from '../fx/daylight.js?v=cc48435a';
+import { buildStoryPlanet } from '../domain/story-planet.js?v=cc48435a';
+import { planetBake, loadPlanetBake } from '../platform/planet-bake.js?v=cc48435a';
+import { buildStoryPlanetMesh } from './story-planet-mesh.js?v=cc48435a';
+import { createNihDairia } from '../fx/nih-dairia/creature.js?v=cc48435a';
+import { createPrey } from '../fx/nih-dairia/prey.js?v=cc48435a';
+import { AutoLure } from '../fx/nih-dairia/auto-lure.js?v=cc48435a';
+import { ARENA } from '../fx/nih-dairia/arena.js?v=cc48435a';
+import { PHYS } from '../fx/nih-dairia/constants.js?v=cc48435a';
+import { MOTION_CONTROLS } from '../fx/nih-dairia/motion-settings.js?v=cc48435a';
+import { CREATURE_VARIANTS } from '../fx/nih-dairia/variants.js?v=cc48435a';
+import { NIH_DAIRIA_MOTION, NIH_DAIRIA_PREDATOR, NIH_DAIRIA_PREDATOR_SIZE_METRES, NIH_DAIRIA_VARIANT, NIH_DAIRIA_SIZE_METRES, NIH_DAIRIA_LOOK, NIH_DAIRIA_MODELS } from '../content/nih-dairia.js?v=cc48435a';
 
 const TANK_R = 3.4;          // the swarm lab's hull scale: MÖRK at its real size
 const CRUISE_TAP = 0.35;     // seconds between two W taps that toggle cruise (td-tab.js noteFastTap)
@@ -1186,7 +1186,8 @@ export function initBossTab(root) {
     setScripted: (v) => { scripted = v; }, setPin: (v) => { pin = v; },
     readout, setLure, setCam, setMode, bait, seat, setFight, fireCannon: () => fireCannon(), copySettings, reset, tryReanchor, placeTank, creatureNow, creatureAim, temperament,
     plane, drive, keys, state, cam, params, gui, arena, fear, fightTune, scene, wave, sinkhole, remains,
-    killBoss: () => { if (fight.phase !== 'fight' || waving() || rise) return false; fight.hp = 0; return true; },   // the round's own kill on its next tick
+    killBoss: () => { if (fight.phase !== 'fight' || waving() || rise) return false; fight.hp = 0; return true; },
+    bossHp: (share) => { if (fight.phase !== 'fight' || waving() || rise) return false; fight.hp = Math.max(1e-6, share * fight.max); return true; },   // the boss's hit points at `share` of its maximum (the acceptance's)   // the round's own kill on its next tick
     closeToBoss: (back = 30, up = 18, at = null) => {   // the free orbit's camera on the boss's carcass (on the local ground point `at` if given), `back` m off along its frame's east and `up` m above it
       if (state.view !== 'free' || !creature) return false;
       const f = remains.frame() ?? { centre: new THREE.Vector3(...creatureAim(0)), outer: rig };   // the living (or still collapsing) boss: its body's centre in its rig

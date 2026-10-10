@@ -20,7 +20,7 @@
 // one negation at the point of application. Two places deciding what "up"
 // means is how a turret ends up shooting at the floor.
 
-import { makeParams, clampParams, formatKnobs, knobProblems } from './knobs.js?v=6e1ea8d0';
+import { makeParams, clampParams, formatKnobs, knobProblems } from './knobs.js?v=cc48435a';
 
 // The eight numbered Sentry families. `fixed` is its own ruling — the Relay is a
 // structure, not a gun, and a range that pretends otherwise is a range that
@@ -34,7 +34,7 @@ import { makeParams, clampParams, formatKnobs, knobProblems } from './knobs.js?v
 // before it will shoot, and what leaves the tube then flies its own
 // intercept (src/lockon.js). It is the same weapon the sniper lab aims by
 // hand, at the other end of the same ladder: manual there, automatic here.
-import { SENTRIES } from './content/sentries.js?v=6e1ea8d0';
+import { SENTRIES } from './content/sentries.js?v=cc48435a';
 export const SENTRY_FAMILIES = SENTRIES.map(s => ({...s,id:s.model}));
 export const SENTRY_TIERS = [1, 2, 3];
 export const familyById = (id) => SENTRY_FAMILIES.find((f) => f.id === id || f.key === id || String(f.number) === String(id)) || SENTRY_FAMILIES[0];
