@@ -2,8 +2,8 @@
 // pinch and wheel to zoom, tap to select a cell, the double tap, the long press that orders an upgrade), the refused placement's
 // caption, the strike's paint on a tap, and the fire pad. Its listeners are registered when it is created, at the controller's own
 // point of start-up. The controller keeps buildPointers (setView clears it) and hands the rest in.
-import { upgradeCost } from '../towers.js?v=e6be0715';
-import { paintTarget, skipFall, retargetStrike } from '../strike.js?v=e6be0715';
+import { upgradeCost } from '../towers.js?v=6a984b93';
+import { paintTarget, skipFall, retargetStrike } from '../strike.js?v=6a984b93';
 
 export function createBuildPointer(host) {
   // build-camera input: drag = azimuth orbit, wheel = zoom, TAP = select a cell (shop/upgrade). A tap is a press that never

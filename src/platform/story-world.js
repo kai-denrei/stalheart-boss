@@ -2,34 +2,34 @@
 // recipe, plus the base at the requested stage, placed onto the game's unit
 // sphere. The controller only sees mesh, dungeon, wall height and a base
 // handle with tick/dispose.
-import * as THREE from '../../vendor/three.module.js?v=e6be0715';
-import { buildWorld } from '../domain/world-recipe.js?v=e6be0715';
-import { planBase } from '../domain/base-plan.js?v=e6be0715';
-import { voiceSounds } from '../content/voice-hooks.js?v=e6be0715';
-import { STORY_RECIPE, STORY_CLEARING, STORY_SOUNDS, STORY_PILOT, STORY_SCALE, STORY_BREACH, STORY_QUIVER, STORY_DAY, STORY_FODDER, STORY_HANDOVER, STORY_EXPEDITIONS, STORY_BACK_DOOR, STORY_SKIP, STORY_BEATS, STORY_CONSTRUCTION, STORY_ROLLOUT, STORY_CHAPTERS, STORY_CHAPTER_END, STORY_NUKE_TANK, STORY_CALM } from '../content/story-defaults.js?v=e6be0715';
-import { findBackMouth } from '../domain/back-door.js?v=e6be0715';
-import { CONTENT } from '../content/runtime.js?v=e6be0715';
-import { FOUNDRY_TUNE } from '../content/foundry.js?v=e6be0715';
-import { LASER_AUDIO } from '../content/orbital-laser.js?v=e6be0715';
+import * as THREE from '../../vendor/three.module.js?v=6a984b93';
+import { buildWorld } from '../domain/world-recipe.js?v=6a984b93';
+import { planBase } from '../domain/base-plan.js?v=6a984b93';
+import { voiceSounds } from '../content/voice-hooks.js?v=6a984b93';
+import { STORY_RECIPE, STORY_CLEARING, STORY_SOUNDS, STORY_PILOT, STORY_SCALE, STORY_BREACH, STORY_QUIVER, STORY_DAY, STORY_FODDER, STORY_HANDOVER, STORY_EXPEDITIONS, STORY_BACK_DOOR, STORY_SKIP, STORY_BEATS, STORY_CONSTRUCTION, STORY_ROLLOUT, STORY_CHAPTERS, STORY_CHAPTER_END, STORY_NUKE_TANK, STORY_CALM } from '../content/story-defaults.js?v=6a984b93';
+import { findBackMouth } from '../domain/back-door.js?v=6a984b93';
+import { CONTENT } from '../content/runtime.js?v=6a984b93';
+import { FOUNDRY_TUNE } from '../content/foundry.js?v=6a984b93';
+import { LASER_AUDIO } from '../content/orbital-laser.js?v=6a984b93';
 // the story world's cues, with SOL-82's burning ground once the orbital laser is in the arsenal (src/fx/laser-arsenal.js)
 const STORY_WORLD_SOUNDS = Object.freeze({ ...STORY_SOUNDS, ...LASER_AUDIO, ...voiceSounds() });   // Isao's lines, lazy (src/fx/isao-voice.js)
 export { STORY_WORLD_SOUNDS as STORY_SOUNDS };
-import { ISLANDS, STRUCTURES, KIT, STAGES, SOLID_STRUCTURES, withLandmarkTiers, landmarkTierMode } from '../content/base-layout.js?v=e6be0715';
-import { SHIELD_ARRAY } from '../content/shield-array.js?v=e6be0715';
-import { createStoryBase, basisAt } from '../fx/story-base.js?v=e6be0715';
-import { createArrival } from '../fx/arrival.js?v=e6be0715';
-import { isStoryRoute, skipsTutorial } from '../core/story-route.js?v=e6be0715';
-import { makeStoryBeats } from '../domain/story-beats.js?v=e6be0715';
-import { STORY_PHASES } from '../domain/automation.js?v=e6be0715';
-import { makeExpeditions } from '../domain/expeditions.js?v=e6be0715';
-import { createStoryHud } from '../fx/story-hud.js?v=e6be0715';
-import { planetBake } from './planet-bake.js?v=e6be0715';
-import { BASE_PROGRAMME } from '../content/base-programme.js?v=e6be0715';
-import { makeBuildProgramme } from '../domain/build-programme.js?v=e6be0715';
-import { BASE_PERKS } from '../content/base-programme.js?v=e6be0715';
-import { createBasePrint } from '../fx/base-print.js?v=e6be0715';
-import { createHullIssue, doorBerth, nearestCell } from '../fx/hull-issue.js?v=e6be0715';
-import { BLOCKED, PATH } from '../dungeon.js?v=e6be0715';
+import { ISLANDS, STRUCTURES, KIT, STAGES, SOLID_STRUCTURES, withLandmarkTiers, landmarkTierMode } from '../content/base-layout.js?v=6a984b93';
+import { SHIELD_ARRAY } from '../content/shield-array.js?v=6a984b93';
+import { createStoryBase, basisAt } from '../fx/story-base.js?v=6a984b93';
+import { createArrival } from '../fx/arrival.js?v=6a984b93';
+import { isStoryRoute, skipsTutorial } from '../core/story-route.js?v=6a984b93';
+import { makeStoryBeats } from '../domain/story-beats.js?v=6a984b93';
+import { STORY_PHASES } from '../domain/automation.js?v=6a984b93';
+import { makeExpeditions } from '../domain/expeditions.js?v=6a984b93';
+import { createStoryHud } from '../fx/story-hud.js?v=6a984b93';
+import { planetBake } from './planet-bake.js?v=6a984b93';
+import { BASE_PROGRAMME } from '../content/base-programme.js?v=6a984b93';
+import { makeBuildProgramme } from '../domain/build-programme.js?v=6a984b93';
+import { BASE_PERKS } from '../content/base-programme.js?v=6a984b93';
+import { createBasePrint } from '../fx/base-print.js?v=6a984b93';
+import { createHullIssue, doorBerth, nearestCell } from '../fx/hull-issue.js?v=6a984b93';
+import { BLOCKED, PATH } from '../dungeon.js?v=6a984b93';
 
 export const STORY_LAYOUT = { islands: ISLANDS, structures: STRUCTURES, kit: KIT, stages: STAGES };
 

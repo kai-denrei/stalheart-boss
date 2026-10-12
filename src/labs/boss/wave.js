@@ -41,17 +41,17 @@
 // fear go. The tips crumble first with time, every round the lab resolves breaks the pieces within its reach (`resolve`, also once the boss is in), and the whole
 // darkens, sinks and cools in the seat's thermal (`hot()`) over `carcass.decay` s; at most `carcass.max` lie. They block nothing and are no one's target. A new wave
 // clears them.
-import * as THREE from '../../../vendor/three.module.js?v=e6be0715';
-import { makeWave, emergePlan, waveStep, aliveCount, resolveReeds, hurtReed, waveCleared, bossEnters, nearestReed } from '../../domain/boss-wave.js?v=e6be0715';
-import { emergence } from '../../domain/boss-emerge.js?v=e6be0715';
-import { createNihDairia, loadMonsterCage } from '../../fx/nih-dairia/creature.js?v=e6be0715';
-import { ARENA } from '../../fx/nih-dairia/arena.js?v=e6be0715';
-import { NIH_DAIRIA_LOOK, NIH_DAIRIA_MODELS } from '../../content/nih-dairia.js?v=e6be0715';
-import { createFear } from './fear.js?v=e6be0715';
-import { createTemperament } from './temperament.js?v=e6be0715';
-import { kitNow, nodesOf, shiftKit } from './body.js?v=e6be0715';
-import { createCarcasses } from './carcass.js?v=e6be0715';
-import { createPullOut } from './pull-out.js?v=e6be0715';
+import * as THREE from '../../../vendor/three.module.js?v=6a984b93';
+import { makeWave, emergePlan, waveStep, aliveCount, resolveReeds, hurtReed, waveCleared, bossEnters, nearestReed } from '../../domain/boss-wave.js?v=6a984b93';
+import { emergence } from '../../domain/boss-emerge.js?v=6a984b93';
+import { createNihDairia, loadMonsterCage } from '../../fx/nih-dairia/creature.js?v=6a984b93';
+import { ARENA } from '../../fx/nih-dairia/arena.js?v=6a984b93';
+import { NIH_DAIRIA_LOOK, NIH_DAIRIA_MODELS } from '../../content/nih-dairia.js?v=6a984b93';
+import { createFear } from './fear.js?v=6a984b93';
+import { createTemperament } from './temperament.js?v=6a984b93';
+import { kitNow, nodesOf, shiftKit } from './body.js?v=6a984b93';
+import { createCarcasses } from './carcass.js?v=6a984b93';
+import { createPullOut } from './pull-out.js?v=6a984b93';
 
 const VARIANT = 'reed';
 const BATCH = 3;            // Reeds made a frame while the wave loads

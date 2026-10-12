@@ -1,7 +1,7 @@
 // Engine plume on a camera-facing quad. The march loop is the MIT launch
 // plume from pulkitxm/claude-directory (see ATTRIBUTIONS.md); the ray setup
 // is rewritten for a quad in a Three.js scene, with an intensity uniform.
-import * as THREE from '../../vendor/three.module.js?v=e6be0715';
+import * as THREE from '../../vendor/three.module.js?v=6a984b93';
 
 const VERT = `
 out vec2 vUv;

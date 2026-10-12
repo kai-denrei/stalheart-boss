@@ -17,8 +17,8 @@
 // the body's nodes beyond it back inside (the domain's `outside` shape, not one of `shapes`: it is never drawn, broken or counted), and
 // `clamp(point, inset)` holds a target `inset` metres inside it. Its ring is drawn on the ground in the world-fixed `fixed(x, z)`
 // surface (the frame at the pole every round starts on, so a re-anchor never moves it), a cool additive band the seat heats for the FLIR.
-import * as THREE from '../../../vendor/three.module.js?v=e6be0715';
-import { makeArena, blockAt, route, pushOut, destroyIn, restore, restoreClear, withdrawFrom, clearSpawn, clampTo } from '../../domain/boss-arena.js?v=e6be0715';
+import * as THREE from '../../../vendor/three.module.js?v=6a984b93';
+import { makeArena, blockAt, route, pushOut, destroyIn, restore, restoreClear, withdrawFrom, clearSpawn, clampTo } from '../../domain/boss-arena.js?v=6a984b93';
 
 const JITTER = 0.12;        // a rock's vertices move this fraction of its radius, radially, by a seeded sequence
 const SEED = 0x5ca1ab1e;

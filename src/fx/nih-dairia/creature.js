@@ -1,13 +1,13 @@
 // Ported from lab-creatures src/monster/portable.ts (kai-denrei, f2a4f89, export of 2026-10-08; derived from Jelly Baby by scottstts; GPL-3.0, see ./LICENSE), types stripped; the solver, the gait, the pursuit and the feeding are unchanged.
 // Changes from the kit: model.ts is folded in as loadMonsterCage (the URLs come from NIH_DAIRIA_MODELS, resolved against document.baseURI); createNihDairia takes the variant's options ({ models, look, cage, phys }), steps with its own copy of PHYS (body.phys), calls appearance.update() after body.updateSurface(), returns the steps taken from update and records creature.timings.
-import { SoftBody } from './soft-body.js?v=e6be0715';
-import { PHYS } from './constants.js?v=e6be0715';
-import { FixedStepper } from './fixed-step.js?v=e6be0715';
-import { parseCage } from './cage-model.js?v=e6be0715';
-import { MonsterBehavior } from './behavior.js?v=e6be0715';
-import { createMonsterAppearance } from './appearance.js?v=e6be0715';
-import { normalizeMotion } from './motion-settings.js?v=e6be0715';
-import { NIH_DAIRIA_LOOK, NIH_DAIRIA_MODELS, NIH_DAIRIA_VARIANT } from '../../content/nih-dairia.js?v=e6be0715';
+import { SoftBody } from './soft-body.js?v=6a984b93';
+import { PHYS } from './constants.js?v=6a984b93';
+import { FixedStepper } from './fixed-step.js?v=6a984b93';
+import { parseCage } from './cage-model.js?v=6a984b93';
+import { MonsterBehavior } from './behavior.js?v=6a984b93';
+import { createMonsterAppearance } from './appearance.js?v=6a984b93';
+import { normalizeMotion } from './motion-settings.js?v=6a984b93';
+import { NIH_DAIRIA_LOOK, NIH_DAIRIA_MODELS, NIH_DAIRIA_VARIANT } from '../../content/nih-dairia.js?v=6a984b93';
 
 export async function loadMonsterCage(variant=NIH_DAIRIA_VARIANT,models=NIH_DAIRIA_MODELS){
   const [binary,metadata]=await Promise.all([

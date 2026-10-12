@@ -13,7 +13,7 @@
 // to (`emerge.fan` metres out, the directions a golden angle apart) before it hunts (how it comes up, pulling itself out, is ./boss-emerge.js's); `waveStep` the solver's fixed step for the Reeds alive (`coarse`); `keepOut` a point pushed
 // out of a disc (Isao's planner kept off the centre while something emerges there). A dead Reed's carcass is ./boss-carcass.js's.
 
-import { splashDamage } from './gunship.js?v=e6be0715';
+import { splashDamage } from './gunship.js?v=6a984b93';
 
 const dist = (a, b) => Math.hypot(a[0] - b[0], a[1] - b[1]);
 const nearestTo = (contacts, at) => { let d = Infinity; for (const p of contacts ?? []) d = Math.min(d, dist(p, at)); return d; };

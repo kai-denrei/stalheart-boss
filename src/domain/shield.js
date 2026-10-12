@@ -17,8 +17,8 @@
 // relationship is pinned by a test, because it is the design and not a
 // coincidence of two numbers.
 
-import { makeParams, clampParams, formatKnobs, knobProblems } from '../core/knobs.js?v=e6be0715';
-import { sub3, scale3, dot3, cross3, norm3 } from '../vec3.js?v=e6be0715';
+import { makeParams, clampParams, formatKnobs, knobProblems } from '../core/knobs.js?v=6a984b93';
+import { sub3, scale3, dot3, cross3, norm3 } from '../vec3.js?v=6a984b93';
 
 export const SHIELD_TUNE = {
   cap: 20,            // seconds; the meter ceiling, whatever fed it

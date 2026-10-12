@@ -17,14 +17,14 @@
 // pass output is always input+bloom and can't be made bloom-only. But it
 // leaves the PURE bloom in renderTargetsHorizontal[0] just before that
 // blend, and that texture is readable. No scene term leaks into the add.
-import { EffectComposer } from '../vendor/EffectComposer.js?v=e6be0715';
-import { RenderPass } from '../vendor/RenderPass.js?v=e6be0715';
-import { UnrealBloomPass } from '../vendor/UnrealBloomPass.js?v=e6be0715';
-import { ShaderPass } from '../vendor/ShaderPass.js?v=e6be0715';
-import { OutputPass } from '../vendor/OutputPass.js?v=e6be0715';
-import * as THREE from '../vendor/three.module.js?v=e6be0715';
+import { EffectComposer } from '../vendor/EffectComposer.js?v=6a984b93';
+import { RenderPass } from '../vendor/RenderPass.js?v=6a984b93';
+import { UnrealBloomPass } from '../vendor/UnrealBloomPass.js?v=6a984b93';
+import { ShaderPass } from '../vendor/ShaderPass.js?v=6a984b93';
+import { OutputPass } from '../vendor/OutputPass.js?v=6a984b93';
+import * as THREE from '../vendor/three.module.js?v=6a984b93';
 import { buildWeightMap, materialConflicts, clampWeight, DEFAULT_BLOOM_WEIGHTS }
-  from './bloomweights.js?v=e6be0715';
+  from './bloomweights.js?v=6a984b93';
 
 const COARSE = typeof matchMedia === 'function'
   && matchMedia('(pointer: coarse)').matches;

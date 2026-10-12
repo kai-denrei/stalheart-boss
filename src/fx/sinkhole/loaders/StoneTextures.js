@@ -1,4 +1,4 @@
-import { TextureLoader, RepeatWrapping, SRGBColorSpace } from '../../../../vendor/three.module.js?v=e6be0715';
+import { TextureLoader, RepeatWrapping, SRGBColorSpace } from '../../../../vendor/three.module.js?v=6a984b93';
 
 /**
  * The shared photographic stone set — ambientCG **Rock030** (CC0), the same four

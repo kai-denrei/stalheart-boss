@@ -1,7 +1,7 @@
 // THE RING IN THE SKY (docs/superpowers/specs/2026-10-02-orbital-works-design.md): every collector the ARC-01 has put up is a point of
 // light on one tilted ring round the planet, `radius` planet radii out. A Points cloud sized for the ring's capacity, its draw range
 // the collectors in orbit, so the ring fills in run over run and costs one draw. The scene's unit is the planet's radius.
-import * as THREE from '../../vendor/three.module.js?v=e6be0715';
+import * as THREE from '../../vendor/three.module.js?v=6a984b93';
 
 export function createOrbitalRing(scene, tune) {
   const n = tune.capacity, pos = new Float32Array(n * 3), tilt = (tune.tiltDeg * Math.PI) / 180;

@@ -4,10 +4,10 @@
 // arrays deploy on arrival, the radiators glow on the thermal page, the iris opens on the optics page, the idle cycle
 // runs between. Every number comes from src/content/orbital-laser.js, so the 1.2 GJ is 120 MW for a 10 s burn.
 // Skippable, once per browser; the host opens it and gets its callback on close.
-import * as THREE from '../../vendor/three.module.js?v=e6be0715';
-import { GLTFLoader } from '../../vendor/GLTFLoader.js?v=e6be0715';
-import { MeshoptDecoder } from '../../vendor/meshopt_decoder.module.js?v=e6be0715';
-import { LASER_ORBIT, LASER_BEAM, LASER_BURN, LASER_TELEMETRY, LASER_GAME } from '../content/orbital-laser.js?v=e6be0715';
+import * as THREE from '../../vendor/three.module.js?v=6a984b93';
+import { GLTFLoader } from '../../vendor/GLTFLoader.js?v=6a984b93';
+import { MeshoptDecoder } from '../../vendor/meshopt_decoder.module.js?v=6a984b93';
+import { LASER_ORBIT, LASER_BEAM, LASER_BURN, LASER_TELEMETRY, LASER_GAME } from '../content/orbital-laser.js?v=6a984b93';
 
 const SOL82_URL = 'assets/models/sol82/sol82_platform_detailed.glb';
 const SEEN_KEY = 'stalheart:v1:sol82-briefing';

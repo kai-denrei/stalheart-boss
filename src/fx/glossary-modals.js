@@ -1,9 +1,9 @@
 // THE BRIEFING AND ITS GLOSSARIES (moved out of src/td-tab.js, 2026-10-01, unchanged): the campaign board's opening briefing as
 // cards, THE RECORD, the hostiles glossary generated from ENEMY_SPEC and the pickups. The host hands in the message element, the
 // pause, the sprite shots and the icon builders; this only writes the modal's HTML.
-import { ACHIEVEMENTS, ACHV_GROUPS } from '../achievements.js?v=e6be0715';
-import { CREATURE_TINTS, ENEMY_SPEC, INTROS } from '../enemyspec.js?v=e6be0715';
-import { makeTriadIcon, glossCard, GAMEPLAY_TIPS } from './briefing-cards.js?v=e6be0715';
+import { ACHIEVEMENTS, ACHV_GROUPS } from '../achievements.js?v=6a984b93';
+import { CREATURE_TINTS, ENEMY_SPEC, INTROS } from '../enemyspec.js?v=6a984b93';
+import { makeTriadIcon, glossCard, GAMEPLAY_TIPS } from './briefing-cards.js?v=6a984b93';
 
 // h: { msgEl, pause(), spriteShot(key, build), heartIcon(), unitIcon(type, tint), mobile(), round(), heldAchv(), towerLook(), buildTowerLook,
 // starterTower(), look(), makeDotBurst, makeRewardSolid, HEART_MAX, DEFAULT_TANK }

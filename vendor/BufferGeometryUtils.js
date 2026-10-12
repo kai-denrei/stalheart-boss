@@ -9,7 +9,7 @@ import {
 	TriangleStripDrawMode,
 	TrianglesDrawMode,
 	Vector3,
-} from './three.module.js?v=e6be0715';
+} from './three.module.js?v=6a984b93';
 
 function computeMikkTSpaceTangents( geometry, MikkTSpace, negateSign = true ) {
 

@@ -1,2 +1,2 @@
 // Compatibility facade; lock and guidance rules have one pure owner.
-export * from './domain/lockon.js?v=e6be0715';
+export * from './domain/lockon.js?v=6a984b93';

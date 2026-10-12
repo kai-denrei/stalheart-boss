@@ -9,13 +9,13 @@ import {
   Sphere,
   Vector3,
   DoubleSide
-} from '../../../../vendor/three.module.js?v=e6be0715';
-import { sharedUniforms } from '../core/FrameUniforms.js?v=e6be0715';
-import { noiseGLSL } from '../shaders/lib/noise.glsl.js?v=e6be0715';
-import { LAYER } from '../core/Layers.js?v=e6be0715';
-import { settings } from '../config/settings.js?v=e6be0715';
-import { getColor } from '../utils/color.js?v=e6be0715';
-import { clamp, saturate, lerp, randRange, Easing } from '../utils/math.js?v=e6be0715';
+} from '../../../../vendor/three.module.js?v=6a984b93';
+import { sharedUniforms } from '../core/FrameUniforms.js?v=6a984b93';
+import { noiseGLSL } from '../shaders/lib/noise.glsl.js?v=6a984b93';
+import { LAYER } from '../core/Layers.js?v=6a984b93';
+import { settings } from '../config/settings.js?v=6a984b93';
+import { getColor } from '../utils/color.js?v=6a984b93';
+import { clamp, saturate, lerp, randRange, Easing } from '../utils/math.js?v=6a984b93';
 
 /**
  * Deep fissure scars — layer 4 of the breakdown.

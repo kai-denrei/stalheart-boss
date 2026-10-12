@@ -1,4 +1,4 @@
-import { storage as localStorage } from './storage.js?v=e6be0715';
+import { storage as localStorage } from './storage.js?v=6a984b93';
 // recordtab.js — THE RECORD as a page of its own.
 //
 // It already existed as a sheet off the briefing, and the operator could not
@@ -9,7 +9,7 @@ import { storage as localStorage } from './storage.js?v=e6be0715';
 // The same store the game writes, read-only here. Thin and effectful — the
 // table and every condition live in achievements.js, which is pure.
 
-import { ACHIEVEMENTS, ACHV_GROUPS, sanitiseRecord } from './achievements.js?v=e6be0715';
+import { ACHIEVEMENTS, ACHV_GROUPS, sanitiseRecord } from './achievements.js?v=6a984b93';
 
 const ACHV_KEY = 'td.achievements';
 

@@ -15,9 +15,9 @@
 // rest copy each frame while it moves; a piece gone leaves the index (rebuilt then, and only then). An untouched carcass costs a colour, an emissive and a sink a
 // frame, as before, and one look at its next crumble time. The whole carcass darkens, sinks and cools in the seat's thermal (its own emissive, as the heat
 // tagging's warm) over `decay` s and goes; at most `max` lie, the oldest going first.
-import * as THREE from '../../../vendor/three.module.js?v=e6be0715';
-import { limbRings, crumbleTimes, blastFor, blastBreaks, flingOf, flingPose, crumblePose, carcassLook } from '../../domain/boss-carcass.js?v=e6be0715';
-import { HEAT } from '../../fx/thermal-heat.js?v=e6be0715';
+import * as THREE from '../../../vendor/three.module.js?v=6a984b93';
+import { limbRings, crumbleTimes, blastFor, blastBreaks, flingOf, flingPose, crumblePose, carcassLook } from '../../domain/boss-carcass.js?v=6a984b93';
+import { HEAT } from '../../fx/thermal-heat.js?v=6a984b93';
 
 const DEAD_TONE = new THREE.Color(0x2a2420);   // a carcass darkens toward this
 const BLACK = new THREE.Color(0, 0, 0), WHITE_HEAT = new THREE.Color(1, 1, 1);   // a fresh carcass's emissive in the thermal goes from black toward white, as the heat tagging's

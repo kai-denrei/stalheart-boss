@@ -1,13 +1,13 @@
 // The navigation shell on every game and workshop page: an always-visible PLAYTEST | DEV toggle joined to the build
 // tag, and one drawer per mode drawn from src/content/nav.js. Switching modes opens that mode's drawer and never
 // navigates; only picking an entry does. DEV is offered on the source tree, or on a release after ?dev=1.
-import { NAV_ENTRIES, NAV_GROUPS } from '../content/nav.js?v=e6be0715';
-import { activeEntry, currentMode, entryUrl, placeLabel, storyStage } from '../core/nav-match.js?v=e6be0715';
-import { devModeOn } from '../core/dev-mode.js?v=e6be0715';
-import { escapeHtml as esc } from '../core/markdown.js?v=e6be0715';
-import { storage } from '../storage.js?v=e6be0715';
-import { downloadJSON } from '../diagnostics.js?v=e6be0715';
-import { DEFAULT_ENEMIES, finishJump, raiseEnemies } from './jump-to.js?v=e6be0715';
+import { NAV_ENTRIES, NAV_GROUPS } from '../content/nav.js?v=6a984b93';
+import { activeEntry, currentMode, entryUrl, placeLabel, storyStage } from '../core/nav-match.js?v=6a984b93';
+import { devModeOn } from '../core/dev-mode.js?v=6a984b93';
+import { escapeHtml as esc } from '../core/markdown.js?v=6a984b93';
+import { storage } from '../storage.js?v=6a984b93';
+import { downloadJSON } from '../diagnostics.js?v=6a984b93';
+import { DEFAULT_ENEMIES, finishJump, raiseEnemies } from './jump-to.js?v=6a984b93';
 
 const MODE_KEY = 'ssg.nav-mode', DEV_KEY = 'ssg.dev-face';
 // where a backslash is typing, not a menu key
@@ -84,7 +84,7 @@ export function mountShellNav({ navigate, buildText, query = new URLSearchParams
   }
 
   const tools = {
-    felt: () => { setOpen(false); import('./felt-capture.js?v=e6be0715').then((m) => m.openFeltCapture()); },
+    felt: () => { setOpen(false); import('./felt-capture.js?v=6a984b93').then((m) => m.openFeltCapture()); },
     // the game's own deep link knows the board and the seed; elsewhere this page's address is the link
     link: (b) => {
       const own = document.querySelector('#td-link');
@@ -108,7 +108,7 @@ export function mountShellNav({ navigate, buildText, query = new URLSearchParams
     if (tool) { tools[tool.dataset.tool]?.(tool); return; }
     const b = ev.target.closest('[data-entry]'); if (!b || b.disabled) return;
     const entry = NAV_ENTRIES.find((e) => e.id === b.dataset.entry);
-    if (entry.target.doc) { setOpen(false); import('./docs-overlay.js?v=e6be0715').then((m) => m.openDocsOverlay(entry.target.doc)); return; }
+    if (entry.target.doc) { setOpen(false); import('./docs-overlay.js?v=6a984b93').then((m) => m.openDocsOverlay(entry.target.doc)); return; }
     navigate(entryUrl(entry.target, location.search, { enemies: entry.target.url ? count : null }));
   });
   nav.querySelector('[data-count]')?.addEventListener('input', (ev) => { count = Math.max(0, parseInt(ev.target.value, 10) || 0); });
@@ -139,6 +139,6 @@ export function mountShellNav({ navigate, buildText, query = new URLSearchParams
   render();
   const jump = finishJump({ query, count: () => count });
   const doc = query.get('doc');
-  if (doc && dev.on) import('./docs-overlay.js?v=e6be0715').then((m) => m.openDocsOverlay(doc));
+  if (doc && dev.on) import('./docs-overlay.js?v=6a984b93').then((m) => m.openDocsOverlay(doc));
   return { setMode, setOpen, dispose() { jump.dispose(); bar.remove(); nav.remove(); } };
 }

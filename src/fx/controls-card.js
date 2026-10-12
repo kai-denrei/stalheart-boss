@@ -5,7 +5,7 @@
 // really honour are listed: the tank (td-tab onKeyEvent), the seats (src/sentry-pilot.js, src/fx/laser-seat.js) and the strip's keys.
 // On a touch shell the pad buttons get their names for a while instead. The shield hint is said once per browser, the first time the
 // rack runs dry.
-import { storage } from '../storage.js?v=e6be0715';
+import { storage } from '../storage.js?v=6a984b93';
 
 // a new key: the old card (the tank's keys only) was already seen in most browsers, and this page is not that card
 const SEEN = 'td.controls-page-seen', RACK = 'td.shield-empty-hint', AUTO_HIDE_MS = 45000;

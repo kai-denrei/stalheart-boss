@@ -23,12 +23,12 @@
 // voice of it is live just after, and how long its opening was held.
 // AFTERWARDS: `seal()` lays the game's rubble cap over a breach (the adapter's `seal`, the game's sealed sinkhole), and a breach opened while a cap lies hides the
 // caps once its ground breaks (they would sit over the new hole); `reset()` takes every breach and cap away for a new round.
-import * as THREE from '../../../vendor/three.module.js?v=e6be0715';
-import { createGameBreaches } from '../../game-breaches.js?v=e6be0715';
-import { makeShaderWarmer } from '../../fx/shader-warm.js?v=e6be0715';
-import { BREACH_SOUNDS } from '../../content/breach-defaults.js?v=e6be0715';
-import { DISTANCE_K } from '../../content/audio-defaults.js?v=e6be0715';
-import { distanceGain } from '../../domain/audiomix.js?v=e6be0715';
+import * as THREE from '../../../vendor/three.module.js?v=6a984b93';
+import { createGameBreaches } from '../../game-breaches.js?v=6a984b93';
+import { makeShaderWarmer } from '../../fx/shader-warm.js?v=6a984b93';
+import { BREACH_SOUNDS } from '../../content/breach-defaults.js?v=6a984b93';
+import { DISTANCE_K } from '../../content/audio-defaults.js?v=6a984b93';
+import { distanceGain } from '../../domain/audiomix.js?v=6a984b93';
 
 const QUAKE = 'sinkhole_quake';
 

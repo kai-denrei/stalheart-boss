@@ -1,9 +1,9 @@
-import { LOOKS } from './looks.js?v=e6be0715';
-import { BREACH_SURFACE_GLSL } from './core/breach-surface.js?v=e6be0715';
-import { generateSphereMesh,relax } from './grid.js?v=e6be0715';
-import * as THREE from '../vendor/three.module.js?v=e6be0715';
-import { rimRadius,bowlHeight,SINKHOLE_INNER,SINKHOLE_DEPTH,SINKHOLE_BOUNDARY_GLSL } from './core/sinkhole-shape.js?v=e6be0715';
-import { getStoneTextures,STONE_TILE_METRES } from './fx/sinkhole/loaders/StoneTextures.js?v=e6be0715';
+import { LOOKS } from './looks.js?v=6a984b93';
+import { BREACH_SURFACE_GLSL } from './core/breach-surface.js?v=6a984b93';
+import { generateSphereMesh,relax } from './grid.js?v=6a984b93';
+import * as THREE from '../vendor/three.module.js?v=6a984b93';
+import { rimRadius,bowlHeight,SINKHOLE_INNER,SINKHOLE_DEPTH,SINKHOLE_BOUNDARY_GLSL } from './core/sinkhole-shape.js?v=6a984b93';
+import { getStoneTextures,STONE_TILE_METRES } from './fx/sinkhole/loaders/StoneTextures.js?v=6a984b93';
 
 export function makeSinkholeTerrain(hole,radius,{ground=true}={}){
   const textures=getStoneTextures(),group=new THREE.Group(),bowl=new THREE.Group();group.add(bowl);

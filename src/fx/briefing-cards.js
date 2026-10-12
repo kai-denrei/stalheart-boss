@@ -1,7 +1,7 @@
 // The campaign board's opening briefing and glossaries: the cards and the how-to text, moved out of src/td-tab.js whole
 // (2026-09-16) so the controller keeps its line budget. The controller still owns the sprites and when the cards show.
-import * as THREE from '../../vendor/three.module.js?v=e6be0715';
-import { makeShellSolid } from '../units.js?v=e6be0715';
+import * as THREE from '../../vendor/three.module.js?v=6a984b93';
+import { makeShellSolid } from '../units.js?v=6a984b93';
 
 // mini bullet triad, briefing-icon edition
 export function makeTriadIcon() {

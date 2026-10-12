@@ -2,16 +2,16 @@
 // rig they draw (ensureBeams, the beam's rank and reach, drawBeam, hideBeams), the heat and the lockout, the laser bolts
 // (killLaser, updateLasers) and the cannon's fire. The controller keeps the bolts' list (laserShots), the heat lets, the live
 // PLASMA knobs and the plume view (plasma) the dev panel walks, and Z_AXIS; they come in as values or getters with setters.
-import { makeOrdnanceShell } from '../shell.js?v=e6be0715';
-import { TANK_PLASMA } from '../content/tank.js?v=e6be0715';
-import * as THREE from '../../vendor/three.module.js?v=e6be0715';
-import { BLOCKED } from '../dungeon.js?v=e6be0715';
-import { createBeamRig, BOARD_PRESET, BEAM_PEAK } from '../beamdraw.js?v=e6be0715';
-import { sub3, add3, scale3, dot3, cross3, norm3 } from '../vec3.js?v=e6be0715';
-import { SECONDARY_TOE, applySecondaryToe } from '../units.js?v=e6be0715';
-import { beamStep } from '../beamranks.js?v=e6be0715';
-import { burn, sweepAdvance, wallBite as wallBiteFor } from '../beamburn.js?v=e6be0715';
-import { arcPoint, projectToArc, toeForCrossing } from '../arc.js?v=e6be0715';
+import { makeOrdnanceShell } from '../shell.js?v=6a984b93';
+import { TANK_PLASMA } from '../content/tank.js?v=6a984b93';
+import * as THREE from '../../vendor/three.module.js?v=6a984b93';
+import { BLOCKED } from '../dungeon.js?v=6a984b93';
+import { createBeamRig, BOARD_PRESET, BEAM_PEAK } from '../beamdraw.js?v=6a984b93';
+import { sub3, add3, scale3, dot3, cross3, norm3 } from '../vec3.js?v=6a984b93';
+import { SECONDARY_TOE, applySecondaryToe } from '../units.js?v=6a984b93';
+import { beamStep } from '../beamranks.js?v=6a984b93';
+import { burn, sweepAdvance, wallBite as wallBiteFor } from '../beamburn.js?v=6a984b93';
+import { arcPoint, projectToArc, toeForCrossing } from '../arc.js?v=6a984b93';
 
 export function createTankLaser(host) {
   // --- twin mini-lasers: hold-to-fire, they overheat ----------------------- Trigger: hold Shift (or the secondary fire button).

@@ -7,10 +7,10 @@
 // `host` hands in the controller: its fixed objects and functions as values (player, params, towers, simCurve, campaign,
 // endShot, breachNextSector, setView, SECTORS_TOTAL), what it rebinds as getters (simDone, heartHP, playerHP, round, wave, t,
 // simCap, simStyle, score, eco, ecoClockT, ecoAffordT) and setSimDone for the one let the result writes (the frame loop reads it).
-import { record } from '../diagnostics.js?v=e6be0715';
-import { CONTENT } from '../content/runtime.js?v=e6be0715';
-import { ROSTER } from '../towers.js?v=e6be0715';
-import { simOutcome } from '../domain/campaign.js?v=e6be0715';
+import { record } from '../diagnostics.js?v=6a984b93';
+import { CONTENT } from '../content/runtime.js?v=6a984b93';
+import { ROSTER } from '../towers.js?v=6a984b93';
+import { simOutcome } from '../domain/campaign.js?v=6a984b93';
 
 export function createSimRun(host) {
   const { player, params, towers, simCurve, campaign, endShot, breachNextSector, setView, SECTORS_TOTAL } = host;

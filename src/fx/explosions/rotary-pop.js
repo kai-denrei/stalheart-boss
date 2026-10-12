@@ -1,7 +1,7 @@
 // Small: 25 mm rotary round. One white-hot puff for the attack, a few fire
 // puffs that cool to smoke, a low dust kick and a dozen sparks. Two draws.
 // Sized to fill its 4.5 m radius: from the seat that is about 70 px across.
-import { assemble, mulberry32, range, direction, prewarm } from './common.js?v=e6be0715';
+import { assemble, mulberry32, range, direction, prewarm } from './common.js?v=6a984b93';
 
 export { prewarm };
 

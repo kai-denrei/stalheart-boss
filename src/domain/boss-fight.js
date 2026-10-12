@@ -26,7 +26,7 @@
 //
 // Imports only ./gunship.js's falloff (`splashDamage`), so a landing hurts exactly as the game's splash does.
 
-import { splashDamage } from './gunship.js?v=e6be0715';
+import { splashDamage } from './gunship.js?v=6a984b93';
 
 const GOLDEN = 2.399963, SPREAD = 8, KINDS = ['rotary', 'bofors', 'nuke', 'sol'], FAR = { pos: [1e6, 0], radius: 0 };
 const STREAM_HOLD = 0.1;   // a player's stream lives this long past the last hold
@@ -211,6 +211,14 @@ export function burn(state, plan, dt, creature, tank) {
   const damage = harm(state, nearest(creature.contacts, plan.at) < plan.radius ? plan.damage * dt : 0, plan.kind);
   if (damage > 0 && !state.burnt.has(plan)) { state.burnt.add(plan); state.hits++; }
   return { damage, tankHit: !plan.spares && dist(tank.pos, plan.at) < plan.radius + tank.radius };
+}
+
+// a damage another rule has already weighed (the Cutis-Maku scenario's phase multiplier, src/domain/cutis-hits.js `cutisDamage`), on the fight through `harm`: a
+// landing counts one hit, a stream (`moving`) one hit a plan, as `burn` counts them. Returns the damage dealt (0 outside a running fight)
+export function hurt(state, plan, damage) {
+  const dealt = harm(state, damage, plan.kind);
+  if (dealt > 0 && (!plan.moving || !state.burnt.has(plan))) { if (plan.moving) state.burnt.add(plan); state.hits++; }
+  return dealt;
 }
 
 export function capture(state, reason) {

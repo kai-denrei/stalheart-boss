@@ -1,2 +1,2 @@
 // Compatibility facade. Rules live in domain.
-export * from './domain/economy.js?v=e6be0715';
+export * from './domain/economy.js?v=6a984b93';

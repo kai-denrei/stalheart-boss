@@ -1,8 +1,8 @@
 // THE WARN RINGS (moved out of src/td-tab.js unchanged, the refactor run, 2026-10-07): the pooled point cloud every warning ring
 // is drawn in (a gate's countdown beats, a round's impact, a strike's mark), ring() to start one and tick(dt) to age and draw them.
 // `host` hands in the board as getters (graph, cellSide).
-import * as THREE from '../../vendor/three.module.js?v=e6be0715';
-import { add3, scale3, cross3, norm3, len3 } from '../vec3.js?v=e6be0715';
+import * as THREE from '../../vendor/three.module.js?v=6a984b93';
+import { add3, scale3, cross3, norm3, len3 } from '../vec3.js?v=6a984b93';
 
 export function createWarnRing(scene, host) {
   // One pooled cloud for every ring, main view only — the map has its blips.

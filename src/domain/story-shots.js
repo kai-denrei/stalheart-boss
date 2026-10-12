@@ -4,7 +4,7 @@
 //
 // Pure arithmetic, like src/domain/showcase-shot.js: every function returns an eye, a look point and an up. Moved out of the
 // game controller unchanged.
-import { add3, sub3, scale3, dot3, norm3, cross3 } from '../vec3.js?v=e6be0715';
+import { add3, sub3, scale3, dot3, norm3, cross3 } from '../vec3.js?v=6a984b93';
 
 // FACE ON: Isao's body at `bp` standing on `dir`, facing `fw` (his model's world direction, flattened onto the ground), `size`
 // his scale. The eye closes from 1.9 to 1.4 of his size in front of his face over the shot (u 0..1), a little above it.

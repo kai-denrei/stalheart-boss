@@ -50,21 +50,21 @@
 //
 // KEYS: the seat swallows every key but H in the capture phase. Esc is its `leave` (the lab goes back to the tank), P its `pause`; the
 // lab's R is a capture listener registered before any seat (boss-tab.js), so it runs first and the game's sentry-pilot.js is unchanged.
-import * as THREE from '../../../vendor/three.module.js?v=e6be0715';
-import { EffectComposer } from '../../../vendor/EffectComposer.js?v=e6be0715';
-import { RenderPass } from '../../../vendor/RenderPass.js?v=e6be0715';
-import { OutputPass } from '../../../vendor/OutputPass.js?v=e6be0715';
-import { createSentryPilot } from '../../sentry-pilot.js?v=e6be0715';
-import { makeCellIndex } from '../../cellindex.js?v=e6be0715';
-import { createStoryMonitor } from '../../fx/story-monitor.js?v=e6be0715';
-import { createThermalHeat } from '../../fx/thermal-heat.js?v=e6be0715';
-import { createGunshipOptic } from '../../fx/gunship-optic.js?v=e6be0715';
-import { createGunshipDrop } from '../../fx/gunship-drop.js?v=e6be0715';
-import { createWarnRing } from '../../fx/warn-ring.js?v=e6be0715';
-import { createExplosions } from '../../fx/explosions.js?v=e6be0715';
-import { makeGunship, stepGunship, onStation, phaseLeft, passProgress, mountGunship, dismountGunship, selectGun, stepGun, aimOnSphere, splashDamage, dangerReport, fireRound, stepRounds, paintHeavy, launchHeavy, nudgeHeavy, stepHeavy, heavyState } from '../../domain/gunship.js?v=e6be0715';
-import { GUNSHIP_GUNS, GUNSHIP_GUN_ORDER, GUNSHIP_NUKE, GUNSHIP_ORBIT, GUNSHIP_PLATFORM } from '../../content/gunship.js?v=e6be0715';
-import { orbitAt } from '../../domain/boss-orbit.js?v=e6be0715';
+import * as THREE from '../../../vendor/three.module.js?v=6a984b93';
+import { EffectComposer } from '../../../vendor/EffectComposer.js?v=6a984b93';
+import { RenderPass } from '../../../vendor/RenderPass.js?v=6a984b93';
+import { OutputPass } from '../../../vendor/OutputPass.js?v=6a984b93';
+import { createSentryPilot } from '../../sentry-pilot.js?v=6a984b93';
+import { makeCellIndex } from '../../cellindex.js?v=6a984b93';
+import { createStoryMonitor } from '../../fx/story-monitor.js?v=6a984b93';
+import { createThermalHeat } from '../../fx/thermal-heat.js?v=6a984b93';
+import { createGunshipOptic } from '../../fx/gunship-optic.js?v=6a984b93';
+import { createGunshipDrop } from '../../fx/gunship-drop.js?v=6a984b93';
+import { createWarnRing } from '../../fx/warn-ring.js?v=6a984b93';
+import { createExplosions } from '../../fx/explosions.js?v=6a984b93';
+import { makeGunship, stepGunship, onStation, phaseLeft, passProgress, mountGunship, dismountGunship, selectGun, stepGun, aimOnSphere, splashDamage, dangerReport, fireRound, stepRounds, paintHeavy, launchHeavy, nudgeHeavy, stepHeavy, heavyState } from '../../domain/gunship.js?v=6a984b93';
+import { GUNSHIP_GUNS, GUNSHIP_GUN_ORDER, GUNSHIP_NUKE, GUNSHIP_ORBIT, GUNSHIP_PLATFORM } from '../../content/gunship.js?v=6a984b93';
+import { orbitAt } from '../../domain/boss-orbit.js?v=6a984b93';
 
 const GAME_LENS = { near: 0.004, far: 50 };   // td-tab.js's camera, in the game's units
 const RELOAD = 6;                // the lab's MK-9 reload, seconds (the knob's default; the game's is 20)
@@ -383,8 +383,10 @@ export function createGameSeat({ stage, renderer, scene, sphere, camera, audio, 
     gunner() {
       if (!m) return null;
       const gun = NAME[m.gs.gun], o = gun === 'nuke' ? m.pilot.gunshipOptic() : null, h = heavyState(m.gs, guns), T = tune();
-      // the MK-9 in flight, release to landing, as a danger zone for Isao's autopilot (src/domain/boss-bait.js): its cell now, the ring, the lab's clock at the landing
-      const nukes = h.phase === 'released' || h.phase === 'ignited' ? [{ at: atLocal(m.G.centers[h.ci]), radius: T.nuke.radius, until: now() + h.left }] : [];
+      // the MK-9, painted to landing, as a danger zone for Isao's autopilot (src/domain/boss-bait.js): its cell now, the ring, the lab's clock at the landing (owner,
+      // 2026-10-12: "Isao should be more aggressively trying to avoid the nuke blast radius": a painted cell is a zone before its release, landing a fall from now)
+      const flying = h.phase === 'released' || h.phase === 'ignited';
+      const nukes = flying || h.phase === 'painted' ? [{ at: atLocal(m.G.centers[h.ci]), radius: T.nuke.radius, until: now() + (flying ? h.left : guns.heavy.travel) }] : [];
       return { gun, reticle: o ? atLocal(o.pos) : null, shotAt: fired.at, fortyAt: fired.forty, nukes };
     },
     // seconds until the next MK-9 can be released: its fall and reload while one is out

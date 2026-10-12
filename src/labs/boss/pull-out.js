@@ -13,7 +13,7 @@
 // kit's step again; the kit's files are untouched. The gait's feet are set to the same goals, so the kit's own muscles lead each arm the same way; on their own they
 // cannot lift one far, since they remove their own net vertical force (behavior.js: "Removing net vertical force prevents the controller levitating the torso"),
 // and the torso squashes instead. The drive's pull is not removed: it is the grip on the lip.
-import { armReach, rimReach, gripRadius } from '../../domain/boss-emerge.js?v=e6be0715';
+import { armReach, rimReach, gripRadius } from '../../domain/boss-emerge.js?v=6a984b93';
 
 const ROOT = 0.05, OUTER = 0.085, TIP = 0.08;   // native metres from the rest centre: the outer part of a limb, fully pulled past OUTER; its tip past TIP
 

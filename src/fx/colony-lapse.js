@@ -4,7 +4,7 @@
 //
 // A still is the scene drawn once into a small render target and read back (w x h, a few dozen times a run), so it costs nothing
 // between stills. The frame is chosen once, from the heart and the rim: `frame(heart, rim)` with unit vectors; until then nothing is shot.
-import * as THREE from '../../vendor/three.module.js?v=e6be0715';
+import * as THREE from '../../vendor/three.module.js?v=6a984b93';
 
 export function createColonyLapse(renderer, scene, { w = 384, h = 216, fov = 42, back = 0.42, up = 0.4, max = 90 } = {}) {
   const target = new THREE.WebGLRenderTarget(w, h, { samples: 4 });

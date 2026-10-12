@@ -11,7 +11,7 @@
 // r160 keys a program on the render target's colour space as well as the scene's lights, so every root is compiled
 // twice: once for the screen and once with a linear offscreen target bound, which is what the bloom chain's scene
 // passes render into. Lights come from the game scene: call this only once they are in.
-import * as THREE from '../../vendor/three.module.js?v=e6be0715';
+import * as THREE from '../../vendor/three.module.js?v=6a984b93';
 
 export function makeShaderWarmer(renderer, scene, camera, { maxPolls = 500 } = {}) {
   const linear = new THREE.WebGLRenderTarget(1, 1);

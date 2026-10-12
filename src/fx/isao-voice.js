@@ -4,11 +4,11 @@
 // time (a brief and its callout often land together), each trigger resting VOICE_TUNE.repeat seconds before it speaks again, the
 // player's picks (the Workshop's voice tab) honoured on every call. Lines are lazy sounds: the chosen one is decoded as it is wanted
 // and dropped if it arrives more than `late` seconds after its moment. A page whose audio has no voice lines stays silent.
-import { ISAO_TRIGGERS } from '../content/isao-voice.js?v=e6be0715';
-import { VOICE_HOOKS, VOICE_TUNE, VOICE_STORE, VOICE_LINE_MOMENTS, VOICE_FLAVOR, voiceKey } from '../content/voice-hooks.js?v=e6be0715';
-import { normText } from '../domain/voice-match.js?v=e6be0715';
-import { createVoiceIndex, eligible, pickLine, readPicks, prunePicks, dbGain } from '../domain/voice-match.js?v=e6be0715';
-import { storage } from '../storage.js?v=e6be0715';
+import { ISAO_TRIGGERS } from '../content/isao-voice.js?v=6a984b93';
+import { VOICE_HOOKS, VOICE_TUNE, VOICE_STORE, VOICE_LINE_MOMENTS, VOICE_FLAVOR, voiceKey } from '../content/voice-hooks.js?v=6a984b93';
+import { normText } from '../domain/voice-match.js?v=6a984b93';
+import { createVoiceIndex, eligible, pickLine, readPicks, prunePicks, dbGain } from '../domain/voice-match.js?v=6a984b93';
+import { storage } from '../storage.js?v=6a984b93';
 
 const KNOWN_IDS = new Set(Object.values(ISAO_TRIGGERS).flatMap((t) => t.lines.map((l) => l.id))), KNOWN_KEYS = new Set(Object.keys(ISAO_TRIGGERS));
 export function createIsaoVoice({ flavor = VOICE_FLAVOR, moments = VOICE_LINE_MOMENTS, triggers = ISAO_TRIGGERS, hooks = VOICE_HOOKS, tune = VOICE_TUNE, picks = () => prunePicks(readPicks(storage.getItem(VOICE_STORE)), KNOWN_IDS, KNOWN_KEYS),

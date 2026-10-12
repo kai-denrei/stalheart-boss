@@ -7,15 +7,15 @@
 // storyBase, deploy, playerMesh, graph, dungeon, cellSide, pilot, pilotMode, isao, rs, ramCombo, playerHP), the four lets
 // the montage writes as setters (setPaused, setFollowSuspend, setRamCam, setGunshipTrack), and placeTank from the
 // acceptance hooks. The hooks call each other through the returned object, as they did through gameHooks.showcase.
-import * as THREE from '../../vendor/three.module.js?v=e6be0715';
-import { norm3, sub3, scale3, dot3, cross3 } from '../vec3.js?v=e6be0715';
-import { BLOCKED } from '../dungeon.js?v=e6be0715';
-import { cellsAhead } from '../domain/showcase-shot.js?v=e6be0715';
-import { fillFromKill } from '../domain/gunship-call.js?v=e6be0715';
-import { onStation, startStation, selectGun } from '../domain/gunship.js?v=e6be0715';
-import { makeTrack } from '../domain/gunship-track.js?v=e6be0715';
-import { GUNSHIP_CALL, GUNSHIP_GUNS, GUNSHIP_ORBIT, GUNSHIP_PLATFORM } from '../content/gunship.js?v=e6be0715';
-import { startDiveShot } from './dive-shot.js?v=e6be0715';
+import * as THREE from '../../vendor/three.module.js?v=6a984b93';
+import { norm3, sub3, scale3, dot3, cross3 } from '../vec3.js?v=6a984b93';
+import { BLOCKED } from '../dungeon.js?v=6a984b93';
+import { cellsAhead } from '../domain/showcase-shot.js?v=6a984b93';
+import { fillFromKill } from '../domain/gunship-call.js?v=6a984b93';
+import { onStation, startStation, selectGun } from '../domain/gunship.js?v=6a984b93';
+import { makeTrack } from '../domain/gunship-track.js?v=6a984b93';
+import { GUNSHIP_CALL, GUNSHIP_GUNS, GUNSHIP_ORBIT, GUNSHIP_PLATFORM } from '../content/gunship.js?v=6a984b93';
+import { startDiveShot } from './dive-shot.js?v=6a984b93';
 
 export function createShowcaseHooks(host) {
   const { camera, enemies, spawnPoints, spawnQueue, towers, player, params, gunship, gunshipCall, explosions, gameBreaches, storyApi,

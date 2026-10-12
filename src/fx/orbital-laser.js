@@ -5,12 +5,12 @@
 //
 // Widths in the preset are METRES. cellSide / metresPerCell is the host's scene units per metre, so a lab drawing in
 // metres passes 10 / 10 and a board drawing in cells passes its own cell side.
-import * as THREE from '../../vendor/three.module.js?v=e6be0715';
-import { createBeam } from '../beamfx.js?v=e6be0715';
-import { LASER_PRESET, LASER_BEAM, LASER_TRAIL, LASER_TRAIL_SMOKE, LASER_SKY_METRES } from '../content/orbital-laser.js?v=e6be0715';
-import { EXPLOSION_PALETTE } from '../content/explosions.js?v=e6be0715';
-import { createScorchTrail } from './scorch-trail.js?v=e6be0715';
-import { template as puffTemplate, buildPuffGeometry } from './explosions/common.js?v=e6be0715';
+import * as THREE from '../../vendor/three.module.js?v=6a984b93';
+import { createBeam } from '../beamfx.js?v=6a984b93';
+import { LASER_PRESET, LASER_BEAM, LASER_TRAIL, LASER_TRAIL_SMOKE, LASER_SKY_METRES } from '../content/orbital-laser.js?v=6a984b93';
+import { EXPLOSION_PALETTE } from '../content/explosions.js?v=6a984b93';
+import { createScorchTrail } from './scorch-trail.js?v=6a984b93';
+import { template as puffTemplate, buildPuffGeometry } from './explosions/common.js?v=6a984b93';
 
 const Y = new THREE.Vector3(0, 1, 0);
 /* the preset keys measured in metres: scaled by scene units per metre at build and in tune() */

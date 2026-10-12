@@ -4,12 +4,12 @@
 // host owns what each means; the strip only names them. On a growing page there
 // is no TANK until the first hull rolls out of the Stålheart (src/fx/hull-issue.js):
 // tank(false) hides the button and disables it, so its hotkey (7) refuses too.
-import { onStation, phaseLeft, startStation, selectGun } from '../domain/gunship.js?v=e6be0715';
-import { callGunship } from '../domain/gunship-call.js?v=e6be0715';
-import { GUNSHIP_ORBIT, GUNSHIP_GUNS } from '../content/gunship.js?v=e6be0715';
-import { createGunshipBriefing } from './gunship-briefing.js?v=e6be0715';
-import { showOrder } from './order-callout.js?v=e6be0715';
-import { takeSeatView } from '../domain/seat-view.js?v=e6be0715';
+import { onStation, phaseLeft, startStation, selectGun } from '../domain/gunship.js?v=6a984b93';
+import { callGunship } from '../domain/gunship-call.js?v=6a984b93';
+import { GUNSHIP_ORBIT, GUNSHIP_GUNS } from '../content/gunship.js?v=6a984b93';
+import { createGunshipBriefing } from './gunship-briefing.js?v=6a984b93';
+import { showOrder } from './order-callout.js?v=6a984b93';
+import { takeSeatView } from '../domain/seat-view.js?v=6a984b93';
 
 export function createStoryViews(root, on) {
   const nav = document.createElement('nav'); nav.id = 'story-views'; root.append(nav);

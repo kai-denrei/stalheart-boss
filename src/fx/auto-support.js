@@ -4,16 +4,16 @@
 // `c` hands in the controller: its fixed objects and functions as values (gunshipRig, camera, sfx, scene, laserStation, showBrief,
 // updateHud, explode, kill, callout) and what it rebinds as getters (story, pilot, pilotMode, briefQ, cellSide, graph, storyBase,
 // dungeon, playerPos, playerHP, isao, enemies, sectorRun).
-import * as THREE from '../../vendor/three.module.js?v=e6be0715';
-import { LASER_AUTO } from '../content/orbital-laser.js?v=e6be0715';
-import { createIsaoStrike } from './isao-strike.js?v=e6be0715';
-import { createGunshipAuto, landGunshipRounds } from './gunship-auto.js?v=e6be0715';
-import { GUNSHIP_AUTO, GUNSHIP_ORBIT } from '../content/gunship.js?v=e6be0715';
-import { callGunship, isFull as callFull } from '../domain/gunship-call.js?v=e6be0715';
-import { onStation, startStation } from '../domain/gunship.js?v=e6be0715';
-import { SOUNDS } from '../content/audio-defaults.js?v=e6be0715';
-import { strikeDue, pickStrikeTarget } from '../domain/isao-strike.js?v=e6be0715';
-import { ISAO_STRIKE } from '../content/base-programme.js?v=e6be0715';
+import * as THREE from '../../vendor/three.module.js?v=6a984b93';
+import { LASER_AUTO } from '../content/orbital-laser.js?v=6a984b93';
+import { createIsaoStrike } from './isao-strike.js?v=6a984b93';
+import { createGunshipAuto, landGunshipRounds } from './gunship-auto.js?v=6a984b93';
+import { GUNSHIP_AUTO, GUNSHIP_ORBIT } from '../content/gunship.js?v=6a984b93';
+import { callGunship, isFull as callFull } from '../domain/gunship-call.js?v=6a984b93';
+import { onStation, startStation } from '../domain/gunship.js?v=6a984b93';
+import { SOUNDS } from '../content/audio-defaults.js?v=6a984b93';
+import { strikeDue, pickStrikeTarget } from '../domain/isao-strike.js?v=6a984b93';
+import { ISAO_STRIKE } from '../content/base-programme.js?v=6a984b93';
 
 export function createAutoSupport(c) {
   const { showBrief, updateHud } = c;

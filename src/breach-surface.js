@@ -1,6 +1,6 @@
-import * as THREE from '../vendor/three.module.js?v=e6be0715';
-import { BREACH_SURFACE_GLSL } from './core/breach-surface.js?v=e6be0715';
-import { patchOnBeforeCompile } from './fx/sinkhole/utils/shaderPatch.js?v=e6be0715';
+import * as THREE from '../vendor/three.module.js?v=6a984b93';
+import { BREACH_SURFACE_GLSL } from './core/breach-surface.js?v=6a984b93';
+import { patchOnBeforeCompile } from './fx/sinkhole/utils/shaderPatch.js?v=6a984b93';
 // Patch presentation after its own shader deformation. Simulation stays in arc metres.
 export function createBreachSurface(radius,frameMatrix={value:new THREE.Matrix4()},inverseFrame={value:new THREE.Matrix4()}){
  const patched=new WeakSet();

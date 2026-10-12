@@ -1,8 +1,8 @@
 // Shared lab boundary: isolated working copy -> validated artifact -> explicit preview.
-import { clone, serializePreset, parsePreset } from '../content/preset.js?v=e6be0715';
-import { createPresetRepository } from '../platform/preset-repository.js?v=e6be0715';
-import { downloadJSON } from '../diagnostics.js?v=e6be0715';
-import { mountLocalAuthoring } from './local-authoring.js?v=e6be0715';
+import { clone, serializePreset, parsePreset } from '../content/preset.js?v=6a984b93';
+import { createPresetRepository } from '../platform/preset-repository.js?v=6a984b93';
+import { downloadJSON } from '../diagnostics.js?v=6a984b93';
+import { mountLocalAuthoring } from './local-authoring.js?v=6a984b93';
 export function mountPresetPanel(root,{read,write,preview='game',subject}) {
   const box=document.createElement('section');box.className='preset-panel';
   box.innerHTML='<strong>FX package</strong><label>Name <input data-preset-id maxlength="80"></label><button data-preset-export>Export JSON</button><label class="preset-import">Import JSON<input data-preset-import type="file" accept=".json,application/json"></label><button data-preset-save>Save draft</button><button data-preset-load>Load draft</button><button data-preset-preview>Preview in game</button><output aria-live="polite"></output>';
